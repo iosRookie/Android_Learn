@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         ListView mainList = findViewById(R.id.main_list_view);
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, titles);
         mainList.setAdapter(arrayAdapter);
+        mainList.setOnItemClickListener(this);
 
         Log.d(MAIN_ACTIVITY_LOG, "onCreate: ");
     }
