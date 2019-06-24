@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.yyg.kotlinlearn.ConditionControlActivity"></activity>
+        <activity android:name="com.yyg.kotlinlearn.CycleControlActivity"></activity>
+        <activity android:name="com.yyg.kotlinlearn.ConditionControlActivity" />
         <activity android:name="com.yyg.kotlinlearn.BasicDataTypeActivity" />
         <activity android:name="com.yyg.kotlinlearn.BasicSyntaxActivity" />
         <activity android:name="com.yyg.kotlinlearn.KoltinLearn" />

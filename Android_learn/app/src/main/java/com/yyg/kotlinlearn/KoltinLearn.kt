@@ -10,7 +10,7 @@ import com.example.myapplication.R
 
 class KoltinLearn : AppCompatActivity() {
 
-    private val listItems:Array<String> = arrayOf("基本语法", "基本数据类型", "条件控制", "类和对象", "继承", "接口", "扩展", "数据类与密封类", "泛型", "枚举类", "对象表达式/声明", "委托")
+    private val listItems:Array<String> = arrayOf("基本语法", "基本数据类型", "条件控制", "循环控制", "类和对象", "继承", "接口", "扩展", "数据类与密封类", "泛型", "枚举类", "对象表达式/声明", "委托")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +30,10 @@ class KoltinLearn : AppCompatActivity() {
             }
             if (listItems[position] == "条件控制") {
                 val intent:Intent = Intent(this, ConditionControlActivity::class.java)
+                startActivity(intent)
+            }
+            if (listItems[position] == "循环控制") {
+                val intent:Intent = Intent(this, CycleControlActivity::class.java)
                 startActivity(intent)
             }
         }
