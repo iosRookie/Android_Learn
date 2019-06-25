@@ -9,7 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.yyg.kotlinlearn.CycleControlActivity"></activity>
+        <activity android:name="com.yyg.kotlinlearn.DataAndSealedActivity"></activity>
+        <activity android:name="com.yyg.kotlinlearn.ExtensionAvtivity" />
+        <activity android:name="com.yyg.kotlinlearn.InterfaceActivity" />
+        <activity android:name="com.yyg.kotlinlearn.InheritActivity" />
+        <activity android:name="com.yyg.kotlinlearn.ClassAndObjectActivity" />
+        <activity android:name="com.yyg.kotlinlearn.CycleControlActivity" />
         <activity android:name="com.yyg.kotlinlearn.ConditionControlActivity" />
         <activity android:name="com.yyg.kotlinlearn.BasicDataTypeActivity" />
         <activity android:name="com.yyg.kotlinlearn.BasicSyntaxActivity" />

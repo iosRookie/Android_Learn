@@ -36,6 +36,27 @@ class KoltinLearn : AppCompatActivity() {
                 val intent:Intent = Intent(this, CycleControlActivity::class.java)
                 startActivity(intent)
             }
+            if (listItems[position] == "类和对象") {
+                val intent:Intent = Intent(this, ClassAndObjectActivity::class.java)
+                startActivity(intent)
+            }
+            if (listItems[position] == "继承") {
+                val intent:Intent = Intent(this, InheritActivity::class.java)
+                startActivity(intent)
+            }
+            if (listItems[position] == "接口") {
+                val intent:Intent = Intent(this, InterfaceActivity::class.java)
+                startActivity(intent)
+            }
+            if (listItems[position] == "扩展") {
+                val intent:Intent = Intent(this, ExtensionAvtivity::class.java)
+                startActivity(intent)
+            }
+            if (listItems[position] == "数据类与密封类") {
+                val intent:Intent = Intent(this, DataAndSealedActivity::class.java)
+                startActivity(intent)
+            }
+
         }
     }
 }
