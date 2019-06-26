@@ -8,13 +8,15 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import com.UILearn.ListViewLearn
+import com.UILearn.WebViewActivity
 import com.yyg.kotlinlearn.KoltinLearn
 
 import java.lang.reflect.Array
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
-    private val titles = arrayOf("kotlin", "ListView", "RecylerView")
+    private val titles = arrayOf("kotlin", "WebView", "ListView", "RecylerView")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +78,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
         if (Array.get(titles, position) == "RecylerView") {
 
+        }
+
+        if (Array.get(titles, position) == "WebView") {
+            val intent = Intent(this, WebViewActivity::class.java)
+            startActivity(intent)
         }
     }
 

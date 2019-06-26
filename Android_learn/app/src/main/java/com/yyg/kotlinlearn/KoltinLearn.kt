@@ -56,6 +56,14 @@ class KoltinLearn : AppCompatActivity() {
                 val intent:Intent = Intent(this, DataAndSealedActivity::class.java)
                 startActivity(intent)
             }
+            if (listItems[position] == "泛型") {
+                val intent:Intent = Intent(this, GenericityActivity::class.java)
+                startActivity(intent)
+            }
+            if (listItems[position] == "枚举类") {
+                val intent:Intent = Intent(this, EnumClassActivity::class.java)
+                startActivity(intent)
+            }
 
         }
     }
