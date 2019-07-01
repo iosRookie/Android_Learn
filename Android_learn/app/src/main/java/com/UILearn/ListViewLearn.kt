@@ -9,17 +9,14 @@ import android.widget.ListView
 import android.widget.Toast
 import com.example.myapplication.R
 
+
 class ListViewLearn : AppCompatActivity(), View.OnClickListener {
 
     var datas = mutableListOf<AnimalModel>(AnimalModel("dog","wangwang",0),
             AnimalModel("cat","miaomiao",0),
             AnimalModel("pig","hengheng",0))
 
-    var adapter: AnimalAdapter<AnimalModel> = AnimalAdapter(
-            this,
-            R.layout.list_view_item_learn,
-            datas
-    )
+    var adapter: AnimalAdapter<AnimalModel> = AnimalAdapter(R.layout.list_view_item_learn, datas)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
