@@ -4,8 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F2F2F2"
     tools:context="com.UILearn.ListViewLearn">
 
 
+    <ListView
+        android:id="@+id/learn_list_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/list_view_add_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/list_view_add_btn"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:text="@string/list_add_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/list_view_clear_btn"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/list_view_clear_btn"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:text="@string/list_clear_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/list_view_delete_btn"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@+id/list_view_add_btn" />
+
+    <Button
+        android:id="@+id/list_view_delete_btn"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:text="@string/list_delete_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@+id/list_view_clear_btn" />
 </android.support.constraint.ConstraintLayout>

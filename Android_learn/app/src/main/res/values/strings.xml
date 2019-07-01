@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Android Learn</string>
+    <string name="list_add_btn">add</string>
+    <string name="list_clear_btn">clear</string>
+    <string name="list_delete_btn">delete</string>
 
 </resources>
