@@ -10,13 +10,14 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.UILearn.ListViewLearn
 import com.UILearn.WebViewActivity
+import com.yyg.RJavaLearn.RXJavaLearnAvtivity
 import com.yyg.kotlinlearn.KoltinLearn
 
 import java.lang.reflect.Array
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
-    private val titles = arrayOf("kotlin", "WebView", "ListView", "RecylerView")
+    private val titles = arrayOf("kotlin", "RXJava", "WebView", "ListView", "RecylerView")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +70,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         if (Array.get(titles, position) == "kotlin") {
             val intent = Intent(this, KoltinLearn::class.java)
+            startActivity(intent)
+        }
+        if (Array.get(titles, position) == "RXJava") {
+            val intent = Intent(this, RXJavaLearnAvtivity::class.java)
             startActivity(intent)
         }
         if (Array.get(titles, position) == "ListView") {
