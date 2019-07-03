@@ -2,12 +2,14 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import com.UILearn.FragmentLearnActivity
 import com.UILearn.ListViewLearn
 import com.UILearn.WebViewActivity
 import com.yyg.RJavaLearn.RXJavaLearnAvtivity
@@ -17,7 +19,7 @@ import java.lang.reflect.Array
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
-    private val titles = arrayOf("kotlin", "RXJava", "WebView", "ListView", "RecylerView")
+    private val titles = arrayOf("kotlin", "RXJava", "WebView", "ListView", "Fragment", "RecylerView")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +80,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         }
         if (Array.get(titles, position) == "ListView") {
             val intent = Intent(this, ListViewLearn::class.java)
+            startActivity(intent)
+        }
+        if (Array.get(titles, position) == "Fragment") {
+            val intent = Intent(this, FragmentLearnActivity::class.java)
             startActivity(intent)
         }
 

@@ -34,7 +34,7 @@ class RXJavaLearnAvtivity : AppCompatActivity() {
         * 另外，Android还有一个专用的AndroidSchedulers.mainThread()，它指定的操作将在Android主线程运行。
         * 可以使用subscribeOn()和observeOn()两个方法来对线程进行控制。
         * */
-        observable.subscribe { Log.d("RXJavaLearnAvtivity", it) }
+        observable.subscribe { Log.d("RXJavaLearnAvtivity", it) }.dispose()
 
         Observable.just("1","2","3").doOnNext{ Log.d("RXJavaLearnAvtivity", it) }.subscribe().dispose()
 
@@ -42,12 +42,12 @@ class RXJavaLearnAvtivity : AppCompatActivity() {
         Observable.fromArray(datas).subscribe({
 
         }, {
-            it.localizedMessage
-        }, {
 
         }, {
 
-        })
+        }, {
+
+        }).dispose()
     }
 }
 

@@ -4,4 +4,6 @@
     <string name="list_clear_btn">clear</string>
     <string name="list_delete_btn">delete</string>
 
+    <string name="second_fragment">Second fragment</string>
+    <string name="first_fragment">First fragment</string>
 </resources>
