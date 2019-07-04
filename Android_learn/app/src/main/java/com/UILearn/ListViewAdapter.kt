@@ -116,16 +116,16 @@ abstract class ListViewAdapter<T>(private val layoutRes: Int, private var mData:
 
         companion object {
             fun bind(context:Context, convertView: View?, parent:ViewGroup, layoutRes:Int, position: Int):ViewHolder {
-                val bviewHolder: ViewHolder
+                val viewHolder: ViewHolder
                 if (convertView !is View) {
-                    bviewHolder = ViewHolder(context, parent, layoutRes)
+                    viewHolder = ViewHolder(context, parent, layoutRes)
                 } else {
-                    bviewHolder = convertView.tag as ViewHolder
-                    bviewHolder.item = convertView
+                    viewHolder = convertView.tag as ViewHolder
+                    viewHolder.item = convertView
                 }
-                bviewHolder.position = position
+                viewHolder.position = position
 
-                return bviewHolder
+                return viewHolder
             }
         }
     }
