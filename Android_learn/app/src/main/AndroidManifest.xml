@@ -12,7 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="com.UILearn.FragmentLearnActivity"></activity>
+        <activity android:name="com.UILearn.LayoutInflaterActivity"></activity>
+
+        <service
+            android:name="com.common.MyLearnService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.yyg.service.LEARN_SERVICE" />
+            </intent-filter>
+        </service>
+
+        <activity android:name="com.common.ServiceActivity" />
+        <activity android:name="com.UILearn.FragmentLearnActivity" />
         <activity android:name="com.yyg.RJavaLearn.RXJavaLearnAvtivity" />
         <activity android:name="com.yyg.kotlinlearn.FunctionAndLambdaActivity" />
         <activity android:name="com.UILearn.WebViewActivity" />

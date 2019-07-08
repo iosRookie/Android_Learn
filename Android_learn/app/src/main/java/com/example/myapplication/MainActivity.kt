@@ -10,8 +10,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.UILearn.FragmentLearnActivity
+import com.UILearn.LayoutInflaterActivity
 import com.UILearn.ListViewLearn
 import com.UILearn.WebViewActivity
+import com.common.ServiceActivity
 import com.yyg.RJavaLearn.RXJavaLearnAvtivity
 import com.yyg.kotlinlearn.KoltinLearn
 
@@ -19,7 +21,7 @@ import java.lang.reflect.Array
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
-    private val titles = arrayOf("kotlin", "RXJava", "WebView", "ListView", "Fragment", "RecylerView")
+    private val titles = arrayOf("kotlin", "RXJava", "WebView", "ListView", "Fragment", "LayoutInflater", "Service", "RecylerView")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,9 +88,16 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
             val intent = Intent(this, FragmentLearnActivity::class.java)
             startActivity(intent)
         }
+        if (Array.get(titles, position) == "Service") {
+            val intent = Intent(this, ServiceActivity::class.java)
+            startActivity(intent)
+        }
 
         if (Array.get(titles, position) == "RecylerView") {
 
+        }
+        if (Array.get(titles, position) == "LayoutInflater") {
+            startActivity(Intent(this, LayoutInflaterActivity::class.java))
         }
 
         if (Array.get(titles, position) == "WebView") {
