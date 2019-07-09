@@ -1,8 +1,10 @@
 package com.example.myapplication
 
+import android.content.ContentProvider
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
@@ -13,6 +15,7 @@ import com.UILearn.FragmentLearnActivity
 import com.UILearn.LayoutInflaterActivity
 import com.UILearn.ListViewLearn
 import com.UILearn.WebViewActivity
+import com.common.NetWorkReceiver
 import com.common.ServiceActivity
 import com.yyg.RJavaLearn.RXJavaLearnAvtivity
 import com.yyg.kotlinlearn.KoltinLearn
@@ -20,6 +23,8 @@ import com.yyg.kotlinlearn.KoltinLearn
 import java.lang.reflect.Array
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
+
+    private val networkReceiver:NetWorkReceiver = NetWorkReceiver()
 
     private val titles = arrayOf("kotlin", "RXJava", "WebView", "ListView", "Fragment", "LayoutInflater", "Service", "RecylerView")
 
@@ -32,6 +37,19 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         mainList.onItemClickListener = this
 
         Log.d(MAIN_ACTIVITY_LOG, "onCreate: ")
+
+        val intentFilter: IntentFilter = IntentFilter()
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+        registerReceiver(networkReceiver, intentFilter)
+
+        val resolver = contentResolver
+        val cursor = resolver.query(Uri.parse("content://sms/"), arrayOf("address","date","type","body"), null, null, null)
+        while (cursor.moveToNext()) {
+            Log.d("MainActivity", "address ${cursor?.getString(0)}")
+            Log.d("MainActivity", "date ${cursor?.getString(1)}")
+            Log.d("MainActivity", "type ${cursor?.getString(2)}")
+            Log.d("MainActivity", "body ${cursor?.getString(3)}")
+        }
     }
 
     override fun onStart() {
@@ -68,6 +86,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         super.onDestroy()
 
         Log.d(MAIN_ACTIVITY_LOG, "onDestroy: ")
+        unregisterReceiver(networkReceiver)
     }
 
 

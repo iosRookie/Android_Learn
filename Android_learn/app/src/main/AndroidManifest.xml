@@ -12,7 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="com.UILearn.LayoutInflaterActivity"></activity>
+        <receiver
+            android:name="com.common.NetWorkReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
+        <activity android:name="com.UILearn.LayoutInflaterActivity" />
 
         <service
             android:name="com.common.MyLearnService"
