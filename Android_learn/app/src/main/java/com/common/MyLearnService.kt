@@ -36,8 +36,8 @@ class MyLearnService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        return super.onStartCommand(intent, flags, startId)
         Log.d("MyLearnService","onStartCommand")
+        return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onDestroy() {
@@ -52,8 +52,8 @@ class MyLearnService : Service() {
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
-        return super.onUnbind(intent)
         Log.d("MyLearnService","onUnbind")
+        return super.onUnbind(intent)
     }
 
 }

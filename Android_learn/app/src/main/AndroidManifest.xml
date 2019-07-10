@@ -4,6 +4,10 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_PROFILE" />
 
     <application
         android:allowBackup="true"
@@ -12,10 +16,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name="com.UILearn.ContactsOperationActivity"></activity>
+        <activity android:name="com.UILearn.ContactsOperationAvtivity" />
+        <activity android:name="com.UILearn.CantactsOperationAvtivity" />
+
         <receiver
             android:name="com.common.NetWorkReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
 
         <activity android:name="com.UILearn.LayoutInflaterActivity" />
 

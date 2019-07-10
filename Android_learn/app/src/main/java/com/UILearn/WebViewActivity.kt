@@ -15,8 +15,7 @@ class WebViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)
 
-        val rxPermissions = RxPermissions(this)
-        val disposied = rxPermissions.request(android.Manifest.permission.CAMERA).subscribe({
+        RxPermissions(this).request(android.Manifest.permission.CAMERA).subscribe({
             if (it == true) {
 
             } else {
@@ -24,7 +23,7 @@ class WebViewActivity : AppCompatActivity() {
             }
         },{
 
-        })
+        }).dispose()
         val webView = findViewById<WebView>(R.id.webView)
         webView.settings.javaScriptEnabled = true
         webView.webViewClient = WebViewClient()
