@@ -6,14 +6,13 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ListView
+import android.widget.*
 import com.UILearn.*
 import com.common.NetWorkReceiver
 import com.common.ServiceActivity
 import com.yyg.RJavaLearn.RXJavaLearnAvtivity
 import com.yyg.kotlinlearn.KoltinLearn
+import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.reflect.Array
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
@@ -26,7 +25,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val mainList = findViewById<ListView>(R.id.main_list_view)
+        val mainList = main_list_view
         mainList.adapter = ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, titles)
         mainList.onItemClickListener = this
 
@@ -36,6 +35,16 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
         registerReceiver(networkReceiver, intentFilter)
 
+        personal_banner_layout.bannerSelected = object : PersonalBannerSelected {
+            override fun selectedIndex(index: Int) {
+                when (index) {
+                    0 -> Toast.makeText(this@MainActivity, "图片1被点击", Toast.LENGTH_SHORT).show();
+                    1 -> Toast.makeText(this@MainActivity, "图片2被点击", Toast.LENGTH_SHORT).show();
+                    2 -> Toast.makeText(this@MainActivity, "图片3被点击", Toast.LENGTH_SHORT).show();
+                    3 -> Toast.makeText(this@MainActivity, "图片4被点击", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     override fun onStart() {
