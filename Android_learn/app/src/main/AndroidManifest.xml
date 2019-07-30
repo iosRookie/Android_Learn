@@ -16,10 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="com.UILearn.ContactsOperationActivity"></activity>
-        <activity android:name="com.UILearn.ContactsOperationAvtivity" />
-        <activity android:name="com.UILearn.CantactsOperationAvtivity" />
-
+        <activity android:name="com.UILearn.DrawableMainActivity" />
+        <activity android:name="com.UILearn.ContactsOperationActivity" />
         <receiver
             android:name="com.common.NetWorkReceiver"
             android:enabled="true"
@@ -53,6 +51,7 @@
         <activity android:name="com.yyg.kotlinlearn.BasicDataTypeActivity" />
         <activity android:name="com.yyg.kotlinlearn.BasicSyntaxActivity" />
         <activity android:name="com.yyg.kotlinlearn.KoltinLearn" />
+        <activity android:name="com.UILearn.DrawDrawableActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

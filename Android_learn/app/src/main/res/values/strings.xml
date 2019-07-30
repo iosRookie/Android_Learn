@@ -9,4 +9,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="color_drawable_xml">ColorDrawable</string>
+    <string name="color_drawable_code">ColorDrawableCode</string>
+    <string name="shape_drawable">ShapeDarwable</string>
+
 </resources>
