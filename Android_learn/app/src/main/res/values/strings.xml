@@ -12,5 +12,6 @@
     <string name="color_drawable_xml">ColorDrawable</string>
     <string name="color_drawable_code">ColorDrawableCode</string>
     <string name="shape_drawable">ShapeDarwable</string>
+    <string name="title_activity_recycler_view">RecyclerViewActivity</string>
 
 </resources>

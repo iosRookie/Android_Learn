@@ -16,8 +16,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name="com.UILearn.RecyclerViewActivity"
+            android:label="@string/title_activity_recycler_view"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+        <activity android:name="com.ThreadLearn.ThreadLearnActivity" />
         <activity android:name="com.UILearn.DrawableMainActivity" />
         <activity android:name="com.UILearn.ContactsOperationActivity" />
+
         <receiver
             android:name="com.common.NetWorkReceiver"
             android:enabled="true"

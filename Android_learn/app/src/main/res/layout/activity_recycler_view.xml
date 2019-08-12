@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.UILearn.RecyclerViewActivity">
+
+    <Button
+        android:id="@+id/add_item_btn"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/linear_layout_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:background="#8083D877"
+        android:gravity="center_horizontal"
+        android:text="linear_layout_recycler_view"
+        android:textColor="#F80303"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/delete_item_btn"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/linear_layout_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout_text" >
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/grid_layout_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#8083D877"
+        android:gravity="center_horizontal"
+        android:text="grid_layout_recycler_view"
+        android:textColor="#F80303"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout_recycler_view" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/grid_layout_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/grid_layout_text" />
+
+    <TextView
+        android:id="@+id/staggered_grid_layout_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#8083D877"
+        android:gravity="center_horizontal"
+        android:text="staggered_grid_layout_recycler_view"
+        android:textColor="#F80303"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/grid_layout_recycler_view" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/staggered_grid_layout_recycler_View"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/staggered_grid_layout_text" />
+</android.support.constraint.ConstraintLayout>

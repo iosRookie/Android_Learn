@@ -53,7 +53,7 @@ abstract class ListViewAdapter<T>(private val layoutRes: Int, private var mData:
         notifyDataSetChanged()
     }
 
-    class ViewHolder constructor(val context: Context, val parent: ViewGroup, private val layoutRes: Int) {
+    class ViewHolder constructor(val context: Context, val parent: ViewGroup, layoutRes: Int) {
         private var mViews: SparseArray<View> = SparseArray()
         private var item: View
         private var position:Int = 0

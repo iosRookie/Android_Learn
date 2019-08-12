@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         }
 
         if (Array.get(titles, position) == "RecylerView") {
-
+            startActivity(Intent(this, RecyclerViewActivity::class.java))
         }
         if (Array.get(titles, position) == "LayoutInflater") {
             startActivity(Intent(this, LayoutInflaterActivity::class.java))
