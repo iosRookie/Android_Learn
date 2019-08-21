@@ -47,6 +47,45 @@ class BasicSyntaxActivity : AppCompatActivity() {
         for (i in 4 downTo 1 step 2) print(i) //输出42 [4,1]步长为2
         for (i in 1 until 4) print(i) //输出123 排除了4 [1,4)
 
+        val fruits = listOf("banana", "avocado", "apple", "kiwifruit")
+        fruits
+                .filter { it.startsWith("a") }
+                .sortedBy { it }
+                .map { it.toUpperCase() }
+                .forEach { println(it)  }
+
+        val map = mapOf("a" to 1, "b" to 2, "c" to 3)
+        map.filter { it.key.equals("a") }
+
+        val p: String by lazy {
+            return@lazy "bcd"
+        }
+
+        fun arrayOfMinusOnes(size: Int): IntArray {
+            return IntArray(size).apply { fill(-1) }
+        }
+
+        var tma = 1
+        var tmb = 2
+        tma = tmb.also { tmb = tma }
+
+        val tmArray = Array(5) { i: Int -> (i*i).toString()}
+
+        val text = """
+                    for (c in "foo")
+                    print(c) """
+        println(text)
+        println(text.trimMargin())
+
+        val text1 = """
+                    |Tell me and I forget. 
+                    |Teach me and I remember. 
+                    |Involve me and I learn. 
+                    |(Benjamin Franklin)
+                    """
+        println(text1)
+        println(text1.trimMargin())
+        println(text1.trimMargin("|"))
 
     }
 
