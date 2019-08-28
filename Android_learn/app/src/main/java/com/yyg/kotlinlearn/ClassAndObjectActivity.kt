@@ -151,6 +151,31 @@ class ClassAndObjectActivity : AppCompatActivity() {
         }
         println(lazyValue)
         println(lazyValue)
+
+        val items = listOf(1, 2, 3, 4, 5)
+        items.associateWith {  }
+        items.fold(0) {
+            acc: Int, i: Int ->
+            val result = acc + i
+            result
+        }
+
+        println(items.toString())
+
+        val joinedToString = items.fold(
+                "Elements:",
+                {acc, i -> "$acc $i"}
+        )
+        println(joinedToString.toString())
+
+        val product = items.fold(1, Int::times)
+        println(product.toString())
+
+        val repeatFun: String.(Int) -> String = { times -> this.repeat(times) }
+
+        val numbers = listOf("two", "three", "one", "four")
+        val numbersSequence = numbers.asSequence()
+        println(numbersSequence)
     }
 }
 
