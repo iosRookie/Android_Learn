@@ -1,7 +1,7 @@
-import os
+import codecs
+import re
 
 import xlsxwriter
-import xlrd
 
 from Log import Log
 
@@ -38,5 +38,33 @@ class XlsOperationUtil:
                 for cindex in range(len(values[lindex])):
                     worksheet.write(cindex + startLine, lindex, values[lindex][cindex])
         workbook.close()
+
+    @staticmethod
+    def getIOSKeysAndValues(path):
+        if path is None:
+            Log.error('file path is None')
+            return
+        tuples = []
+        # 1.Read localizable.strings
+        try:
+            file = codecs.open(path, 'r', encoding='utf-8')
+            for line in file:
+                pattern = re.compile('\".*\";')
+                value = pattern.search(line)
+                if value is not None:
+                    result = re.findall(r"\"(.*)\"\s*=\s*\"(.*)\";", value.string)
+                    if len(result) > 0:
+                        tuples.append(result[0])
+            file.close()
+        except UnicodeDecodeError:
+            print("got unicode error with utf-8 , trying different encoding")
+
+        keys = []
+        values = []
+        for x in tuples:
+            if len(x) >= 2:
+                keys.append(x[0])
+                values.append(x[1])
+        return keys, values
 
 

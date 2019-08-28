@@ -7,6 +7,7 @@ import pyExcelerator
 import time
 
 # Add command option
+from XlsOperationUtil import XlsOperationUtil
 
 
 def addParser():
@@ -95,7 +96,7 @@ def convertToMultipleFiles(stringsDir, targetDir):
                 for stringfile in stringsFiles:
                     ws = workbook.add_sheet(stringfile)
                     path = stringsDir+dirname+'/' + stringfile
-                    (keys, values) = StringsFileUtil.getKeysAndValues(
+                    (keys, values) = XlsOperationUtil.getiOSKeysAndValues(
                         path)
                     for keyIndex in range(len(keys)):
                         key = keys[keyIndex]
@@ -130,7 +131,6 @@ def startConvert(options):
         convertToSingleFile(stringsDir, targetDir)
     else:
         convertToMultipleFiles(stringsDir, targetDir)
-
 
 def main():
     options = addParser()
