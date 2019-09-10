@@ -13,7 +13,6 @@ import com.example.myapplication.R
 import kotlinx.android.synthetic.main.activity_fragment_learn.*
 
 class FragmentLearnActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var topbar: TextView
     private lateinit var contact: TextView
     private lateinit var message: TextView
     private lateinit var dialing: TextView
@@ -30,7 +29,6 @@ class FragmentLearnActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fragment_learn)
 
-        topbar = findViewById(R.id.txt_topbar)
         contact = findViewById(R.id.txt_contact_channel)
         message = findViewById(R.id.txt_message_channel)
         dialing = findViewById(R.id.txt_dialing_channel)
@@ -58,7 +56,6 @@ class FragmentLearnActivity : AppCompatActivity(), View.OnClickListener {
                 } else {
                     fTransaction.show(dialingFragment!!)
                 }
-                topbar.text = "通话"
             }
             R.id.txt_contact_channel -> {
                 if (contactFragment == null) {
@@ -67,7 +64,6 @@ class FragmentLearnActivity : AppCompatActivity(), View.OnClickListener {
                 } else {
                     fTransaction.show(contactFragment!!)
                 }
-                topbar.text = "联系人"
             }
             R.id.txt_message_channel -> {
                 if (messageFragment == null) {
@@ -76,7 +72,6 @@ class FragmentLearnActivity : AppCompatActivity(), View.OnClickListener {
                 } else {
                     fTransaction.show(messageFragment!!)
                 }
-                topbar.text = "短信"
             }
             R.id.txt_individual_channel -> {
                 if (individualFragment == null) {
@@ -85,7 +80,6 @@ class FragmentLearnActivity : AppCompatActivity(), View.OnClickListener {
                 } else {
                     fTransaction.show(individualFragment!!)
                 }
-                topbar.text = "个人"
             }
         }
         fTransaction.commit()

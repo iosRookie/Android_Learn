@@ -9,32 +9,14 @@
     android:baselineAligned="false"
     android:orientation="horizontal">
 
-    <RelativeLayout
-        android:id="@+id/ly_top_bar"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:background="#FFFFFF"
+    <com.common_ui.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:title="123"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/txt_topbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="标题"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:background="#FF0000" />
-    </RelativeLayout>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
         android:id="@+id/ly_tab_bar"
