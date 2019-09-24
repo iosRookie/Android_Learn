@@ -12,92 +12,114 @@
     <com.common_ui.TopBar
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:title="123"
+        android:layout_height="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="标题"
+        android:background="#ffffff">
 
-    <LinearLayout
-        android:id="@+id/ly_tab_bar"
+    </com.common_ui.TopBar>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/fragments_view_pager"
         android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_tab_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar" />
+
+    <com.common_ui.TabBar
+        android:id="@+id/bottom_tab_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+    </com.common_ui.TabBar>
 
-        <TextView
-            android:id="@+id/txt_dialing_channel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/tab_dialing_channel"
-            android:drawablePadding="3dp"
-            android:gravity="center"
-            android:padding="7dp"
-            android:text=" 拨号"
-            android:textColor="@drawable/tab_enum_text"
-            android:textAlignment="center" />
+    <!--<LinearLayout-->
+        <!--android:id="@+id/ly_tab_bar"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="56dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent">-->
 
-        <TextView
-            android:id="@+id/txt_contact_channel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/tab_contact_channel"
-            android:drawablePadding="3dp"
-            android:gravity="center"
-            android:padding="7dp"
-            android:text="联系人"
-            android:textColor="@drawable/tab_enum_text"
-            android:textAlignment="center" />
+        <!--<TextView-->
+            <!--android:id="@+id/txt_dialing_channel"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:drawableTop="@drawable/tab_dialing_channel"-->
+            <!--android:drawablePadding="3dp"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="7dp"-->
+            <!--android:text=" 拨号"-->
+            <!--android:textColor="@drawable/tab_enum_text"-->
+            <!--android:textAlignment="center" />-->
 
-        <TextView
-            android:id="@+id/txt_message_channel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/tab_messge_channel"
-            android:drawablePadding="3dp"
-            android:gravity="center"
-            android:padding="7dp"
-            android:text="短信"
-            android:textColor="@drawable/tab_enum_text"
-            android:textAlignment="center" />
+        <!--<TextView-->
+            <!--android:id="@+id/txt_contact_channel"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:drawableTop="@drawable/tab_contact_channel"-->
+            <!--android:drawablePadding="3dp"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="7dp"-->
+            <!--android:text="联系人"-->
+            <!--android:textColor="@drawable/tab_enum_text"-->
+            <!--android:textAlignment="center" />-->
 
-        <TextView
-            android:id="@+id/txt_individual_channel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/tab_individual_channel"
-            android:drawablePadding="3dp"
-            android:gravity="center"
-            android:padding="7dp"
-            android:text="个人"
-            android:textColor="@drawable/tab_enum_text"
-            android:textAlignment="center" />
-    </LinearLayout>
+        <!--<TextView-->
+            <!--android:id="@+id/txt_message_channel"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:drawableTop="@drawable/tab_messge_channel"-->
+            <!--android:drawablePadding="3dp"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="7dp"-->
+            <!--android:text="短信"-->
+            <!--android:textColor="@drawable/tab_enum_text"-->
+            <!--android:textAlignment="center" />-->
 
-    <View
-        android:id="@+id/tab_top_line"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="#FF0000"
-        app:layout_constraintBottom_toTopOf="@+id/ly_tab_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <!--<TextView-->
+            <!--android:id="@+id/txt_individual_channel"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:drawableTop="@drawable/tab_individual_channel"-->
+            <!--android:drawablePadding="3dp"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="7dp"-->
+            <!--android:text="个人"-->
+            <!--android:textColor="@drawable/tab_enum_text"-->
+            <!--android:textAlignment="center" />-->
+    <!--</LinearLayout>-->
 
-    <FrameLayout
-        android:id="@+id/ly_content"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tab_top_line"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ly_top_bar">
+    <!--<View-->
+        <!--android:id="@+id/tab_top_line"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="#FF0000"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/ly_tab_bar"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent" />-->
 
-    </FrameLayout>
+    <!--<FrameLayout-->
+        <!--android:id="@+id/ly_content"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/tab_top_line"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/top_bar">-->
+
+    <!--</FrameLayout>-->
 
 </android.support.constraint.ConstraintLayout>

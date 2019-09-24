@@ -19,7 +19,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     private val networkReceiver:NetWorkReceiver = NetWorkReceiver()
 
-    private val titles = arrayOf("kotlin", "RXJava", "WebView", "ListView", "Fragment", "LayoutInflater", "Service", "RecylerView", "Contacts", "Drawable", "DrawDrawable")
+    private val titles = arrayOf("kotlin", "RXJava", "WebView", "ListView",
+            "Fragment", "LayoutInflater", "Service",
+            "RecylerView", "Contacts", "Drawable", "DrawDrawable",
+            "画笔")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -129,6 +132,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         }
         if (Array.get(titles, position) == "DrawDrawable") {
             val intent = Intent(this, DrawDrawableActivity::class.java)
+            startActivity(intent)
+        }
+        if (Array.get(titles, position) == "画笔") {
+            val intent = Intent(this, PaintActivity::class.java)
             startActivity(intent)
         }
     }

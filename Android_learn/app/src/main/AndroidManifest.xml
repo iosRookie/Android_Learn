@@ -16,10 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name="com.UILearn.PaintActivity"></activity>
         <activity
             android:name="com.UILearn.RecyclerViewActivity"
             android:label="@string/title_activity_recycler_view"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity android:name="com.ThreadLearn.ThreadLearnActivity" />
         <activity android:name="com.UILearn.DrawableMainActivity" />
         <activity android:name="com.UILearn.ContactsOperationActivity" />
