@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import com.UILearn.*
+import com.VideoEditor.VideoEditorActivity
 import com.common.NetWorkReceiver
 import com.common.ServiceActivity
 import com.yyg.RJavaLearn.RXJavaLearnAvtivity
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     private val networkReceiver:NetWorkReceiver = NetWorkReceiver()
 
-    private val titles = arrayOf("kotlin", "RXJava", "WebView", "ListView",
+    private val titles = arrayOf("视频编辑", "kotlin", "RXJava", "WebView", "ListView",
             "Fragment", "LayoutInflater", "Service",
             "RecylerView", "Contacts", "Drawable", "DrawDrawable",
             "画笔")
@@ -138,6 +139,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
             val intent = Intent(this, PaintActivity::class.java)
             startActivity(intent)
         }
+        if (Array.get(titles, position) == "视频编辑") {
+            val intent = Intent(this, VideoEditorActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     companion object {

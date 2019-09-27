@@ -17,35 +17,36 @@ class PaintView @JvmOverloads constructor(context: Context, attributeSet: Attrib
 
     private var mPaint: Paint = Paint()   // 画笔
     private var mPath: Path = Path()      // 绘图路径
-    private var mCanvas: Canvas? = null
-    private lateinit  var mBitmap: Bitmap
+    private var mBitmap: Bitmap = createBitmap(
+            getContext().resources.displayMetrics.widthPixels,
+            getContext().resources.displayMetrics.heightPixels,
+            Bitmap.Config.ARGB_8888
+    )
+    private var mCanvas: Canvas
 
     private var mLastX: Float? = 0f
     private var mLastY: Float? = 0f
 
     init {
+
+        mCanvas = Canvas(this.mBitmap)
         mPaint.color = Color.GREEN
-        mPaint.isAntiAlias = true
-        mPaint.isDither = true
+        mPaint.isAntiAlias = true             // 抗锯齿
+        mPaint.isDither = true                // 抖动
         mPaint.style = Paint.Style.STROKE
         mPaint.strokeJoin = Paint.Join.ROUND  // 结合处为圆角
         mPaint.strokeCap = Paint.Cap.ROUND    // 转弯处为圆形
         mPaint.strokeWidth = 20f              // 画笔宽度
-    }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-
-        mBitmap = createBitmap(
-                this.measuredWidth,
-                this.measuredHeight,
-                Bitmap.Config.ARGB_8888
-        )
     }
 
     override fun onDraw(canvas: Canvas?) {
-        mCanvas?.drawPath(mPath, mPaint)
+        super.onDraw(canvas)
+
+        mCanvas.drawPath(mPath, mPaint)
         canvas?.drawBitmap(mBitmap, 0f, 0f, null)
+        canvas?.save()
+        canvas?.restore()
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -55,25 +56,23 @@ class PaintView @JvmOverloads constructor(context: Context, attributeSet: Attrib
 
         when (action) {
             MotionEvent.ACTION_DOWN -> {
-                if (mCanvas == null) {
-                    mCanvas = Canvas(this.mBitmap)
-                }
                 mLastX = x
                 mLastY = y
-                mPath.moveTo(mLastX!!, mLastX!!)
+                mPath.moveTo(mLastX!!, mLastY!!)
                 Log.d("moveTo", "$mLastX ++++ $mLastY")
             }
             MotionEvent.ACTION_MOVE -> {
                 val dx = abs(x!!.minus(mLastX!!))
                 val dy = abs(y!!.minus(mLastY!!))
                 if (dx > 2f || dy > 2f) {
-                    Log.d("lineTo", "$x ++++ $y")
-                    mPath.lineTo(x, y)
+                    Log.d("quadTo", "$x ++++ $y")
+                    mPath.quadTo(mLastX!!, mLastY!!, x, y)
                 }
-
                 mLastX = x
                 mLastY = y
-//                Log.d("ACTION_MOVE", "$mLastX ++++ $mLastY")
+            }
+            MotionEvent.ACTION_UP -> {
+                mPath.reset()
             }
         }
         invalidate()
