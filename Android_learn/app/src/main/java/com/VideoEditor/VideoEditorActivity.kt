@@ -23,7 +23,7 @@ class VideoEditorActivity : BaseActivity() {
 
         // 视频录制
         record_btn.setOnClickListener {
-
+            startActivity(Intent(this, CameraActivity::class.java))
         }
 
         // 选择系统资源

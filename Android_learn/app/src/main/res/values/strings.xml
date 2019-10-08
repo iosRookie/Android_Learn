@@ -14,6 +14,7 @@
     <string name="shape_drawable">ShapeDarwable</string>
     <string name="title_activity_recycler_view">RecyclerViewActivity</string>
     <string name="record_video">录制视频</string>
+    <string name="stop_record">停止录制</string>
     <string name="select_resource">选取本地</string>
     <string name="picture">照片</string>
     <string name="take_picture">拍照</string>
