@@ -8,7 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import com.UILearn.*
-import com.VideoEditor.VideoEditorActivity
+import com.videoEditor.VideoEditorActivity
 import com.common.NetWorkReceiver
 import com.common.ServiceActivity
 import com.yyg.RJavaLearn.RXJavaLearnAvtivity

@@ -1,4 +1,4 @@
-package com.VideoEditor;
+package com.videoEditor;
 
 import android.support.v7.app.AppCompatActivity;
 
