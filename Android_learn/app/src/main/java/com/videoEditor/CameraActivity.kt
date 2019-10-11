@@ -1,6 +1,7 @@
 package com.videoEditor
 
 import android.Manifest
+import android.opengl.GLSurfaceView
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -17,10 +18,8 @@ class CameraActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
-
         mPreview = CameraSurfacePreview(this)
         camera_preview_layout.addView(mPreview)
-
         if (mPreview != null) {
             mCameraHelper = CameraHelper(mPreview!!.holder, mPreview as View)
         }
@@ -55,16 +54,29 @@ class CameraActivity : AppCompatActivity() {
             when (mCameraHelper?.currentFacing) {
                 CameraHelper.BACK -> {
                     mCameraHelper?.changeCameraFacing(CameraHelper.FRONT)
+                    change_facing.text = "FRONT"
                 }
                 CameraHelper.FRONT -> {
                     mCameraHelper?.changeCameraFacing(CameraHelper.BACK)
+                    change_facing.text = "BACK"
                 }
             }
         }
 
         // 闪光灯模式
         flash.setOnClickListener {
-
+            val flashModes = arrayListOf("off", "auto", "on")
+            val cFlashMode = mCameraHelper?.getFlashMode()
+            if (flashModes.contains(cFlashMode)) {
+                val index = flashModes.indexOf(cFlashMode)
+                if (index + 1 >= flashModes.count()) {
+                    mCameraHelper?.setFlashMode(flashModes[0])
+                    flash.text = flashModes[0]
+                } else {
+                    mCameraHelper?.setFlashMode(flashModes[index + 1])
+                    flash.text = flashModes[index + 1]
+                }
+            }
         }
     }
 

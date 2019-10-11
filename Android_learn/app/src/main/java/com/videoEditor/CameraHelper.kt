@@ -5,6 +5,7 @@ import android.content.ContextWrapper
 import android.hardware.Camera
 import android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK
 import android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT
+import android.hardware.Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO
 import android.media.CamcorderProfile
 import android.media.MediaRecorder
 import android.os.Environment
@@ -15,6 +16,7 @@ import android.util.Log
 import android.view.Surface
 import android.view.SurfaceHolder
 import android.view.View
+import jp.co.cyberagent.android.gpuimage.GPUImageNativeLibrary
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -22,7 +24,9 @@ import java.io.IOException
 import java.util.*
 
 class CameraHelper(private var mHolder: SurfaceHolder, private val displayView: View) : SurfaceHolder.Callback, Camera.PictureCallback, Camera.PreviewCallback {
-    private var mCamera: Camera? = null
+    var mCamera: Camera? = null
+        private set
+
     private var mMediaRecorder = MediaRecorder()
     private var isRecording = false
     var currentFacing: Int = CAMERA_FACING_BACK
@@ -40,12 +44,13 @@ class CameraHelper(private var mHolder: SurfaceHolder, private val displayView: 
                 Camera.getCameraInfo(i, cameraInfo)
                 if (cameraInfo.facing == facing) {
                     mCamera = Camera.open(i)
+                    setAutoFocus()
                     currentFacing = i
                     break
                 }
             }
             mCamera?.setPreviewCallback(this)
-            setCameraDispalyOrientaion(displayView)
+            setCameraDisplayOrientation(displayView)
             true
         } catch (e: java.lang.Exception) {
             mCamera = null
@@ -63,14 +68,16 @@ class CameraHelper(private var mHolder: SurfaceHolder, private val displayView: 
             when (facing) {
                 CAMERA_FACING_BACK -> {
                     mCamera = Camera.open(facing)
+                    setAutoFocus()
                 }
 
                 CAMERA_FACING_FRONT -> {
                     mCamera = Camera.open(facing)
+                    setAutoFocus()
                 }
             }
             currentFacing = facing
-            setCameraDispalyOrientaion(displayView)
+            setCameraDisplayOrientation(displayView)
 
             mCamera?.setPreviewDisplay(mHolder)
             mCamera?.setPreviewCallback(this)
@@ -83,7 +90,7 @@ class CameraHelper(private var mHolder: SurfaceHolder, private val displayView: 
         }
     }
 
-    fun setCameraDispalyOrientaion(view: View) {
+    private fun setCameraDisplayOrientation(view: View) {
         if (mCamera != null) {
             getActivityFromView(view)?.let {
                 setCameraDisplayOrientation(it, currentFacing, mCamera!!)
@@ -253,8 +260,8 @@ class CameraHelper(private var mHolder: SurfaceHolder, private val displayView: 
 
 
     companion object {
-        val BACK = CAMERA_FACING_BACK
-        val FRONT = CAMERA_FACING_FRONT
+        const val BACK = CAMERA_FACING_BACK
+        const val FRONT = CAMERA_FACING_FRONT
 
         fun setCameraDisplayOrientation(activity: Activity, cameraId: Int, camera: Camera) {
             val info = Camera.CameraInfo()
@@ -312,4 +319,33 @@ class CameraHelper(private var mHolder: SurfaceHolder, private val displayView: 
             }
         }
     }
+}
+
+// 闪光灯
+fun CameraHelper.setFlashMode(value: String) {
+    var parameters = mCamera?.parameters
+    val supportFlashModes = mCamera?.parameters?.supportedFlashModes
+    if (supportFlashModes?.contains(value)!!) {
+        parameters?.flashMode = value
+    }
+    mCamera?.parameters = parameters
+}
+
+fun CameraHelper.getFlashMode(): String {
+    return mCamera?.parameters?.flashMode.toString()
+}
+
+// 对焦
+// FOCUS_MODE_AUTO 自动对焦
+// FOCUS_MODE_INFINITY 无穷远
+// FOCUS_MODE_MACRO 微距拍摄
+// FOCUS_MODE_FIXED 固定对焦
+// FOCUS_MODE_EDOF 扩展景深
+// FOCUS_MODE_CONTINUOUS_PICTURE
+// FOCUS_MODE_CONTINUOUS_VIDEO 视频记录的连续自动对焦
+fun CameraHelper.setAutoFocus() {
+    var parameters = mCamera?.parameters
+    val sFocusModes = mCamera?.parameters?.supportedFocusModes
+    parameters?.focusMode = FOCUS_MODE_CONTINUOUS_VIDEO
+    mCamera?.parameters = parameters
 }
