@@ -6,4 +6,21 @@
     android:layout_height="match_parent"
     tools:context="com.ThreadLearn.ThreadLearnActivity">
 
+    <Button
+        android:id="@+id/handlerThreadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HandlerThread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/threadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="3dp"
+        android:text="Thread"
+        app:layout_constraintStart_toEndOf="@+id/handlerThreadButton"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

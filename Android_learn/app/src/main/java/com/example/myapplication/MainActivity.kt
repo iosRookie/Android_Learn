@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.*
+import com.ThreadLearn.ThreadLearnActivity
 import com.UILearn.*
 import com.videoEditor.VideoEditorActivity
 import com.common.NetWorkReceiver
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     private val titles = arrayOf("视频编辑", "kotlin", "RXJava", "WebView", "ListView",
             "Fragment", "LayoutInflater", "Service",
             "RecylerView", "Contacts", "Drawable", "DrawDrawable",
-            "画笔")
+            "画笔", "多线程")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -143,6 +144,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
             val intent = Intent(this, VideoEditorActivity::class.java)
             startActivity(intent)
         }
+        if (Array.get(titles, position) == "多线程") {
+            val intent = Intent(this, ThreadLearnActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 
