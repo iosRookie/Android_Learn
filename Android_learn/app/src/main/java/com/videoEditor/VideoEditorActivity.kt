@@ -6,7 +6,9 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.WindowManager
 import android.widget.Toast
+import com.common_ui.fullScreen
 import com.example.myapplication.R
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_video_editor.*
@@ -50,6 +52,8 @@ class VideoEditorActivity : BaseActivity() {
                 }
             }
         }
+
+        fullScreen(false)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -95,6 +99,5 @@ class VideoEditorActivity : BaseActivity() {
             startActivityForResult(intent, REQUEST_VIDEO_CAPTURE)
         }
     }
-
 
 }

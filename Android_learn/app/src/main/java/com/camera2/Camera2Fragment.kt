@@ -17,7 +17,6 @@
 package com.camera2
 
 import android.Manifest
-import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -27,11 +26,12 @@ import android.graphics.Point
 import android.graphics.RectF
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
+import android.hardware.camera2.CameraDevice.TEMPLATE_RECORD
 import android.media.ImageReader
+import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
@@ -47,13 +47,14 @@ import android.widget.Toast
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.fragment_camera2_basic.*
 import java.io.File
+import java.io.IOException
 import java.util.Collections
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 import kotlin.math.max
 
-class Camera2Fragment : Fragment(), View.OnClickListener {
+class Camera2Fragment : Fragment() {
 
     /**
      * [TextureView.SurfaceTextureListener] handles several lifecycle events on a
@@ -68,7 +69,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
         }
 
         override fun onSurfaceTextureSizeChanged(texture: SurfaceTexture, width: Int, height: Int) {
-            configureTransform(width, height)
+            configurePreViewTransform(width, height)
 
             Log.d(TAG, "onSurfaceTextureSizeChanged")
         }
@@ -102,12 +103,12 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
     /**
      * [CameraDevice.StateCallback] is called when [CameraDevice] changes its state.
      */
-    private val stateCallback = object : CameraDevice.StateCallback() {
+    private val deviceStateCallback = object : CameraDevice.StateCallback() {
 
         override fun onOpened(cameraDevice: CameraDevice) {
             cameraOpenCloseLock.release()
             this@Camera2Fragment.cameraDevice = cameraDevice
-            createCameraPreviewSession()
+            createPreviewSession()
             Log.d(TAG, "CameraDevice.StateCallback onOpened")
         }
 
@@ -191,10 +192,16 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
      */
     private var sensorOrientation = 0
 
+    private var mediaRecorder: MediaRecorder? = null
+
+    private var isRecordingVideo = false
+
+    private var isTakePicture = true
+
     /**
      * A [CameraCaptureSession.CaptureCallback] that handles events related to JPEG capture.
      */
-    private val captureCallback = object : CameraCaptureSession.CaptureCallback() {
+    private val captureSessionCallback = object : CameraCaptureSession.CaptureCallback() {
 
         private fun process(result: CaptureResult) {
             when (state) {
@@ -252,7 +259,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
         }
 
         override fun onCaptureStarted(session: CameraCaptureSession, request: CaptureRequest, timestamp: Long, frameNumber: Long) {
-            Log.d(TAG, "CameraCaptureSession.CaptureCallback onCaptureStarted")
+//            Log.d(TAG, "CameraCaptureSession.CaptureCallback onCaptureStarted")
         }
 
         override fun onCaptureFailed(session: CameraCaptureSession, request: CaptureRequest, failure: CaptureFailure) {
@@ -279,8 +286,17 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
     ): View? = inflater.inflate(R.layout.fragment_camera2_basic, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        picture.setOnClickListener(this)
-        info.setOnClickListener(this)
+        take_picture.setOnClickListener {
+            isTakePicture = true
+            lockFocus()
+        }
+
+        record_video.setOnClickListener {
+            isTakePicture = false
+            if (!isRecordingVideo) {
+                startRecordVideo()
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -328,13 +344,10 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
                     continue
                 }
 
-                val map = characteristics.get(
-                        CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP) ?: continue
+                val map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP) ?: continue
 
                 // For still image captures, we use the largest available size.
-                val largest = Collections.max(
-                        listOf(*map.getOutputSizes(ImageFormat.JPEG)),
-                        CompareSizesByArea())
+                val largest = Collections.max(listOf(*map.getOutputSizes(ImageFormat.JPEG)), CompareSizesByArea())
                 imageReader = ImageReader.newInstance(largest.width, largest.height,
                         ImageFormat.JPEG,1).apply {
                     setOnImageAvailableListener(onImageAvailableListener, backgroundHandler)
@@ -428,14 +441,14 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
             return
         }
         setUpCameraOutputs(width, height)
-        configureTransform(width, height)
+        configurePreViewTransform(width, height)
         val manager = activity?.getSystemService(Context.CAMERA_SERVICE) as CameraManager
         try {
             // Wait for camera to open - 2.5 seconds is sufficient
             if (!cameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
                 throw RuntimeException("Time out waiting to lock camera opening.")
             }
-            manager.openCamera(cameraId, stateCallback, backgroundHandler)
+            manager.openCamera(cameraId, deviceStateCallback, backgroundHandler)
         } catch (e: CameraAccessException) {
             Log.e(TAG, e.toString())
         } catch (e: InterruptedException) {
@@ -489,26 +502,21 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
     /**
      * Creates a new [CameraCaptureSession] for camera preview.
      */
-    private fun createCameraPreviewSession() {
+    private fun createPreviewSession() {
         try {
-            val texture = texture_view.surfaceTexture
-
             // We configure the size of default buffer to be the size of camera preview we want.
-            texture.setDefaultBufferSize(previewSize.width, previewSize.height)
+            texture_view.surfaceTexture.setDefaultBufferSize(previewSize.width, previewSize.height)
 
             // This is the output Surface we need to start preview.
-            val surface = Surface(texture)
+            val surface = Surface(texture_view.surfaceTexture)
 
             // We set up a CaptureRequest.Builder with the output Surface.
-            previewRequestBuilder = cameraDevice!!.createCaptureRequest(
-                    CameraDevice.TEMPLATE_PREVIEW
-            )
+            previewRequestBuilder = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
             previewRequestBuilder.addTarget(surface)
 
             // Here, we create a CameraCaptureSession for camera preview.
             cameraDevice?.createCaptureSession(listOf(surface, imageReader?.surface),
                     object : CameraCaptureSession.StateCallback() {
-
                         override fun onConfigured(cameraCaptureSession: CameraCaptureSession) {
                             // The camera is already closed
                             if (cameraDevice == null) return
@@ -520,12 +528,14 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
                                 previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
                                 // Flash is automatically enabled when necessary.
-                                setAutoFlash(previewRequestBuilder)
+                                if (flashSupported) {
+                                    previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
+                                            CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH)
+                                }
 
                                 // Finally, we start displaying the camera preview.
                                 previewRequest = previewRequestBuilder.build()
-                                captureSession?.setRepeatingRequest(previewRequest,
-                                        captureCallback, backgroundHandler)
+                                updatePreview()
                             } catch (e: CameraAccessException) {
                                 Log.e(TAG, e.toString())
                             }
@@ -571,7 +581,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
      * @param viewWidth  The width of `textureView`
      * @param viewHeight The height of `textureView`
      */
-    private fun configureTransform(viewWidth: Int, viewHeight: Int) {
+    private fun configurePreViewTransform(viewWidth: Int, viewHeight: Int) {
         activity ?: return
         val rotation = activity!!.windowManager.defaultDisplay.rotation
         val matrix = Matrix()
@@ -606,7 +616,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
                     CameraMetadata.CONTROL_AF_TRIGGER_START)
             // Tell #captureCallback to wait for the lock.
             state = STATE_WAITING_LOCK
-            captureSession?.capture(previewRequestBuilder.build(), captureCallback,
+            captureSession?.capture(previewRequestBuilder.build(), captureSessionCallback,
                     backgroundHandler)
         } catch (e: CameraAccessException) {
             Log.e(TAG, e.toString())
@@ -624,7 +634,7 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
                     CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER_START)
             // Tell #captureCallback to wait for the precapture sequence to be set.
             state = STATE_WAITING_PRECAPTURE
-            captureSession?.capture(previewRequestBuilder.build(), captureCallback,
+            captureSession?.capture(previewRequestBuilder.build(), captureSessionCallback,
                     backgroundHandler)
         } catch (e: CameraAccessException) {
             Log.e(TAG, e.toString())
@@ -656,7 +666,12 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
                 // Use the same AE and AF modes as the preview.
                 set(CaptureRequest.CONTROL_AF_MODE,
                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
-            }?.also { setAutoFlash(it) }
+            }?.also {
+                if (flashSupported) {
+                    it.set(CaptureRequest.CONTROL_AE_MODE,
+                            CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH)
+                }
+            }
 
             val captureCallback = object : CameraCaptureSession.CaptureCallback() {
 
@@ -689,12 +704,15 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
             // Reset the auto-focus trigger
             previewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
                     CameraMetadata.CONTROL_AF_TRIGGER_CANCEL)
-            setAutoFlash(previewRequestBuilder)
-            captureSession?.capture(previewRequestBuilder.build(), captureCallback,
+            if (flashSupported) {
+                previewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
+                        CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH)
+            }
+            captureSession?.capture(previewRequestBuilder.build(), captureSessionCallback,
                     backgroundHandler)
             // After this, the camera will go back to the normal state of preview.
             state = STATE_PREVIEW
-            captureSession?.setRepeatingRequest(previewRequest, captureCallback,
+            captureSession?.setRepeatingRequest(previewRequest, captureSessionCallback,
                     backgroundHandler)
         } catch (e: CameraAccessException) {
             Log.e(TAG, e.toString())
@@ -702,27 +720,113 @@ class Camera2Fragment : Fragment(), View.OnClickListener {
 
     }
 
-    override fun onClick(view: View) {
-        when (view.id) {
-            R.id.picture -> lockFocus()
-            R.id.info -> {
-                if (activity != null) {
-                    AlertDialog.Builder(activity)
-                            .setMessage(R.string.intro_message)
-                            .setPositiveButton(android.R.string.ok, null)
-                            .show()
-                }
+    private fun updatePreview() {
+        if (cameraDevice == null) return
+        try {
+            previewRequestBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO)
+            captureSession?.setRepeatingRequest(previewRequestBuilder.build(), null, backgroundHandler)
+        } catch (e: CameraAccessException) {
+            Log.e(TAG, e.toString())
+        }
+    }
+
+    private fun closePreviewSession() {
+        captureSession?.close()
+        captureSession = null
+    }
+
+    @Throws(IOException::class)
+    private fun setUpMediaRecorder() {
+        val cameraActivity = activity ?: return
+        if (mediaRecorder == null) {
+            mediaRecorder = MediaRecorder()
+        }
+        val rotation = cameraActivity.windowManager.defaultDisplay.rotation
+//        when (sensorOrientation) {
+//            SENSOR_ORIENTATION_DEFAULT_DEGREES -> mediaRecorder?.setOrientationHint(DEFAULT_ORIENTATION.get(rotation))
+//            SENSOR_ORIENTATION_INVERSE_DEGREES -> mediaRecorder?.setOrientationHint(INVERSE_ORIENTATIONS.get(rotation))
+//        }
+
+        mediaRecorder?.apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setVideoSource(MediaRecorder.VideoSource.SURFACE)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setOutputFile(getVideoFilePath(cameraActivity))
+            setVideoEncodingBitRate(10000000)
+            setVideoFrameRate(30)
+            setVideoSize(1440, 1080)
+            setVideoEncoder(MediaRecorder.VideoEncoder.H264)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+            prepare()
+        }
+    }
+
+    private fun getVideoFilePath(context: Context?): String {
+        val fileName = "${System.currentTimeMillis()}.mp4"
+        val dir = context?.getExternalFilesDir(null)
+        return if (dir == null) {
+            fileName
+        } else {
+            "${dir.absolutePath}/$fileName"
+        }
+    }
+
+    private fun startRecordVideo() {
+        if (cameraDevice == null || !texture_view.isAvailable) return
+        try {
+            closePreviewSession()
+            setUpMediaRecorder()
+            val texture = texture_view.surfaceTexture.apply {
+                setDefaultBufferSize(1440, 1080)
             }
+
+            // Set up Surface for camera preview and MediaRecorder
+            val previewSurface = Surface(texture)
+            val recorderSurface = mediaRecorder!!.surface
+
+            previewRequestBuilder = cameraDevice!!.createCaptureRequest(TEMPLATE_RECORD).apply {
+                addTarget(previewSurface)
+                addTarget(recorderSurface)
+            }
+
+            // Start a capture session
+            // Once the session starts, we can update the UI and start recording
+            cameraDevice?.createCaptureSession(arrayListOf(previewSurface,recorderSurface), object : CameraCaptureSession.StateCallback() {
+                override fun onConfigured(session: CameraCaptureSession) {
+                    captureSession = session
+                    updatePreview()
+                    activity?.runOnUiThread {
+                        record_video.text = "Stop"
+                        isRecordingVideo = true
+                        mediaRecorder?.start()
+                    }
+                }
+
+                override fun onConfigureFailed(session: CameraCaptureSession) {
+                    activity?.showToast("Failed")
+                }
+
+                override fun onClosed(session: CameraCaptureSession) {
+                    mediaRecorder?.apply {
+                        stop()
+                        reset()
+                    }
+                    super.onClosed(session)
+                }
+            }, backgroundHandler)
+        } catch (e: CameraAccessException) {
+            Log.d(TAG, e.toString())
+        } catch (e: IOException) {
+            Log.d(TAG, e.toString())
         }
     }
 
-    private fun setAutoFlash(requestBuilder: CaptureRequest.Builder) {
-        if (flashSupported) {
-            requestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
-                    CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH)
-        }
-    }
+    private fun stopRecordingVideo() {
+        isRecordingVideo = false
+        record_video.text = "Record"
+        createPreviewSession()
 
+    }
     companion object {
 
         /**
