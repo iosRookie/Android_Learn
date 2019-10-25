@@ -295,6 +295,8 @@ class Camera2Fragment : Fragment() {
             isTakePicture = false
             if (!isRecordingVideo) {
                 startRecordVideo()
+            } else {
+                stopRecordingVideo()
             }
         }
     }
@@ -436,7 +438,9 @@ class Camera2Fragment : Fragment() {
      * Opens the camera specified by [Camera2Fragment.cameraId].
      */
     private fun openCamera(width: Int, height: Int) {
-        val permission = activity?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.CAMERA) }
+        val permission = activity?.let {
+            ContextCompat.checkSelfPermission(it, Manifest.permission.CAMERA)
+        }
         if (permission != PackageManager.PERMISSION_GRANTED) {
             return
         }
@@ -480,7 +484,9 @@ class Camera2Fragment : Fragment() {
      * Starts a background thread and its [Handler].
      */
     private fun startBackgroundThread() {
-        backgroundThread = HandlerThread("CameraBackground").also { it.start() }
+        backgroundThread = HandlerThread("CameraBackground").apply {
+            start()
+        }
         backgroundHandler = Handler(backgroundThread?.looper)
     }
 
@@ -782,11 +788,13 @@ class Camera2Fragment : Fragment() {
 
             // Set up Surface for camera preview and MediaRecorder
             val previewSurface = Surface(texture)
+            val imageReaderSurface = imageReader!!.surface
             val recorderSurface = mediaRecorder!!.surface
 
             previewRequestBuilder = cameraDevice!!.createCaptureRequest(TEMPLATE_RECORD).apply {
                 addTarget(previewSurface)
                 addTarget(recorderSurface)
+                addTarget(imageReaderSurface)
             }
 
             // Start a capture session
