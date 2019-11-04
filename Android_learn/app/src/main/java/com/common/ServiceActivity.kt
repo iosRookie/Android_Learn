@@ -27,6 +27,13 @@ class ServiceActivity : AppCompatActivity(), View.OnClickListener {
             binder = service as MyLearnService.MyBinder
         }
 
+        override fun onBindingDied(name: ComponentName?) {
+            Log.d("ServiceActivity", "onBindingDied")
+        }
+
+        override fun onNullBinding(name: ComponentName?) {
+            Log.d("ServiceActivity", "onBindingDied")
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,32 +46,59 @@ class ServiceActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<Button>(R.id.service_unbind).setOnClickListener(this)
         findViewById<Button>(R.id.service_state).setOnClickListener(this)
 
+        findViewById<Button>(R.id.rStart).setOnClickListener(this)
+        findViewById<Button>(R.id.rStop).setOnClickListener(this)
+        findViewById<Button>(R.id.rBind).setOnClickListener(this)
+        findViewById<Button>(R.id.rUnbind).setOnClickListener(this)
+        findViewById<Button>(R.id.rState).setOnClickListener(this)
+
         Log.d("ServiceActivity", "packageName = $packageName")
+        Log.d("ServiceActivity", Thread.currentThread().toString())
     }
 
     override fun onClick(v: View?) {
-        val serviceIntent = Intent(this, MyLearnService::class.java)
-        stopService(serviceIntent)
         when (v?.id) {
             R.id.service_start -> {
+                val serviceIntent = Intent(this, MyLearnService::class.java)
 //                val serviceIntent = Intent()
 //                serviceIntent.action = "com.yyg.service.LEARN_SERVICE"
 //                serviceIntent.`package` = packageName
                 startService(serviceIntent)
             }
             R.id.service_stop -> {
+                val serviceIntent = Intent(this, MyLearnService::class.java)
 //                val serviceIntent = Intent(this, MyLearnService::class.java)
                 stopService(serviceIntent)
             }
             R.id.service_bind -> {
+                val serviceIntent = Intent(this, MyLearnService::class.java)
                 bindService(serviceIntent, serviceConnectionService, Service.BIND_AUTO_CREATE)
             }
             R.id.service_unbind -> {
                 unbindService(serviceConnectionService)
             }
             R.id.service_state -> {
-                Toast.makeText(getApplicationContext(), "Service的count的值为:"
-                        + binder?.getCount(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(applicationContext, "Service的count的值为:" + binder?.getCount(), Toast.LENGTH_SHORT).show()
+            }
+
+            R.id.rStart -> {
+                val rServiceIntent = Intent(this, MyLearnRemoteService::class.java)
+                rServiceIntent.action = "com.yyg.service.LEARN_REMOTE_SERVICE"
+                startService(rServiceIntent)
+            }
+            R.id.rStop -> {
+                val rServiceIntent = Intent(this, MyLearnRemoteService::class.java)
+                stopService(rServiceIntent)
+            }
+            R.id.rBind -> {
+                val rServiceIntent = Intent(this, MyLearnRemoteService::class.java)
+                bindService(rServiceIntent, serviceConnectionService, Service.BIND_AUTO_CREATE)
+            }
+            R.id.rUnbind -> {
+                unbindService(serviceConnectionService)
+            }
+            R.id.rState -> {
+
             }
         }
     }

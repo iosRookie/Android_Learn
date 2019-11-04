@@ -90,6 +90,16 @@
                 <action android:name="com.yyg.service.LEARN_SERVICE" />
             </intent-filter>
         </service>
+        <service
+            android:name="com.common.MyLearnRemoteService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="com.yyg.service.LEARN_REMOTE_SERVICE" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
