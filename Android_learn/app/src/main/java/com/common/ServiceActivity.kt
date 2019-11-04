@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.os.RemoteException
 import android.support.v7.app.AppCompatActivity
 import android.telecom.ConnectionService
 import android.util.Log
@@ -17,6 +18,8 @@ import com.example.myapplication.R
 class ServiceActivity : AppCompatActivity(), View.OnClickListener {
     var binder : MyLearnService.MyBinder? = null
 
+    private lateinit var myAIDLService:MyAIDLService
+
     private val serviceConnectionService = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
             Log.d("ServiceActivity", "onServiceDisconnected")
@@ -25,6 +28,34 @@ class ServiceActivity : AppCompatActivity(), View.OnClickListener {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             Log.d("ServiceActivity", "onServiceConnected")
             binder = service as MyLearnService.MyBinder
+        }
+
+        override fun onBindingDied(name: ComponentName?) {
+            Log.d("ServiceActivity", "onBindingDied")
+        }
+
+        override fun onNullBinding(name: ComponentName?) {
+            Log.d("ServiceActivity", "onBindingDied")
+        }
+    }
+
+
+    private val rServiceConnectionService = object : ServiceConnection {
+        override fun onServiceDisconnected(name: ComponentName?) {
+            Log.d("ServiceActivity", "onServiceDisconnected")
+        }
+
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            Log.d("ServiceActivity", "onServiceConnected")
+            myAIDLService = MyAIDLService.Stub.asInterface(service)
+            try {
+                val result = myAIDLService.plus(3,5)
+                val upperstr = myAIDLService.toUpperCase("hello world")
+                Log.d("onServiceConnected", "result is $result")
+                Log.d("onServiceConnected", "upperstr is $upperstr")
+            } catch (e: RemoteException) {
+                e.printStackTrace()
+            }
         }
 
         override fun onBindingDied(name: ComponentName?) {
@@ -92,10 +123,10 @@ class ServiceActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.rBind -> {
                 val rServiceIntent = Intent(this, MyLearnRemoteService::class.java)
-                bindService(rServiceIntent, serviceConnectionService, Service.BIND_AUTO_CREATE)
+                bindService(rServiceIntent, rServiceConnectionService, Service.BIND_AUTO_CREATE)
             }
             R.id.rUnbind -> {
-                unbindService(serviceConnectionService)
+                unbindService(rServiceConnectionService)
             }
             R.id.rState -> {
 

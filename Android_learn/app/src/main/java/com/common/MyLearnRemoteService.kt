@@ -4,11 +4,20 @@ import android.app.Service
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
+import android.os.Process
 import android.util.Log
 
 class MyLearnRemoteService : Service() {
     val TAG = "MyLearnRemoteService"
-    private val myBinder : MyRemoteBinder = MyRemoteBinder()
+    private val myBinder = object : MyAIDLService.Stub() {
+        override fun plus(a: Int, b: Int): Int {
+            return a + b
+        }
+
+        override fun toUpperCase(str: String?): String? {
+            return str?.toUpperCase()
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -19,7 +28,7 @@ class MyLearnRemoteService : Service() {
             Log.d(TAG, e.printStackTrace().toString())
         }
 
-        Log.d(TAG, Thread.currentThread().toString())
+        Log.d(TAG, "Process ID is " + Process.myPid().toString())
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

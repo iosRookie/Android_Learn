@@ -83,13 +83,7 @@
             tools:ignore="ExportedReceiver" />
         <service
             android:name="com.common.MyLearnService"
-            android:enabled="true"
-            android:exported="true"
-            tools:ignore="ExportedService">
-            <intent-filter>
-                <action android:name="com.yyg.service.LEARN_SERVICE" />
-            </intent-filter>
-        </service>
+            android:enabled="true"/>
         <service
             android:name="com.common.MyLearnRemoteService"
             android:enabled="true"
