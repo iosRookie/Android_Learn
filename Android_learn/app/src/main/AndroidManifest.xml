@@ -64,7 +64,7 @@
         <activity android:name="com.yyg.kotlinlearn.ConditionControlActivity" />
         <activity android:name="com.yyg.kotlinlearn.BasicDataTypeActivity" />
         <activity android:name="com.yyg.kotlinlearn.BasicSyntaxActivity" />
-        <activity android:name="com.yyg.kotlinlearn.KoltinLearn" />
+        <activity android:name="com.yyg.kotlinlearn.KotlinLearn" />
         <activity android:name="com.UILearn.DrawDrawableActivity"
             tools:ignore="InnerclassSeparator" />
         <activity android:name=".MainActivity">

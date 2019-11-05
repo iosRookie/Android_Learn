@@ -6,9 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.os.RemoteException
 import android.support.v7.app.AppCompatActivity
-import android.telecom.ConnectionService
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -17,8 +15,6 @@ import com.example.myapplication.R
 
 class ServiceActivity : AppCompatActivity(), View.OnClickListener {
     var binder : MyLearnService.MyBinder? = null
-
-    private lateinit var myAIDLService:MyAIDLService
 
     private val serviceConnectionService = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -47,15 +43,6 @@ class ServiceActivity : AppCompatActivity(), View.OnClickListener {
 
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             Log.d("ServiceActivity", "onServiceConnected")
-            myAIDLService = MyAIDLService.Stub.asInterface(service)
-            try {
-                val result = myAIDLService.plus(3,5)
-                val upperstr = myAIDLService.toUpperCase("hello world")
-                Log.d("onServiceConnected", "result is $result")
-                Log.d("onServiceConnected", "upperstr is $upperstr")
-            } catch (e: RemoteException) {
-                e.printStackTrace()
-            }
         }
 
         override fun onBindingDied(name: ComponentName?) {

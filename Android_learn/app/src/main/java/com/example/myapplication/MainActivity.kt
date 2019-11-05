@@ -13,7 +13,7 @@ import com.videoEditor.VideoEditorActivity
 import com.common.NetWorkReceiver
 import com.common.ServiceActivity
 import com.yyg.RJavaLearn.RXJavaLearnAvtivity
-import com.yyg.kotlinlearn.KoltinLearn
+import com.yyg.kotlinlearn.KotlinLearn
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.reflect.Array
 
@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         if (Array.get(titles, position) == "kotlin") {
-            val intent = Intent(this, KoltinLearn::class.java)
+            val intent = Intent(this, KotlinLearn::class.java)
             startActivity(intent)
         }
         if (Array.get(titles, position) == "RXJava") {

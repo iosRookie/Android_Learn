@@ -9,21 +9,12 @@ import android.util.Log
 
 class MyLearnRemoteService : Service() {
     val TAG = "MyLearnRemoteService"
-    private val myBinder = object : MyAIDLService.Stub() {
-        override fun plus(a: Int, b: Int): Int {
-            return a + b
-        }
-
-        override fun toUpperCase(str: String?): String? {
-            return str?.toUpperCase()
-        }
-    }
 
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "onCreate")
         try {
-//            Thread.sleep(60000)
+
         } catch (e: InterruptedException) {
             Log.d(TAG, e.printStackTrace().toString())
         }
@@ -37,12 +28,16 @@ class MyLearnRemoteService : Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder? {
-        return myBinder
+        return null
     }
 
     override fun onDestroy() {
         Log.d(TAG, "onDestroy")
         super.onDestroy()
+    }
+
+    fun serviceMethod(str: String?) {
+        Log.d("serviceMethod print ", str)
     }
 }
 
