@@ -12,6 +12,7 @@ import com.UILearn.*
 import com.videoEditor.VideoEditorActivity
 import com.common.NetWorkReceiver
 import com.common.ServiceActivity
+import com.coroutines_learn.CoroutinesLearnActivity
 import com.yyg.RJavaLearn.RXJavaLearnAvtivity
 import com.yyg.kotlinlearn.KotlinLearn
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     private val titles = arrayOf("视频编辑", "kotlin", "RXJava", "WebView", "ListView",
             "Fragment", "LayoutInflater", "Service",
             "RecylerView", "Contacts", "Drawable", "DrawDrawable",
-            "画笔", "多线程")
+            "画笔", "多线程", "协程（coroutines）")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,7 +149,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
             val intent = Intent(this, ThreadLearnActivity::class.java)
             startActivity(intent)
         }
-
+        if (Array.get(titles, position) == "协程（coroutines）") {
+            val intent = Intent(this, CoroutinesLearnActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 

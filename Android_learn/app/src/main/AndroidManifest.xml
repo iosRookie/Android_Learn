@@ -4,7 +4,9 @@
     package="com.example.myapplication">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera"/>
+
+    <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -22,36 +24,43 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.videoEditor.CameraActivity"
+        <activity android:name="com.coroutines_learn.CoroutinesLearnActivity"></activity>
+        <activity
+            android:name="com.videoEditor.CameraActivity"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name="com.videoEditor.VideoEditorActivity"
+        <activity
+            android:name="com.videoEditor.VideoEditorActivity"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name="com.UILearn.PaintActivity"
+        <activity
+            android:name="com.UILearn.PaintActivity"
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name="com.UILearn.RecyclerViewActivity"
             android:label="@string/title_activity_recycler_view"
             android:theme="@style/AppTheme.NoActionBar.NoActionBar"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name="com.ThreadLearn.ThreadLearnActivity"
+        <activity
+            android:name="com.ThreadLearn.ThreadLearnActivity"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name="com.UILearn.DrawableMainActivity"
+        <activity
+            android:name="com.UILearn.DrawableMainActivity"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name="com.UILearn.ContactsOperationActivity"
+        <activity
+            android:name="com.UILearn.ContactsOperationActivity"
             tools:ignore="InnerclassSeparator" />
-
-        <activity android:name="com.UILearn.LayoutInflaterActivity"
+        <activity
+            android:name="com.UILearn.LayoutInflaterActivity"
             tools:ignore="InnerclassSeparator" />
-
         <activity android:name="com.common.ServiceActivity" />
-
-        <activity android:name="com.UILearn.FragmentLearnActivity"
+        <activity
+            android:name="com.UILearn.FragmentLearnActivity"
             tools:ignore="InnerclassSeparator" />
-
-        <activity android:name="com.yyg.RJavaLearn.RXJavaLearnAvtivity"
+        <activity
+            android:name="com.yyg.RJavaLearn.RXJavaLearnAvtivity"
             tools:ignore="InnerclassSeparator" />
         <activity android:name="com.yyg.kotlinlearn.FunctionAndLambdaActivity" />
-        <activity android:name="com.UILearn.WebViewActivity"
+        <activity
+            android:name="com.UILearn.WebViewActivity"
             tools:ignore="InnerclassSeparator" />
         <activity android:name="com.yyg.kotlinlearn.EnumClassActivity" />
         <activity android:name="com.yyg.kotlinlearn.GenericityActivity" />
@@ -65,7 +74,8 @@
         <activity android:name="com.yyg.kotlinlearn.BasicDataTypeActivity" />
         <activity android:name="com.yyg.kotlinlearn.BasicSyntaxActivity" />
         <activity android:name="com.yyg.kotlinlearn.KotlinLearn" />
-        <activity android:name="com.UILearn.DrawDrawableActivity"
+        <activity
+            android:name="com.UILearn.DrawDrawableActivity"
             tools:ignore="InnerclassSeparator" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -74,16 +84,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.UILearn.ListViewLearn"
+        <activity
+            android:name="com.UILearn.ListViewLearn"
             tools:ignore="InnerclassSeparator" />
+
         <receiver
             android:name="com.common.NetWorkReceiver"
             android:enabled="true"
             android:exported="true"
             tools:ignore="ExportedReceiver" />
+
         <service
             android:name="com.common.MyLearnService"
-            android:enabled="true"/>
+            android:enabled="true" />
         <service
             android:name="com.common.MyLearnRemoteService"
             android:enabled="true"
@@ -93,7 +106,6 @@
                 <action android:name="com.yyg.service.LEARN_REMOTE_SERVICE" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>
