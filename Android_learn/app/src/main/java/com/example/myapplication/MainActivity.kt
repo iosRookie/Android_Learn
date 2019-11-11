@@ -12,11 +12,9 @@ import com.UILearn.*
 import com.videoEditor.VideoEditorActivity
 import com.common.NetWorkReceiver
 import com.common.ServiceActivity
-import com.koin_Learn.MySimplePresenter
 import com.yyg.RJavaLearn.RXJavaLearnAvtivity
 import com.yyg.kotlinlearn.KotlinLearn
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.android.ext.android.inject
 import java.lang.reflect.Array
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
@@ -27,8 +25,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
             "Fragment", "LayoutInflater", "Service",
             "RecylerView", "Contacts", "Drawable", "DrawDrawable",
             "画笔", "多线程")
-
-    private val firstPresenter: MySimplePresenter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

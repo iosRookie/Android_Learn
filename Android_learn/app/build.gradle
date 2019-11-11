@@ -51,10 +51,10 @@ dependencies {
     implementation "com.github.Raizlabs.DBFlow:dbflow-rx:${dbflow_version}"
     implementation "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
 
-    // Koin AndroidX Scope features
-    implementation "org.koin:koin-androidx-scope:$koin_version"
-    // Koin AndroidX ViewModel features
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
-    // Koin AndroidX Experimental features
-    implementation "org.koin:koin-androidx-ext:$koin_version"
+//    // Koin AndroidX Scope features
+//    implementation "org.koin:koin-androidx-scope:$koin_version"
+//    // Koin AndroidX ViewModel features
+//    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+//    // Koin AndroidX Experimental features
+//    implementation "org.koin:koin-androidx-ext:$koin_version"
 }
