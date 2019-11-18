@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/FavoriteWidget.dart';
+import 'package:flutter_app/HomeListView.dart';
 import 'package:flutter_app/ListViewWidget.dart';
 import 'package:flutter_app/MyAppBar.dart';
 import 'package:flutter_app/RandomWords.dart';
@@ -12,9 +13,20 @@ import 'package:flutter_app/TapboxB.dart';
 import 'package:flutter_app/TapboxC.dart' as C;
 import 'package:flutter_app/TutorialHome.dart';
 
+import 'ArticleListScreen.dart';
+import 'HomePage.dart';
+import 'MianPage.dart';
+
 void main() {
   runApp(
       MyApp()
+//      MaterialApp(
+//        initialRoute: "/",
+//        routes: {
+//          "/": (context) => HomeListView(["ListViewLearn", "234", "345"]),
+//          "/listViewLearn": (context) => ListViewWidget()
+//        },
+//      )
   );
   if (Platform.isAndroid) {
     // 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
@@ -245,23 +257,78 @@ void main() {
 //  }
 //}
 
+//class MyApp extends StatelessWidget {
+//  @override
+//  Widget build(BuildContext context) {
+//    return HomeListView(["ListViewLearn", "234", "345"]);
+////    return new MaterialApp(
+////      title: "ListView learn",
+////      home: new Scaffold(
+////        appBar: new AppBar(
+////          title: new Text("ListView Learn"),
+////        ),
+////        body: new Container(
+////          color: Color.fromRGBO(236, 236, 236, 1),
+////          child: new ListViewWidget(),
+////        ),
+////      ),
+////    );
+//  }
+//}
+
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: "ListView learn",
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text("ListView Learn"),
-        ),
-        body: new Container(
-          color: Color.fromRGBO(236, 236, 236, 1),
-          child: new ListViewWidget(),
+    return MaterialApp(
+      title: "Navigation",
+      home: HomePage(),
+    );
+  }
+}
+
+class FirstScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("First Screen"),
+      ),
+      body: Center(
+        child: RaisedButton(
+          child: Text("Launch second screen"),
+          onPressed: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SecondScreen()),
+            );
+          },
         ),
       ),
     );
   }
 }
+
+class SecondScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Second Screen"),
+      ),
+      body: Center(
+        child: RaisedButton(
+          child: Text("Go Back"),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
+  }
+}
+
 
 
 
