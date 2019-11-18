@@ -254,7 +254,10 @@ class MyApp extends StatelessWidget {
         appBar: new AppBar(
           title: new Text("ListView Learn"),
         ),
-        body: new ListViewWidget(),
+        body: new Container(
+          color: Color.fromRGBO(236, 236, 236, 1),
+          child: new ListViewWidget(),
+        ),
       ),
     );
   }
