@@ -13,7 +13,7 @@ class HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     MainNavigator(),
-    PlaceholderWidget("profile")
+    ProfilePage()
   ];
 
   @override
@@ -36,7 +36,7 @@ class HomePageState extends State<HomePage> {
       ),
     );
   }
-
+  
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
@@ -44,15 +44,21 @@ class HomePageState extends State<HomePage> {
   }
 }
 
-class PlaceholderWidget extends StatelessWidget {
-  final String text;
-
-  PlaceholderWidget(this.text);
-
+class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(text),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Proflie'),
+      ),
+      body: Center(
+        child: RaisedButton(
+          child: Text('Log Out'),
+          onPressed: (){
+            Navigator.pushNamed(context, '/login');
+          },
+        ),
+      ),
     );
   }
 }

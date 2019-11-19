@@ -5,16 +5,18 @@ import 'package:english_words/english_words.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/FavoriteWidget.dart';
 import 'package:flutter_app/HomeListView.dart';
+import 'package:flutter_app/HomePage.dart';
 import 'package:flutter_app/ListViewWidget.dart';
+import 'package:flutter_app/LoginPage.dart';
 import 'package:flutter_app/MyAppBar.dart';
 import 'package:flutter_app/RandomWords.dart';
+import 'package:flutter_app/Simbox/SimboxMianPage.dart';
 import 'package:flutter_app/TapboxA.dart';
 import 'package:flutter_app/TapboxB.dart';
 import 'package:flutter_app/TapboxC.dart' as C;
 import 'package:flutter_app/TutorialHome.dart';
 
 import 'ArticleListScreen.dart';
-import 'HomePage.dart';
 import 'MianPage.dart';
 
 void main() {
@@ -281,8 +283,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Navigation",
-      home: HomePage(),
+      title: 'MainPage',
+      initialRoute: '/',
+      routes: {
+        '/': (BuildContext context) => SimboxMainPage()
+      },
+//      title: "Navigation",
+//      initialRoute: '/',
+//      routes: {
+//        '/': (BuildContext context) => new HomePage(),
+//        '/login': (BuildContext context) => new LoginPage()
+//      },
+      theme: ThemeData(
+          primaryColor: Color(0xFF1AC0B5)
+      ),
     );
   }
 }
