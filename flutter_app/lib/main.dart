@@ -11,10 +11,12 @@ import 'package:flutter_app/LoginPage.dart';
 import 'package:flutter_app/MyAppBar.dart';
 import 'package:flutter_app/RandomWords.dart';
 import 'package:flutter_app/Simbox/SimboxMianPage.dart';
+import 'package:flutter_app/Simbox/page/common/SimboxLocalizations.dart';
 import 'package:flutter_app/TapboxA.dart';
 import 'package:flutter_app/TapboxB.dart';
 import 'package:flutter_app/TapboxC.dart' as C;
 import 'package:flutter_app/TutorialHome.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'ArticleListScreen.dart';
 import 'MianPage.dart';
@@ -297,6 +299,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: Color(0xFF1AC0B5)
       ),
+      // 国际化
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        SimboxLocalizations.delegate
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'),   // English
+        const Locale('zh', 'CN'),   // chinese
+      ],
+      localeResolutionCallback: (local, supportLocals) {
+        return local;
+//        return Localizations.localeOf(context); // 应用的当前区域设置
+      },
+//      locale: const Locale('zh', 'CN'),
     );
   }
 }

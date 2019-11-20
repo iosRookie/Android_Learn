@@ -4,6 +4,7 @@ import 'package:flutter_app/Simbox/page/CallLogHomePage.dart';
 import 'package:flutter_app/Simbox/page/ContactHomePage.dart';
 import 'package:flutter_app/Simbox/page/MessageHomePage.dart';
 import 'package:flutter_app/Simbox/page/PersonHomePage.dart';
+import 'package:flutter_app/Simbox/page/common/SimboxLocalizations.dart';
 
 class SimboxMainPage extends StatefulWidget {
   @override
@@ -63,10 +64,33 @@ class SimboxMainPageState extends State<SimboxMainPage> with SingleTickerProvide
   }
 
   List<BottomNavigationBarItem> _bottomNavigationBarItems() {
-    return [
-      const BottomNavigationBarItem(title: Padding(padding: EdgeInsets.only(top: 3.0), child: Text('拨号'),), icon: Icon(Icons.call)),
-      const BottomNavigationBarItem(title: Padding(padding: EdgeInsets.only(top: 3.0), child: Text('联系人'),), icon: Icon(Icons.contacts)),
-      const BottomNavigationBarItem(title: Padding(padding: EdgeInsets.only(top: 3.0), child: Text('短信'),), icon: Icon(Icons.message)),
-      const BottomNavigationBarItem(title: Padding(padding: EdgeInsets.only(top: 3.0), child: Text('个人'),), icon: Icon(Icons.person)),];
+    List items = List<BottomNavigationBarItem>();
+    List<_BottomBarItemModel> datas = [
+      _BottomBarItemModel(SimboxLocalizations.of(context).callLog, "images/ic_calllog.png", "images/ic_calllog_selected.png"),
+      _BottomBarItemModel(SimboxLocalizations.of(context).contact, "images/ic_contact.png", "images/ic_contact_selected.png"),
+      _BottomBarItemModel(SimboxLocalizations.of(context).message, "images/ic_message.png", "images/ic_message_selected.png"),
+      _BottomBarItemModel(SimboxLocalizations.of(context).individual, "images/ic_individual.png", "images/ic_individual_selected.png"),
+      ];
+    datas.forEach((data) {
+        items.add(BottomNavigationBarItem(
+          title: Padding(
+            padding: EdgeInsets.only(top: 5.0),
+            child: Text(data.title),),
+          icon: Image(image: AssetImage(data.imagePath),),
+          activeIcon: Image(image: AssetImage(data.selectedImagePath),),
+        ));
+    });
+
+    if (items.isEmpty) throw Exception("_bottomNavigationBarItems can't null");
+
+    return items;
   }
+}
+
+class _BottomBarItemModel {
+  String title;
+  String imagePath;
+  String selectedImagePath;
+
+  _BottomBarItemModel(this.title, this.imagePath, this.selectedImagePath);
 }

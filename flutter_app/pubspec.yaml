@@ -20,14 +20,20 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_localizations:
+    sdk: flutter
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   english_words: ^3.1.5
+  intl: ^0.16.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  intl_translation: ^0.17.7
 
 
 # For information on the generic Dart part of this file, see the
@@ -43,8 +49,33 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - Images/lake.jpeg
-  #  - images/a_dot_ham.jpeg
+    - images/ic_contact.png
+    - images/ic_calllog.png
+    - images/ic_individual.png
+    - images/ic_message.png
+    - images/ic_contact_selected.png
+    - images/ic_calllog_selected.png
+    - images/ic_individual_selected.png
+    - images/ic_message_selected.png
+
+    - images/2.0x/ic_contact.png
+    - images/2.0x/ic_calllog.png
+    - images/2.0x/ic_individual.png
+    - images/2.0x/ic_message.png
+    - images/2.0x/ic_contact_selected.png
+    - images/2.0x/ic_calllog_selected.png
+    - images/2.0x/ic_individual_selected.png
+    - images/2.0x/ic_message_selected.png
+
+    - images/3.0x/ic_contact.png
+    - images/3.0x/ic_calllog.png
+    - images/3.0x/ic_individual.png
+    - images/3.0x/ic_message.png
+    - images/3.0x/ic_contact_selected.png
+    - images/3.0x/ic_calllog_selected.png
+    - images/3.0x/ic_individual_selected.png
+    - images/3.0x/ic_message_selected.png
+    - Images/lake.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -71,3 +102,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+####https://book.flutterchina.club/chapter12/intl.html
