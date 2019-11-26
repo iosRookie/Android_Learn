@@ -11,7 +11,7 @@ import 'package:flutter_app/LoginPage.dart';
 import 'package:flutter_app/MyAppBar.dart';
 import 'package:flutter_app/RandomWords.dart';
 import 'package:flutter_app/Simbox/SimboxMianPage.dart';
-import 'package:flutter_app/Simbox/page/common/SimboxLocalizations.dart';
+import 'package:flutter_app/Simbox/common/SimboxLocalizations.dart';
 import 'package:flutter_app/TapboxA.dart';
 import 'package:flutter_app/TapboxB.dart';
 import 'package:flutter_app/TapboxC.dart' as C;
@@ -285,7 +285,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MainPage',
+      onGenerateTitle: (context){
+        return SimboxLocalizations.of(context).appName;
+      },
       initialRoute: '/',
       routes: {
         '/': (BuildContext context) => SimboxMainPage()

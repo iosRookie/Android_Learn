@@ -8,12 +8,14 @@ class SimboxLocalizations {
 
   static const Map<String, Map<String, String>> _localizedValues = {
     'en': {
+      'AppName': 'Simbox',
       'contact': 'Contact',
       'call_log': 'CallLog',
       'message': 'Message',
       'individual': 'Individual',
     },
     'zh': {
+      'AppName': 'Simbox',
       'contact': '联系人',
       'call_log': '通话记录',
       'message': '短信',
@@ -21,6 +23,7 @@ class SimboxLocalizations {
     }
   };
 
+  String get appName => _localizedValues[locale.languageCode]['AppName'];
   String get contact => _localizedValues[locale.languageCode]['contact'];
   String get callLog => _localizedValues[locale.languageCode]['call_log'];
   String get message => _localizedValues[locale.languageCode]['message'];

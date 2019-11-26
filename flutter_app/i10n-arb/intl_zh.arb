@@ -1,0 +1,21 @@
+{
+  "@@last_modified": "2019-11-21T14:31:20.199065",
+  "greetTo": "见到你很高兴, {name}!",
+  "@greetTo": {
+    "description": "The application title",
+    "type": "text",
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "hello": "你好!",
+  "@hello": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contact": "联系人",
+  "@contact": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

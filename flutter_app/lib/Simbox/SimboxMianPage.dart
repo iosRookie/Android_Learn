@@ -4,7 +4,7 @@ import 'package:flutter_app/Simbox/page/CallLogHomePage.dart';
 import 'package:flutter_app/Simbox/page/ContactHomePage.dart';
 import 'package:flutter_app/Simbox/page/MessageHomePage.dart';
 import 'package:flutter_app/Simbox/page/PersonHomePage.dart';
-import 'package:flutter_app/Simbox/page/common/SimboxLocalizations.dart';
+import 'package:flutter_app/Simbox/common/SimboxLocalizations.dart';
 
 class SimboxMainPage extends StatefulWidget {
   @override
@@ -13,7 +13,8 @@ class SimboxMainPage extends StatefulWidget {
   }
 }
 
-class SimboxMainPageState extends State<SimboxMainPage> with SingleTickerProviderStateMixin {
+class SimboxMainPageState extends State<SimboxMainPage>
+    with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
   final children = _children();
@@ -66,19 +67,28 @@ class SimboxMainPageState extends State<SimboxMainPage> with SingleTickerProvide
   List<BottomNavigationBarItem> _bottomNavigationBarItems() {
     List items = List<BottomNavigationBarItem>();
     List<_BottomBarItemModel> datas = [
-      _BottomBarItemModel(SimboxLocalizations.of(context).callLog, "images/ic_calllog.png", "images/ic_calllog_selected.png"),
-      _BottomBarItemModel(SimboxLocalizations.of(context).contact, "images/ic_contact.png", "images/ic_contact_selected.png"),
-      _BottomBarItemModel(SimboxLocalizations.of(context).message, "images/ic_message.png", "images/ic_message_selected.png"),
-      _BottomBarItemModel(SimboxLocalizations.of(context).individual, "images/ic_individual.png", "images/ic_individual_selected.png"),
-      ];
+      _BottomBarItemModel(SimboxLocalizations.of(context).callLog,
+          "images/ic_calllog.png", "images/ic_calllog_selected.png"),
+      _BottomBarItemModel(SimboxLocalizations.of(context).contact,
+          "images/ic_contact.png", "images/ic_contact_selected.png"),
+      _BottomBarItemModel(SimboxLocalizations.of(context).message,
+          "images/ic_message.png", "images/ic_message_selected.png"),
+      _BottomBarItemModel(SimboxLocalizations.of(context).individual,
+          "images/ic_individual.png", "images/ic_individual_selected.png"),
+    ];
     datas.forEach((data) {
-        items.add(BottomNavigationBarItem(
-          title: Padding(
-            padding: EdgeInsets.only(top: 5.0),
-            child: Text(data.title),),
-          icon: Image(image: AssetImage(data.imagePath),),
-          activeIcon: Image(image: AssetImage(data.selectedImagePath),),
-        ));
+      items.add(BottomNavigationBarItem(
+        title: Padding(
+          padding: EdgeInsets.only(top: 5.0),
+          child: Text(data.title),
+        ),
+        icon: Image(
+          image: AssetImage(data.imagePath),
+        ),
+        activeIcon: Image(
+          image: AssetImage(data.selectedImagePath),
+        ),
+      ));
     });
 
     if (items.isEmpty) throw Exception("_bottomNavigationBarItems can't null");
