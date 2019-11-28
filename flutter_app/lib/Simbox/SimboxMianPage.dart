@@ -13,14 +13,15 @@ class SimboxMainPage extends StatefulWidget {
   }
 }
 
-class SimboxMainPageState extends State<SimboxMainPage>
-    with SingleTickerProviderStateMixin {
+class SimboxMainPageState extends State<SimboxMainPage> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin<SimboxMainPage>{
   int _currentIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
   final children = _children();
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       body: PageView.builder(
           controller: _pageController,
@@ -95,6 +96,9 @@ class SimboxMainPageState extends State<SimboxMainPage>
 
     return items;
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class _BottomBarItemModel {

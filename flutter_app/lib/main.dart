@@ -7,7 +7,6 @@ import 'package:flutter_app/FavoriteWidget.dart';
 import 'package:flutter_app/HomeListView.dart';
 import 'package:flutter_app/HomePage.dart';
 import 'package:flutter_app/ListViewWidget.dart';
-import 'package:flutter_app/LoginPage.dart';
 import 'package:flutter_app/MyAppBar.dart';
 import 'package:flutter_app/RandomWords.dart';
 import 'package:flutter_app/Simbox/SimboxMianPage.dart';
@@ -20,6 +19,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'ArticleListScreen.dart';
 import 'MianPage.dart';
+import 'Simbox/page/LoginAndRegister/LoginPage.dart';
 
 void main() {
   runApp(
@@ -290,7 +290,7 @@ class MyApp extends StatelessWidget {
       },
       initialRoute: '/',
       routes: {
-        '/': (BuildContext context) => SimboxMainPage()
+        '/': (BuildContext context) => LoginPage()//SimboxMainPage()
       },
 //      title: "Navigation",
 //      initialRoute: '/',

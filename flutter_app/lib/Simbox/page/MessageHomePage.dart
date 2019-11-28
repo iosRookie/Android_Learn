@@ -7,9 +7,14 @@ class MessageHomePage extends StatefulWidget {
   }
 }
 
-class MessageHomePageState extends State<MessageHomePage> {
+class MessageHomePageState extends State<MessageHomePage> with AutomaticKeepAliveClientMixin<MessageHomePage> {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('短信'),

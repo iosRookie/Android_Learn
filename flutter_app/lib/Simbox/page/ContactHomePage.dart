@@ -7,9 +7,15 @@ class ContactHomePage extends StatefulWidget {
   }
 }
 
-class ContactHomePageState extends State<ContactHomePage> {
+class ContactHomePageState extends State<ContactHomePage> with AutomaticKeepAliveClientMixin<ContactHomePage> {
+
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('联系人'),

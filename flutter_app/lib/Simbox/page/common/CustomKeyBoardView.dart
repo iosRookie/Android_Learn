@@ -2,8 +2,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class CustomKeyBoardView extends StatefulWidget {
-  Function hiddenKeyBoard;
-  String parent;
+  final Function hiddenKeyBoard;
+  final String parent;
+
   CustomKeyBoardView(this.hiddenKeyBoard, this.parent);
 
   @override
@@ -17,6 +18,8 @@ class _CustomKeyBoardViewState extends State<CustomKeyBoardView> {
   static const int _columnCount = 4;
   static const double _itemAspectRatio = 2.0;
   static const double _bottomToolsViewHeight = 64;
+
+  FocusNode _contentFocusNode = FocusNode();
 
   String _inputText = "";
 
@@ -35,6 +38,7 @@ class _CustomKeyBoardViewState extends State<CustomKeyBoardView> {
   @override
   void initState() {
     super.initState();
+
   }
 
   @override
@@ -55,19 +59,27 @@ class _CustomKeyBoardViewState extends State<CustomKeyBoardView> {
             child: TextField(
               cursorColor: Theme.of(context).primaryColor,
               cursorWidth: 1.0,
-              focusNode: FocusNode(canRequestFocus: false),
+              focusNode: _contentFocusNode,
               keyboardType: TextInputType.phone,
               textAlign: TextAlign.center,
               autocorrect: false,
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.black
-              ),
-              controller: TextEditingController(),
+              style: TextStyle(fontSize: 30, color: Colors.black),
+              readOnly: false,
+              controller: TextEditingController.fromValue(TextEditingValue(
+                  text: _inputText,
+                  selection: TextSelection.fromPosition(TextPosition(
+                      affinity: TextAffinity.downstream,
+                      offset: _inputText.length)))),
               decoration: InputDecoration(
-                border: InputBorder.none,
-                suffixIcon: Icon(Icons.backspace, color: Colors.grey,)
-              ),
+                  border: InputBorder.none,
+                  suffixIcon: IconButton(
+                    color: Colors.red,
+                    icon: Icon(Icons.backspace, color: Colors.grey,),
+                    onPressed: () {
+                      _contentFocusNode.unfocus(focusPrevious: true);
+                      _deleteInputText();
+                    },
+                  )),
             ),
 //            child: Text(
 //              _inputText,
@@ -153,19 +165,19 @@ class _CustomKeyBoardViewState extends State<CustomKeyBoardView> {
   Widget _getItemContainer(int index, KeyboardDisplayModel model) {
     return GestureDetector(
       child: Container(
-        height: _itemHeight(),
-        width: _itemWidth(),
-        color: Colors.white,
-        alignment: Alignment.center,
-        child: Column (
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text (model.title, style: TextStyle(color: Colors.black, fontSize: 22)),
-            Text(model.subTitle, style: TextStyle(color: Colors.grey, fontSize: 12))
-          ],
-        )
-
-      ),
+          height: _itemHeight(),
+          width: _itemWidth(),
+          color: Colors.white,
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(model.title,
+                  style: TextStyle(color: Colors.black, fontSize: 22)),
+              Text(model.subTitle,
+                  style: TextStyle(color: Colors.grey, fontSize: 12))
+            ],
+          )),
       onTap: () {
         _onTapKeyBoard(index);
       },
@@ -204,9 +216,20 @@ class _CustomKeyBoardViewState extends State<CustomKeyBoardView> {
   void _gotoSettingPage() {
     debugPrint("_gotoSettingPage");
   }
+
+  void _deleteInputText() {
+    debugPrint("_deleteInputText");
+      setState(() {
+        if (_inputText.length > 0) {
+          _inputText = _inputText.replaceRange(
+              _inputText.length - 1, _inputText.length, '');
+        }
+      });
+  }
 }
 
 class KeyboardDisplayModel {
   String title, subTitle;
+
   KeyboardDisplayModel(this.title, this.subTitle);
 }

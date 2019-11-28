@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ListViewWidget.dart';
 import 'common/CardAppBar.dart';
 import 'common/CustomKeyBoardView.dart';
 
@@ -7,9 +8,12 @@ class CallLogHomePage extends StatefulWidget {
   State<StatefulWidget> createState() => _CallLogHomePageState();
 }
 
-class _CallLogHomePageState extends State<CallLogHomePage> with TickerProviderStateMixin {
+class _CallLogHomePageState extends State<CallLogHomePage> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin<CallLogHomePage> {
   AnimationController _controller;
   Animation<Offset> _animation;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -24,16 +28,16 @@ class _CallLogHomePageState extends State<CallLogHomePage> with TickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    super.build(context);
 
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: CardAppBar(),
       body: Stack(alignment: AlignmentDirectional.bottomCenter, children: [
         Container(
           height: size.height,
           width: size.width,
-          color: Colors.red,
-          child: Text("content"),
+          child: ListViewWidget(),
         ),
         Positioned(
           right: 15.0,

@@ -7,9 +7,14 @@ class PersonHomePage extends StatefulWidget {
   }
 }
 
-class PersonHomePageState extends State<PersonHomePage> {
+class PersonHomePageState extends State<PersonHomePage> with AutomaticKeepAliveClientMixin<PersonHomePage> {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('个人'),

@@ -22,7 +22,8 @@ class _ListViewWidgetState extends State<ListViewWidget> {
     super.initState();
 
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
         print("----------加载更多----------");
         _getMoreData();
       }
@@ -32,42 +33,36 @@ class _ListViewWidgetState extends State<ListViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("ListView Learn"),
-        ),
-        body: Center(
-            child: RefreshIndicator(
-              displacement: 50,
-              child: ListView.separated(
-                itemCount: entityList.length + 1,
-                itemBuilder: (BuildContext context, int index) {
-                  if (index == entityList.length) {
-                    return LoadMoreView();
-                  } else {
-                    return ListViewItem(entityList[index]);
-                  }
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return new Container(height: 20.0, color: Colors.transparent);
-                },
-                controller: _scrollController,
-              ),
-              onRefresh: _handleRefresh,
-            )
-        )
-    );
+    return Center(
+        child: RefreshIndicator(
+          displacement: 50,
+          child: ListView.separated(
+            itemCount: entityList.length + 1,
+            itemBuilder: (BuildContext context, int index) {
+              if (index == entityList.length) {
+                return LoadMoreView();
+              } else {
+                return ListViewItem(entityList[index]);
+              }
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return new Container(height: 20.0, color: Colors.transparent);
+            },
+            controller: _scrollController,
+          ),
+          onRefresh: _handleRefresh,
+        ));
   }
 
   List<ItemEntity> _getTestDatas() {
     List<ItemEntity> datas = List<ItemEntity>();
-    for (int section=0; section < Random().nextInt(10) + 1; section++) {
+    for (int section = 0; section < Random().nextInt(10) + 1; section++) {
       datas.add(ItemEntity(null, null, true, "Section $section"));
-      for (int index=0; index < Random().nextInt(10); index++) {
-        datas.add(ItemEntity("Item $index", Icons.favorite_border, false, null));
+      for (int index = 0; index < Random().nextInt(10) + 3; index++) {
+        datas
+            .add(ItemEntity("Item $index", Icons.favorite_border, false, null));
       }
     }
-
     return datas;
   }
 
@@ -98,27 +93,26 @@ class _ListViewWidgetState extends State<ListViewWidget> {
 class LoadMoreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("ListView Learn"),
-      ),
-      body:Container(
-        color: Colors.white70,
-        child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Center(
-            child: Row(
-              children: <Widget>[
-                new Container(
-                  width: 20,
-                  height: 20,
-                  child:new CircularProgressIndicator(strokeWidth: 2,),
+    return Container(
+      color: Colors.white70,
+      child: Padding(
+        padding: const EdgeInsets.all(18),
+        child: Center(
+          child: Row(
+            children: <Widget>[
+              new Container(
+                width: 20,
+                height: 20,
+                child: new CircularProgressIndicator(
+                  strokeWidth: 2,
                 ),
-                Padding(padding: EdgeInsets.all(10),),
-                Text("加载中...")
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+              ),
+              Text("加载中...")
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
           ),
         ),
       ),
