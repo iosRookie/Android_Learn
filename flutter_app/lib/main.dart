@@ -1,43 +1,67 @@
 import 'dart:io';
 
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/FavoriteWidget.dart';
-import 'package:flutter_app/HomeListView.dart';
-import 'package:flutter_app/HomePage.dart';
-import 'package:flutter_app/ListViewWidget.dart';
-import 'package:flutter_app/MyAppBar.dart';
-import 'package:flutter_app/RandomWords.dart';
-import 'package:flutter_app/Simbox/SimboxMianPage.dart';
 import 'package:flutter_app/Simbox/common/SimboxLocalizations.dart';
-import 'package:flutter_app/TapboxA.dart';
-import 'package:flutter_app/TapboxB.dart';
-import 'package:flutter_app/TapboxC.dart' as C;
-import 'package:flutter_app/TutorialHome.dart';
+import 'package:flutter_app/Simbox/res/colors.dart';
+import 'package:flutter_app/Simbox/routes/application.dart';
+import 'package:flutter_app/dome/ArticleListScreen.dart';
+import 'package:flutter_app/dome/layout_dome.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'ArticleListScreen.dart';
-import 'MianPage.dart';
-import 'Simbox/page/LoginAndRegister/LoginPage.dart';
+import 'Simbox/login/page/LoginPage.dart';
+import 'Simbox/routes/routes.dart';
 
 void main() {
-  runApp(
-      MyApp()
-//      MaterialApp(
-//        initialRoute: "/",
-//        routes: {
-//          "/": (context) => HomeListView(["ListViewLearn", "234", "345"]),
-//          "/listViewLearn": (context) => ListViewWidget()
-//        },
-//      )
-  );
+  //        debugProfileBuildsEnabled = true;
+//        debugPaintLayerBordersEnabled = true;
+//        debugProfilePaintsEnabled = true;
+  runApp(MyApp());
   if (Platform.isAndroid) {
     // 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
     SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 }
+
+//class MyApp extends StatelessWidget {
+//  final bool isLogin;
+//
+//  MyApp({@required this.isLogin}) {
+//    final router = Router();
+//    Routes.configureRoutes(router);
+//    Application.router = router;
+//  }
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return MaterialApp(
+//      showPerformanceOverlay: false,
+//      debugShowCheckedModeBanner: false,
+//      onGenerateTitle: (context) {
+//        return SimboxLocalizations.of(context).appName;
+//      },
+//      home: LoginPage(),//SimboxMainPage(),
+//      theme: ThemeData(primaryColor: SColors.theme_color),
+//      // 国际化
+//      localizationsDelegates: [
+//        GlobalMaterialLocalizations.delegate,
+//        GlobalWidgetsLocalizations.delegate,
+//        SimboxLocalizations.delegate
+//      ],
+//      supportedLocales: [
+//        const Locale('en', 'US'), // English
+//        const Locale('zh', 'CN'), // chinese
+//      ],
+//      localeResolutionCallback: (local, supportLocals) {
+//        return local;
+////        return Localizations.localeOf(context); // 应用的当前区域设置
+//      },
+//      onGenerateRoute: Application.router.generator,
+//    );
+//  }
+//}
 
 //class MyApp extends StatelessWidget {
 //  @override
@@ -60,16 +84,34 @@ void main() {
 //  }
 //}
 
-//class MyApp extends StatelessWidget {
-//  @override
-//  Widget build(BuildContext context) {
-//    return new MaterialApp(
-//      title: 'My app',
-//      home: new TutorialHome()
-//      //new MyScaffold()
-//    );
-//  }
-//}
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+  debugPaintSizeEnabled = true; //直观的调试布局问题
+//  debugPaintPointersEnabled = true; //对象都突出显
+//  debugPaintBaselinesEnabled = true; //对象的基准线
+    return new MaterialApp(
+        title: 'My app',
+        theme: ThemeData(primaryColor: SColors.theme_color),
+        // 国际化
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          SimboxLocalizations.delegate
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'), // English
+          const Locale('zh', 'CN'), // chinese
+        ],
+        localeResolutionCallback: (local, supportLocals) {
+          return local;
+//        return Localizations.localeOf(context); // 应用的当前区域设置
+        },
+        home: LayoutDome()
+      //new MyScaffold()
+    );
+  }
+}
 
 //class MyApp extends StatelessWidget {
 //  @override
@@ -280,46 +322,6 @@ void main() {
 //  }
 //}
 
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      onGenerateTitle: (context){
-        return SimboxLocalizations.of(context).appName;
-      },
-      initialRoute: '/',
-      routes: {
-        '/': (BuildContext context) => LoginPage()//SimboxMainPage()
-      },
-//      title: "Navigation",
-//      initialRoute: '/',
-//      routes: {
-//        '/': (BuildContext context) => new HomePage(),
-//        '/login': (BuildContext context) => new LoginPage()
-//      },
-      theme: ThemeData(
-          primaryColor: Color(0xFF1AC0B5)
-      ),
-      // 国际化
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        SimboxLocalizations.delegate
-      ],
-      supportedLocales: [
-        const Locale('en', 'US'),   // English
-        const Locale('zh', 'CN'),   // chinese
-      ],
-      localeResolutionCallback: (local, supportLocals) {
-        return local;
-//        return Localizations.localeOf(context); // 应用的当前区域设置
-      },
-//      locale: const Locale('zh', 'CN'),
-    );
-  }
-}
-
 class FirstScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -331,10 +333,10 @@ class FirstScreen extends StatelessWidget {
       body: Center(
         child: RaisedButton(
           child: Text("Launch second screen"),
-          onPressed: (){
+          onPressed: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SecondScreen()),
+              context,
+              MaterialPageRoute(builder: (context) => SecondScreen()),
             );
           },
         ),
@@ -353,7 +355,7 @@ class SecondScreen extends StatelessWidget {
       body: Center(
         child: RaisedButton(
           child: Text("Go Back"),
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
         ),
@@ -361,21 +363,3 @@ class SecondScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

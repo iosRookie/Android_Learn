@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ListViewWidget.dart';
-import 'common/CardAppBar.dart';
-import 'common/CustomKeyBoardView.dart';
+import 'package:flutter_app/dome/ListViewWidget.dart';
+import '../widget/CardAppBar.dart';
+import '../widget/CustomKeyBoardView.dart';
 
 class CallLogHomePage extends StatefulWidget {
   @override

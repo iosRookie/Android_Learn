@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/Simbox/common/util/Log.dart';
 import 'package:flutter_app/Simbox/http/HTTPResponseEntity.dart';
@@ -36,16 +34,17 @@ class HttpUtil {
             "userLabel" : "businessUser",
             "voipId" : ""});
       _httpClient = Dio(options);
+
       //代理
-      (_httpClient.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.findProxy = (uri) {
-        //proxy all request to localhost:8888
-        return "PROXY 192.168.1.121:8080";
-      };
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-    };
+//      (_httpClient.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+//        (HttpClient client) {
+//      client.findProxy = (uri) {
+//        //proxy all request to localhost:8888
+//        return "PROXY 192.168.1.121:8080";
+//      };
+//      client.badCertificateCallback =
+//          (X509Certificate cert, String host, int port) => true;
+//    };
 
       _httpClient.interceptors.add(LoggingInterceptor());    //添加请求打印拦截器
     }

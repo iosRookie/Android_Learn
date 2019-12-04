@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ArticleListScreen.dart';
+import 'package:flutter_app/dome/ArticleListScreen.dart';
 
 class MainNavigator extends StatelessWidget {
   @override

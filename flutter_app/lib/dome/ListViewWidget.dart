@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ListViewItem.dart';
+import 'package:flutter_app/dome/ListViewItem.dart';
 
 class ListViewWidget extends StatefulWidget {
   @override

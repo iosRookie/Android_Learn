@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Article.dart';
+import 'package:flutter_app/dome/Article.dart';
 
 /// https://www.jianshu.com/p/3b105658728e
 

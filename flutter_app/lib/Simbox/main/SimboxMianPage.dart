@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Simbox/page/CallLogHomePage.dart';
-import 'package:flutter_app/Simbox/page/ContactHomePage.dart';
-import 'package:flutter_app/Simbox/page/MessageHomePage.dart';
-import 'package:flutter_app/Simbox/page/PersonHomePage.dart';
+import 'package:flutter_app/Simbox/call_log/CallLogHomePage.dart';
+import 'package:flutter_app/Simbox/contact/ContactHomePage.dart';
+import 'package:flutter_app/Simbox/message/MessageHomePage.dart';
+import 'package:flutter_app/Simbox/person/PersonHomePage.dart';
 import 'package:flutter_app/Simbox/common/SimboxLocalizations.dart';
 
 class SimboxMainPage extends StatefulWidget {

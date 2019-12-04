@@ -1,4 +1,5 @@
 import 'package:flutter_app/Simbox/http/ResponseModel/LoginResponseModel.dart';
+import 'package:flutter_app/Simbox/login/model/CountryCodeModel.dart';
 
 class HTTPResponseEntity<T>{
 
@@ -38,6 +39,8 @@ class EntityFactory {
   static T generateOBJ<T>(json) {
     if (T.toString() == "LoginResponseModel") {
       return LoginResponseModel.fromJson(json) as T;
+    } else if (T.toString() == "CountryCodeModel") {
+      return CountryCodeModel.fromJson(json) as T;
     } else {
       return null;
     }

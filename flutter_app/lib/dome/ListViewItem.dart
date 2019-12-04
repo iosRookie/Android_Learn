@@ -14,7 +14,7 @@ class ItemEntity {
 }
 
 class ListViewItem extends StatefulWidget {
-  ItemEntity itemEntity;
+  final ItemEntity itemEntity;
   ListViewItem(this.itemEntity);
 
   @override
