@@ -39,6 +39,8 @@ dependencies:
   flutter_spinkit: ^4.1.0
 # 数据持久化
   shared_preferences: ^0.5.4+8
+  sqflite: ^1.1.7+3
+  lpinyin: ^1.0.7
 
 dev_dependencies:
   flutter_test:

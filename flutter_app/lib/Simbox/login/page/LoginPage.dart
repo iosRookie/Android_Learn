@@ -11,6 +11,7 @@ import 'package:flutter_app/Simbox/login/LoginRouter.dart';
 import 'package:flutter_app/Simbox/login/presenter/LoginPresenter.dart';
 import 'package:flutter_app/Simbox/res/colors.dart';
 import 'package:flutter_app/Simbox/routes/FluroNavigator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,7 +20,8 @@ class LoginPage extends StatefulWidget {
   }
 }
 
-class LoginPageState extends BasePageState<LoginPage, LoginPresenter> with AutomaticKeepAliveClientMixin<LoginPage> {
+class LoginPageState extends BasePageState<LoginPage, LoginPresenter>
+    with AutomaticKeepAliveClientMixin<LoginPage> {
   TextEditingController _unameController = TextEditingController();
   TextEditingController _pwdController = TextEditingController();
   GlobalKey _formKey = GlobalKey<FormState>();
@@ -61,35 +63,8 @@ class LoginPageState extends BasePageState<LoginPage, LoginPresenter> with Autom
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: GestureDetector(
-                          child: Stack(
-                            children: <Widget>[
-                              SizedBox(height: 44, child: Container(color: Colors.transparent,),),
-                              Row(
-                                children: <Widget>[
-                                  Text("国家/地区"),
-                                  Text("+$telprex"),
-                                  Icon(
-                                    Icons.arrow_forward_ios
-                                  )
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 43.5),
-                                child: Container(
-                                  color: SColors.divider_color,
-                                  height: 0.5,
-                                ),
-                              ),
-
-                            ],
-                          ),
-                          onTap: (() {
-                            _gotoCountryCodeSelectPage();
-                          }),
-                        ),
-                      ),
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: _countryCodeSelect()),
                       Padding(
                         padding: const EdgeInsets.only(top: 20.0),
                         child: TextFormField(
@@ -176,28 +151,64 @@ class LoginPageState extends BasePageState<LoginPage, LoginPresenter> with Autom
                 ))));
   }
 
-  void _gotoLoginPage() async {
-    HttpUtil().asyncRequestNetwork<LoginResponseModel>(
-        Method.post,
-        HTTPApi.LoginApi,
-        params: LoginRequestModel(countryCode: "86", password: "123456", userCode: "15991270411").toJson(),
-        onSuccess: ((value) {
-            NavigatorUtils.push(context, LoginRouter.registerPage);
-        }),
-        onError: ((code, message) {
+  Widget _countryCodeSelect() {
+    return GestureDetector(
+      child: Column(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.bottomLeft,
+            padding: EdgeInsets.only(bottom: 10.0),
+//            color: Colors.red,
+            height: 44,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                    flex: 2,
+                    child: Text("国家/地区")
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Text("+$telprex"),
+                ),
+//                Expanded(
+//                    child:
+                    Icon(Icons.arrow_forward_ios, size: 18, color: SColors.divider_color,)
+//                )
+              ],
+            ),
+          ),
+          Container(
+            color: SColors.divider_color,
+            height: 0.5,
+          ),
+        ],
+      ),
+      onTap: (() {
+        _gotoCountryCodeSelectPage();
+      }),
+    );
+  }
 
-        }));
+  void _gotoMainHomePage() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    HttpUtil().asyncRequestNetwork<LoginResponseModel>(
+        Method.post, HTTPApi.LoginApi,
+        params: LoginRequestModel(
+                countryCode: "86", password: "123456", userCode: "15991270411")
+            .toJson(), onSuccess: ((value) {
+      sp.setBool("hasLogin", true);
+      NavigatorUtils.push(context, LoginRouter.mainHomePage,
+          clearStack: true, replace: true);
+//          NavigatorUtils.push(context, LoginRouter.registerPage);
+    }), onError: ((code, message) {}));
   }
 
   _gotoCountryCodeSelectPage() {
-    NavigatorUtils.pushResult(context, LoginRouter.countryCodeSelectPage, (object) {
+    NavigatorUtils.pushResult(context, LoginRouter.countryCodeSelectPage,
+        (object) {
       setState(() {
         telprex = (object as Map)["telprex"];
       });
     });
-  }
-
-  _gotoMainHomePage() {
-    NavigatorUtils.push(context, LoginRouter.mainHomePage, clearStack: true, replace: true);
   }
 }

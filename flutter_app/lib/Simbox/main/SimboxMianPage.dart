@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Simbox/call_log/CallLogHomePage.dart';
+import 'package:flutter_app/Simbox/call_log/page/CallLogHomePage.dart';
 import 'package:flutter_app/Simbox/contact/ContactHomePage.dart';
 import 'package:flutter_app/Simbox/message/MessageHomePage.dart';
 import 'package:flutter_app/Simbox/person/PersonHomePage.dart';

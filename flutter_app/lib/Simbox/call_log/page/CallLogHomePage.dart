@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/dome/ListViewWidget.dart';
-import '../widget/CardAppBar.dart';
-import '../widget/CustomKeyBoardView.dart';
+import 'package:flutter_app/Simbox/call_log/presenter/CallLogHomePresenter.dart';
+import 'package:flutter_app/Simbox/common/mvp/BasePageState.dart';
+import 'package:flutter_app/Simbox/call_log/widget/CallLogListView.dart';
+import '../../widget/CardAppBar.dart';
+import '../../widget/CustomKeyBoardView.dart';
 
 class CallLogHomePage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _CallLogHomePageState();
+  State<StatefulWidget> createState() => CallLogHomePageState();
 }
 
-class _CallLogHomePageState extends State<CallLogHomePage> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin<CallLogHomePage> {
+class CallLogHomePageState extends BasePageState<CallLogHomePage, CallLogHomePresenter> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin<CallLogHomePage> {
   AnimationController _controller;
   Animation<Offset> _animation;
+
+  @override
+  CallLogHomePresenter createPresenter() => CallLogHomePresenter();
 
   @override
   bool get wantKeepAlive => true;
@@ -37,7 +42,7 @@ class _CallLogHomePageState extends State<CallLogHomePage> with TickerProviderSt
         Container(
           height: size.height,
           width: size.width,
-          child: ListViewWidget(),
+          child: CallLogListView(),
         ),
         Positioned(
           right: 15.0,

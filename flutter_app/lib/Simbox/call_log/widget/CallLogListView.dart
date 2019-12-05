@@ -1,18 +1,17 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/dome/ListViewItem.dart';
+import 'package:flutter_app/Simbox/call_log/widget/CallLogListItem.dart';
+import 'package:flutter_app/Simbox/res/colors.dart';
 
-class ListViewWidget extends StatefulWidget {
+class CallLogListView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return new _ListViewWidgetState();
+    return new _CallLogListViewState();
   }
 }
 
-class _ListViewWidgetState extends State<ListViewWidget> {
+class _CallLogListViewState extends State<CallLogListView> {
   List<ItemEntity> entityList = [];
   ScrollController _scrollController = new ScrollController();
   bool isLoadData = false;
@@ -35,14 +34,15 @@ class _ListViewWidgetState extends State<ListViewWidget> {
   Widget build(BuildContext context) {
     return Center(
         child: RefreshIndicator(
-          displacement: 50,
+          color: SColors.theme_color,
+          displacement: 30,
           child: ListView.separated(
             itemCount: entityList.length + 1,
             itemBuilder: (BuildContext context, int index) {
               if (index == entityList.length) {
                 return LoadMoreView();
               } else {
-                return ListViewItem(entityList[index]);
+                return CallLogListItem(entityList[index]);
               }
             },
             separatorBuilder: (BuildContext context, int index) {
@@ -94,28 +94,25 @@ class LoadMoreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white70,
-      child: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Center(
+      height: 40.0,
+      color: Colors.transparent,
+      child: Center(
           child: Row(
             children: <Widget>[
               new Container(
                 width: 20,
                 height: 20,
-                child: new CircularProgressIndicator(
+                child: CircularProgressIndicator(
                   strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(SColors.theme_color),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(10),
-              ),
+              Padding(padding: EdgeInsets.only(left: 10.0)),
               Text("加载中...")
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
-        ),
-      ),
+        )
     );
   }
 }

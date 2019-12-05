@@ -10,13 +10,20 @@ import 'package:flutter_app/Simbox/routes/application.dart';
 import 'package:flutter_app/dome/ArticleListScreen.dart';
 import 'package:flutter_app/dome/layout_dome.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Simbox/login/page/LoginPage.dart';
+import 'Simbox/main/SimboxMianPage.dart';
 import 'Simbox/routes/routes.dart';
 
-void main() {
+SharedPreferences sp;
+
+void main() async {
   //        debugProfileBuildsEnabled = true;
 //        debugPaintLayerBordersEnabled = true;
 //        debugProfilePaintsEnabled = true;
+  WidgetsFlutterBinding.ensureInitialized();
+
+  sp = await SharedPreferences.getInstance();
   runApp(MyApp());
   if (Platform.isAndroid) {
     // 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
@@ -25,43 +32,65 @@ void main() {
   }
 }
 
-//class MyApp extends StatelessWidget {
-//  final bool isLogin;
-//
-//  MyApp({@required this.isLogin}) {
-//    final router = Router();
-//    Routes.configureRoutes(router);
-//    Application.router = router;
-//  }
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return MaterialApp(
-//      showPerformanceOverlay: false,
-//      debugShowCheckedModeBanner: false,
-//      onGenerateTitle: (context) {
-//        return SimboxLocalizations.of(context).appName;
-//      },
-//      home: LoginPage(),//SimboxMainPage(),
-//      theme: ThemeData(primaryColor: SColors.theme_color),
-//      // 国际化
-//      localizationsDelegates: [
-//        GlobalMaterialLocalizations.delegate,
-//        GlobalWidgetsLocalizations.delegate,
-//        SimboxLocalizations.delegate
-//      ],
-//      supportedLocales: [
-//        const Locale('en', 'US'), // English
-//        const Locale('zh', 'CN'), // chinese
-//      ],
-//      localeResolutionCallback: (local, supportLocals) {
-//        return local;
-////        return Localizations.localeOf(context); // 应用的当前区域设置
-//      },
-//      onGenerateRoute: Application.router.generator,
-//    );
-//  }
-//}
+
+
+class MyApp extends StatefulWidget {
+  MyApp() {
+    final router = Router();
+    Routes.configureRoutes(router);
+    Application.router = router;
+  }
+
+  @override
+  State<StatefulWidget> createState() => MyAppState();
+}
+class MyAppState extends State<MyApp> {
+  bool _hasLogin;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+//  debugPaintSizeEnabled = true; //直观的调试布局问题
+//  debugPaintPointersEnabled = true; //对象都突出显
+//  debugPaintBaselinesEnabled = true; //对象的基准线
+    return MaterialApp(
+      showPerformanceOverlay: false,
+      debugShowCheckedModeBanner: false,
+      onGenerateTitle: (context) {
+        return SimboxLocalizations.of(context).appName;
+      },
+      home: loadWidget(),
+      theme: ThemeData(primaryColor: SColors.theme_color),
+      // 国际化
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        SimboxLocalizations.delegate
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'), // English
+        const Locale('zh', 'CN'), // chinese
+      ],
+      localeResolutionCallback: (local, supportLocals) {
+        return local;
+//        return Localizations.localeOf(context); // 应用的当前区域设置
+      },
+      onGenerateRoute: Application.router.generator,
+    );
+  }
+}
+
+Widget loadWidget() {
+  if (sp.containsKey("hasLogin") && sp.getBool("hasLogin")) {
+    return SimboxMainPage();
+  } else {
+    return LoginPage();
+  }
+}
 
 //class MyApp extends StatelessWidget {
 //  @override
@@ -84,34 +113,34 @@ void main() {
 //  }
 //}
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-  debugPaintSizeEnabled = true; //直观的调试布局问题
-//  debugPaintPointersEnabled = true; //对象都突出显
-//  debugPaintBaselinesEnabled = true; //对象的基准线
-    return new MaterialApp(
-        title: 'My app',
-        theme: ThemeData(primaryColor: SColors.theme_color),
-        // 国际化
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          SimboxLocalizations.delegate
-        ],
-        supportedLocales: [
-          const Locale('en', 'US'), // English
-          const Locale('zh', 'CN'), // chinese
-        ],
-        localeResolutionCallback: (local, supportLocals) {
-          return local;
-//        return Localizations.localeOf(context); // 应用的当前区域设置
-        },
-        home: LayoutDome()
-      //new MyScaffold()
-    );
-  }
-}
+//class MyApp extends StatelessWidget {
+//  @override
+//  Widget build(BuildContext context) {
+//  debugPaintSizeEnabled = true; //直观的调试布局问题
+////  debugPaintPointersEnabled = true; //对象都突出显
+////  debugPaintBaselinesEnabled = true; //对象的基准线
+//    return new MaterialApp(
+//        title: 'My app',
+//        theme: ThemeData(primaryColor: SColors.theme_color),
+//        // 国际化
+//        localizationsDelegates: [
+//          GlobalMaterialLocalizations.delegate,
+//          GlobalWidgetsLocalizations.delegate,
+//          SimboxLocalizations.delegate
+//        ],
+//        supportedLocales: [
+//          const Locale('en', 'US'), // English
+//          const Locale('zh', 'CN'), // chinese
+//        ],
+//        localeResolutionCallback: (local, supportLocals) {
+//          return local;
+////        return Localizations.localeOf(context); // 应用的当前区域设置
+//        },
+//        home: LayoutDome()
+//      //new MyScaffold()
+//    );
+//  }
+//}
 
 //class MyApp extends StatelessWidget {
 //  @override
