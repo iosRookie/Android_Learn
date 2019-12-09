@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Simbox/call_log/widget/CallLogListItem.dart';
+import 'package:flutter_app/Simbox/call_log/widget/call_log_list_item.dart';
 import 'package:flutter_app/Simbox/res/colors.dart';
 
 class CallLogListView extends StatefulWidget {

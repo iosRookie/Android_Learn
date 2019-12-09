@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_app/Simbox/common/util/Log.dart';
-import 'package:flutter_app/Simbox/http/HTTPResponseEntity.dart';
-import 'package:flutter_app/Simbox/http/HTTPExceptionHandle.dart';
-import 'package:flutter_app/Simbox/http/Interceptor/LoggingIterceptor.dart';
+import 'package:flutter_app/Simbox/http/http_response_entity.dart';
+import 'package:flutter_app/Simbox/http/http_exception_handle.dart';
+import 'package:flutter_app/Simbox/http/Interceptor/logging_iterceptor.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HttpUtil {

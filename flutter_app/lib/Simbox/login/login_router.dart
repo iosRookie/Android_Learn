@@ -1,13 +1,13 @@
 import 'package:fluro/fluro.dart';
-import 'package:flutter_app/Simbox/login/page/CountryCodeSelectPage.dart';
-import 'package:flutter_app/Simbox/main/SimboxMianPage.dart';
-import 'package:flutter_app/Simbox/routes/RouterInit.dart';
+import 'package:flutter_app/Simbox/login/page/country_code_select_page.dart';
+import 'package:flutter_app/Simbox/main/Simbox_mian_page.dart';
+import 'package:flutter_app/Simbox/routes/router_init.dart';
 
-import 'page/LoginPage.dart';
-import 'page/RegisterPage.dart';
-import 'page/ResetPasswordPage.dart';
-import 'page/SMSLoginPage.dart';
-import 'page/UpdatePasswordPage.dart';
+import 'page/login_page.dart';
+import 'page/register_page.dart';
+import 'page/reset_password_page.dart';
+import 'page/sms_login_page.dart';
+import 'page/update_password_page.dart';
 
 class LoginRouter implements IRouterProvider {
   static String loginPage = '/login';

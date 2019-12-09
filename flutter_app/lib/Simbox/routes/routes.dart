@@ -1,8 +1,8 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Simbox/login/LoginRouter.dart';
-import 'package:flutter_app/Simbox/routes/PageNotFound.dart';
-import 'package:flutter_app/Simbox/routes/RouterInit.dart';
+import 'package:flutter_app/Simbox/login/login_router.dart';
+import 'package:flutter_app/Simbox/routes/page_not_found.dart';
+import 'package:flutter_app/Simbox/routes/router_init.dart';
 
 class Routes {
   static List<IRouterProvider> _moduleRoutes = [];

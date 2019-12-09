@@ -11,8 +11,8 @@ import 'package:flutter_app/dome/ArticleListScreen.dart';
 import 'package:flutter_app/dome/layout_dome.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Simbox/login/page/LoginPage.dart';
-import 'Simbox/main/SimboxMianPage.dart';
+import 'Simbox/login/page/login_page.dart';
+import 'Simbox/main/Simbox_mian_page.dart';
 import 'Simbox/routes/routes.dart';
 
 SharedPreferences sp;
@@ -85,11 +85,11 @@ class MyAppState extends State<MyApp> {
 }
 
 Widget loadWidget() {
-  if (sp.containsKey("hasLogin") && sp.getBool("hasLogin")) {
-    return SimboxMainPage();
-  } else {
+//  if (sp.containsKey("hasLogin") && sp.getBool("hasLogin")) {
+//    return SimboxMainPage();
+//  } else {
     return LoginPage();
-  }
+//  }
 }
 
 //class MyApp extends StatelessWidget {

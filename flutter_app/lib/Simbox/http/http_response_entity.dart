@@ -1,5 +1,5 @@
-import 'package:flutter_app/Simbox/http/ResponseModel/LoginResponseModel.dart';
-import 'package:flutter_app/Simbox/login/model/CountryCodeModel.dart';
+import 'package:flutter_app/Simbox/http/ResponseModel/login_response_model.dart';
+import 'package:flutter_app/Simbox/login/model/country_code_model.dart';
 
 class HTTPResponseEntity<T>{
 

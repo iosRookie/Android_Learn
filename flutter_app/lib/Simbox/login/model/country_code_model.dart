@@ -1,4 +1,5 @@
 class CountryCodeModel {
+  // response data
   String countryName;
   String iso2;
   String iso3;
@@ -7,6 +8,10 @@ class CountryCodeModel {
   String sendFlag;
   String smsFlag;
   String telprex;
+
+  // generate data
+  String sPinyin;
+  String firstChar;
 
   CountryCodeModel(
       {this.countryName,
@@ -27,6 +32,9 @@ class CountryCodeModel {
     sendFlag = json['sendFlag'];
     smsFlag = json['smsFlag'];
     telprex = json['telprex'];
+
+    sPinyin = json['sPinyin'];
+    firstChar = json['firstChar'];
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +47,9 @@ class CountryCodeModel {
     data['sendFlag'] = this.sendFlag;
     data['smsFlag'] = this.smsFlag;
     data['telprex'] = this.telprex;
+
+    data['sPinyin'] = this.sPinyin;
+    data['firstChar'] = this.firstChar;
     return data;
   }
 }

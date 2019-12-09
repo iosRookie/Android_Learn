@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Simbox/common/mvp/BasePagePresenter.dart';
-import 'package:flutter_app/Simbox/common/mvp/MvpView.dart';
+import 'package:flutter_app/Simbox/common/mvp/base_page_presenter.dart';
+import 'package:flutter_app/Simbox/common/mvp/mvp_view.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 abstract class BasePageState<T extends StatefulWidget, P extends BasePagePresenter> extends State<T> implements MvpView {

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_app/Simbox/common/util/Log.dart';
-import 'package:flutter_app/Simbox/http/HTTPExceptionHandle.dart';
+import 'package:flutter_app/Simbox/http/http_exception_handle.dart';
 
 class LoggingInterceptor extends Interceptor {
   DateTime _startTime;
