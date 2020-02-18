@@ -2,16 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Simbox/common/mvp/base_page_state.dart';
-import 'package:flutter_app/Simbox/http/http_Api.dart';
-import 'package:flutter_app/Simbox/http/http_util.dart';
 
-import 'package:flutter_app/Simbox/http/RequestModel/login_request_model.dart';
-import 'package:flutter_app/Simbox/http/ResponseModel/login_response_model.dart';
 import 'package:flutter_app/Simbox/login/login_router.dart';
 import 'package:flutter_app/Simbox/login/presenter/login_presenter.dart';
 import 'package:flutter_app/Simbox/res/colors.dart';
 import 'package:flutter_app/Simbox/routes/fluro_navigator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -190,17 +185,17 @@ class LoginPageState extends BasePageState<LoginPage, LoginPresenter>
   }
 
   void _gotoMainHomePage() async {
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    HttpUtil().asyncRequestNetwork<LoginResponseModel>(
-        Method.post, HTTPApi.LoginApi,
-        params: LoginRequestModel(
-                countryCode: "86", password: "123456", userCode: "15991270411")
-            .toJson(), onSuccess: ((value) {
-      sp.setBool("hasLogin", true);
+//    SharedPreferences sp = await SharedPreferences.getInstance();
+//    HttpUtil().asyncRequestNetwork<LoginResponseModel>(
+//        Method.post, HTTPApi.LoginApi,
+//        params: LoginRequestModel(
+//                countryCode: "86", password: "123456", userCode: "15991270411")
+//            .toJson(), onSuccess: ((value) {
+//      sp.setBool("hasLogin", true);
       NavigatorUtils.push(context, LoginRouter.mainHomePage,
           clearStack: true, replace: true);
 //          NavigatorUtils.push(context, LoginRouter.registerPage);
-    }), onError: ((code, message) {}));
+//    }), onError: ((code, message) {}));
   }
 
   _gotoCountryCodeSelectPage() {

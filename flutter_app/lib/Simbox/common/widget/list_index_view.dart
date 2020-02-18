@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Simbox/res/colors.dart';
 
 typedef void IndexSelected(int index, String title, bool isTouchDown);
 

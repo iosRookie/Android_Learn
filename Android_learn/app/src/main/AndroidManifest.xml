@@ -24,7 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.coroutines_learn.CoroutinesLearnActivity"></activity>
+        <activity android:name="com.UILearn.AppbarLayoutLeran"></activity>
+        <activity android:name="com.coroutines_learn.CoroutinesLearnActivity" />
         <activity
             android:name="com.videoEditor.CameraActivity"
             tools:ignore="InnerclassSeparator" />
