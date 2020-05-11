@@ -74,7 +74,7 @@ class _CallLogListItemState extends State<CallLogListItem> {
 
   Widget _getItem(ItemEntity entity) {
     return new Container(
-      height: 118,
+//      height: 118,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[

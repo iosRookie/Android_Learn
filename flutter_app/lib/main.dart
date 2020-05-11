@@ -7,20 +7,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/Simbox/common/SimboxLocalizations.dart';
 import 'package:flutter_app/Simbox/res/colors.dart';
 import 'package:flutter_app/Simbox/routes/application.dart';
-import 'package:flutter_app/dome/ArticleListScreen.dart';
-import 'package:flutter_app/dome/layout_dome.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Simbox/login/page/login_page.dart';
 import 'Simbox/main/Simbox_mian_page.dart';
+import 'Simbox/res/shared_preferences_config.dart';
 import 'Simbox/routes/routes.dart';
 
 SharedPreferences sp;
 
 void main() async {
-  //        debugProfileBuildsEnabled = true;
-//        debugPaintLayerBordersEnabled = true;
-//        debugProfilePaintsEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
 
   sp = await SharedPreferences.getInstance();
@@ -31,8 +27,6 @@ void main() async {
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 }
-
-
 
 class MyApp extends StatefulWidget {
   MyApp() {
@@ -45,8 +39,6 @@ class MyApp extends StatefulWidget {
   State<StatefulWidget> createState() => MyAppState();
 }
 class MyAppState extends State<MyApp> {
-  bool _hasLogin;
-
   @override
   void initState() {
     super.initState();
@@ -85,11 +77,11 @@ class MyAppState extends State<MyApp> {
 }
 
 Widget loadWidget() {
-//  if (sp.containsKey("hasLogin") && sp.getBool("hasLogin")) {
-//    return SimboxMainPage();
-//  } else {
+  if (sp.containsKey(SharedPreferencesConfig.HasLogin) && sp.getBool(SharedPreferencesConfig.HasLogin)) {
+    return SimboxMainPage();
+  } else {
     return LoginPage();
-//  }
+  }
 }
 
 //class MyApp extends StatelessWidget {

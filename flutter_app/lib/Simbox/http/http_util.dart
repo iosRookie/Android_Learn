@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_app/Simbox/common/util/Log.dart';
+import 'package:flutter_app/Simbox/http/Interceptor/common_params_interceptor.dart';
 import 'package:flutter_app/Simbox/http/http_response_entity.dart';
 import 'package:flutter_app/Simbox/http/http_exception_handle.dart';
 import 'package:flutter_app/Simbox/http/Interceptor/logging_iterceptor.dart';
@@ -46,7 +47,8 @@ class HttpUtil {
 //          (X509Certificate cert, String host, int port) => true;
 //    };
 
-      _httpClient.interceptors.add(LoggingInterceptor());    //添加请求打印拦截器
+      _httpClient.interceptors.add(LoggingInterceptor());       // 添加请求打印拦截器
+      _httpClient.interceptors.add(CommonParamsInterceptor());  // 添加公共参数拦截器
     }
   }
 

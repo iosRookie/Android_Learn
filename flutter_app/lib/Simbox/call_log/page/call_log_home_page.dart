@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/Simbox/call_log/presenter/call_log_home_presenter.dart';
 import 'package:flutter_app/Simbox/common/mvp/base_page_state.dart';
 import 'package:flutter_app/Simbox/call_log/widget/call_log_list_view.dart';
-import '../../widget/card_app_bar.dart';
-import '../../widget/custom_keyboard_view.dart';
+import 'package:flutter_app/Simbox/common/widget/card_app_bar.dart';
+import 'package:flutter_app/Simbox/common/widget/custom_keyboard_view.dart';
 
 class CallLogHomePage extends StatefulWidget {
   @override

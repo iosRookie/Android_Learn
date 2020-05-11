@@ -190,6 +190,10 @@ class LoginPageState extends BasePageState<LoginPage, LoginPresenter>
   }
 
   void _gotoMainHomePage() async {
+
+    NavigatorUtils.push(context, LoginRouter.mainHomePage, clearStack: true, replace: true);
+    return;
+
     SharedPreferences sp = await SharedPreferences.getInstance();
     HttpUtil().asyncRequestNetwork<LoginResponseModel>(
         Method.post, HTTPApi.LoginApi,
@@ -197,18 +201,19 @@ class LoginPageState extends BasePageState<LoginPage, LoginPresenter>
                 countryCode: "86", password: "123456", userCode: "15991270411")
             .toJson(), onSuccess: ((value) {
       sp.setBool("hasLogin", true);
-      NavigatorUtils.push(context, LoginRouter.mainHomePage,
-          clearStack: true, replace: true);
+      NavigatorUtils.push(context, LoginRouter.mainHomePage, clearStack: true, replace: true);
 //          NavigatorUtils.push(context, LoginRouter.registerPage);
     }), onError: ((code, message) {}));
   }
 
   _gotoCountryCodeSelectPage() {
     NavigatorUtils.pushResult(context, LoginRouter.countryCodeSelectPage,
-        (object) {
-      setState(() {
-        telprex = (object as Map)["telprex"];
-      });
-    });
+            (object) {
+                setState(() {
+                    telprex = (object as Map)["telprex"];
+                  });
+            });
   }
+
+
 }

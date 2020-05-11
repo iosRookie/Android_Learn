@@ -23,7 +23,7 @@ class CountryCodeSelectPageState
   List<dynamic> datas = [];
   ScrollController _scrollController = ScrollController();
   Map<String, int> _sectionCount = Map();
-  String _indexTiltle;
+  String _indexTitle;
   bool _showIndexTitle = false;
 
   @override
@@ -33,6 +33,12 @@ class CountryCodeSelectPageState
   void initState() {
     super.initState();
     presenter?.getCountryCodeList();
+  }
+
+  @override
+  disMissProgressCallBack(Function func) {
+
+    return super.disMissProgressCallBack(func);
   }
 
   @override
@@ -89,48 +95,66 @@ class CountryCodeSelectPageState
   Widget _contentListView() {
     return Container(
       padding: EdgeInsets.only(right: 0),
-      child: ListView.separated(
+      child: ListView.builder(
           controller: _scrollController,
           itemBuilder: ((context, index) {
-            if (datas[index] is String) {
-              return Container(
-                padding: EdgeInsets.only(left: 15.0),
-                alignment: Alignment.centerLeft,
-                color: SColors.divider_color,
-                  height: 30,
-                  child: Text(datas[index],
-                      style: TextStyle(color: Color(0xff666666))),
-              );
-            } else if (datas[index] is CountryCodeModel) {
-              return SizedBox(
-                height: 50,
-                child: ListTile(
-                  title: Text(datas[index].countryName == null
-                      ? "无数据" : datas[index].countryName),
-                  trailing: Text(
-                      datas[index].telprex == null ? "无数据" : datas[index].telprex),
-                  onTap: (() {
-                    _selectedIndex(index);
-                  }),
-                )
-              );
+            bool showDivider = true;
+            if (datas[index] is CountryCodeModel) {
+              if (index + 1 < datas.length) {
+                if(datas[index + 1] is CountryCodeModel) showDivider = true;
+                else showDivider = false;
+              }
+              return _getItemView(index, showDivider);
             } else {
-              return SizedBox(
-                  height: 50,
-                  child:ListTile(title: Text("")));
+              return _getSectionView(index);
             }
           }),
-          separatorBuilder: (context, index) {
-            return Container(height: SEPARATED_HEIGHT, color: SColors.divider_color);
-          },
+//          Container(height: SEPARATED_HEIGHT, color: SColors.divider_color)
           itemCount: datas.length)
+    );
+  }
+
+  Widget _getSectionView(int index) {
+    return Container(
+      padding: EdgeInsets.only(left: 15.0),
+      alignment: Alignment.centerLeft,
+      color: SColors.divider_color,
+      height: 30,
+      child: Text(datas[index], style: TextStyle(color: Color(0xff666666)))
+    );
+  }
+
+  Widget _getItemView(int index, bool showDivider) {
+    return Container(
+        height: 50,
+        child: Column(
+            children: [
+              Expanded (
+                  child: GestureDetector(
+                    child: Row(
+                        children: <Widget>[
+                          Padding(padding:  EdgeInsets.only(left: 15.0)),
+                          Expanded (
+                              child:Text(datas[index].countryName == null ? "无数据" : datas[index].countryName)),
+                          Text(datas[index].telprex == null ? "无数据" : datas[index].telprex),
+                          Padding(padding:  EdgeInsets.only(right: 40.0)),
+                        ]
+                    ),
+                    onTap: (() {
+                      _selectedIndex(index);
+                    }),
+                  )
+              ),
+              showDivider ? Container(margin: EdgeInsets.only(left: 15.0), height: SEPARATED_HEIGHT, color: SColors.divider_color) : Container()
+            ]
+        )
     );
   }
 
   Widget _indexBar() {
     return Align(
         alignment: Alignment.centerRight,
-        child: ListIndexView(ITEM_HEIGHT, _keys, width: 30, indexSelected:(index, title, isTouchDown) {
+        child: ListIndexView(ITEM_HEIGHT, _keys, width: 30, defaultIndex: 0, indexSelected:(index, title, isTouchDown) {
           _onIndexBarTouch(index, title, isTouchDown);
         })
     );
@@ -138,13 +162,13 @@ class CountryCodeSelectPageState
 
   void _onIndexBarTouch(int index, String title, bool show) {
     setState(() {
-      _indexTiltle = title;
+      _indexTitle = title;
       _showIndexTitle = show;
       double dy = 0;
       for (int i=0; i<index; i++) {
         String key = _keys[i];
         int count = _sectionCount[key];
-        dy += count * (50 + SEPARATED_HEIGHT) + (30 + SEPARATED_HEIGHT);
+        dy += count * 50 + 30;
       }
       _scrollController.jumpTo(dy.toDouble().clamp(.0, _scrollController.position.maxScrollExtent));
     });
@@ -160,7 +184,7 @@ class CountryCodeSelectPageState
             alignment: Alignment.center,
             width: 80.0,
             height: 80.0,
-            child: Text('$_indexTiltle', style: TextStyle(fontSize: 32.0, color: Colors.white,),
+            child: Text('$_indexTitle', style: TextStyle(fontSize: 32.0, color: Colors.white,),
             ),
           ),
         )

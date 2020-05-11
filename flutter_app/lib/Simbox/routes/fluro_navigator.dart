@@ -8,13 +8,13 @@ class NavigatorUtils {
   static push(BuildContext context, String path,
   {bool replace = false, bool clearStack = false}) {
     FocusScope.of(context).unfocus();
-    Application.router.navigateTo(context, path, replace: replace, clearStack: clearStack, transition: TransitionType.native);
+    Application.router.navigateTo(context, path, replace: replace, clearStack: clearStack, transition: TransitionType.inFromLeft);
   }
 
   static pushResult(BuildContext context, String path, Function(Object) function,
       {bool replace = false, bool clearStack = false}) {
     FocusScope.of(context).unfocus();
-    Application.router.navigateTo(context, path, replace: replace, clearStack: clearStack, transition: TransitionType.native)
+    Application.router.navigateTo(context, path, replace: replace, clearStack: clearStack, transition: TransitionType.inFromRight)
         .then((result) {
       if (result == null) return;
       function(result);

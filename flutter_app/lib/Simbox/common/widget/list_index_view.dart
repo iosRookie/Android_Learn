@@ -9,20 +9,22 @@ class ListIndexView extends StatefulWidget {
   final double width;
   final List<String> indexTitles;
   final IndexSelected indexSelected;
+  final int defaultIndex;
 
   ListIndexView(this.itemHeight, this.indexTitles, {
     this.indexSelected,
-    this.width = 30
+    this.width = 30,
+    this.defaultIndex = 0
   });
 
   @override
-  State<StatefulWidget> createState() => ListIndexViewState();
+  State<StatefulWidget> createState() => ListIndexViewState(defaultIndex);
 }
-
 
 class ListIndexViewState extends State<ListIndexView> {
 
-  int _currentSelected = 0;
+  int selectedIndex;
+  ListIndexViewState(this.selectedIndex);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,8 @@ class ListIndexViewState extends State<ListIndexView> {
         child: GestureDetector(
           child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: _indexItems()),
+              children: _indexItems()
+          ),
           onVerticalDragDown: (DragDownDetails details) {
             _currentSelectedIndex = (details.localPosition.dy / widget.itemHeight).ceil();
             _selectedItemIndex(_currentSelectedIndex, true, "onVerticalDragDown");
@@ -62,7 +65,7 @@ class ListIndexViewState extends State<ListIndexView> {
               height: widget.itemHeight,
               child: Text(widget.indexTitles[index],
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Color(0xff666666), fontSize: 13.0)
+                    style: TextStyle(color: selectedIndex == index ? SColors.theme_color : Color(0xff666666), fontSize: 13.0)
                 ),
               )
       );
@@ -73,11 +76,13 @@ class ListIndexViewState extends State<ListIndexView> {
   _selectedItemIndex(int index, bool isTouchDown, String methodName) {
     print("====>  index = $index  +++ $methodName");
     if (index >= 0 && index < widget.indexTitles.length) {
-      if (_currentSelected == index && isTouchDown == true) return;
-      _currentSelected = index;
+      if (selectedIndex == index && isTouchDown == true) return;
+      setState(() {
+        selectedIndex = index;
+      });
       widget?.indexSelected(index, widget.indexTitles[index], isTouchDown);
     } else {
-      widget?.indexSelected(_currentSelected, widget.indexTitles[_currentSelected], false);
+      widget?.indexSelected(selectedIndex, widget.indexTitles[selectedIndex], false);
     }
   }
 }

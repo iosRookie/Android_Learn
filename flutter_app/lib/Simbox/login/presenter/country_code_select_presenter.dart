@@ -7,7 +7,9 @@ import 'package:lpinyin/lpinyin.dart';
 
 class CountryCodeSelectPresenter extends BasePagePresenter<CountryCodeSelectPageState> {
   getCountryCodeList() {
-    view?.showProgress();
+    Future.delayed(Duration.zero, () {
+      view?.showProgress();
+    });
     HttpUtil().asyncRequestNetwork<CountryCodeModel>(Method.post, HTTPApi.QueryCountryCode,
         isList: true,
         params: {"langType":"zh-CN", "streamNo":"SIMBOXC4B75C79_7106_4CA8_9C55_0FA8997C1CF9","partnerCode":"UKAPP"},

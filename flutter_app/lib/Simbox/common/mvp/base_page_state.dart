@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Simbox/common/mvp/base_page_presenter.dart';
 import 'package:flutter_app/Simbox/common/mvp/mvp_view.dart';
+import 'package:flutter_app/Simbox/common/widget/LoadingDialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 abstract class BasePageState<T extends StatefulWidget, P extends BasePagePresenter> extends State<T> implements MvpView {
@@ -8,6 +9,7 @@ abstract class BasePageState<T extends StatefulWidget, P extends BasePagePresent
   P presenter;
 
   bool _isShowDialog = false;
+  LoadingDialog _requestProgress;
 
   BasePageState() {
     presenter = createPresenter();
@@ -24,6 +26,7 @@ abstract class BasePageState<T extends StatefulWidget, P extends BasePagePresent
     if (mounted && _isShowDialog){
       _isShowDialog = false;
 //      Navigator.of(context).pop();
+      Navigator.of(context).pop(_requestProgress);
     }
   }
 
@@ -35,10 +38,9 @@ abstract class BasePageState<T extends StatefulWidget, P extends BasePagePresent
       try{
         showDialog(
             context: context,
-          builder: ((context) {
-            return SpinKitRing(color: Colors.red,);
-          })
-        );
+            builder: (context) {
+          return _requestProgress;
+        });
       }catch(e){
         /// 异常原因主要是页面没有build完成就调用Progress。
         print(e);
@@ -47,7 +49,13 @@ abstract class BasePageState<T extends StatefulWidget, P extends BasePagePresent
   }
 
   @override
+  disMissProgressCallBack(Function func) {
+
+  }
+
+  @override
   showToast(String string) {
+
   }
 
   @override
@@ -76,6 +84,11 @@ abstract class BasePageState<T extends StatefulWidget, P extends BasePagePresent
 
   @override
   void initState() {
+    _requestProgress = LoadingDialog(
+      dismissCallback: disMissProgressCallBack,
+      outsideDismiss: false,
+    );
+
     super.initState();
     presenter?.initState();
   }
