@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     private val networkReceiver:NetWorkReceiver = NetWorkReceiver()
 
-    private val titles = arrayOf("视频编辑", "kotlin", "RXJava", "WebView", "ListView",
+    private val titles = arrayOf("AppbarLayout", "视频编辑", "kotlin", "RXJava", "WebView", "ListView",
             "Fragment", "LayoutInflater", "Service",
             "RecylerView", "Contacts", "Drawable", "DrawDrawable",
             "画笔", "多线程", "协程（coroutines）")
@@ -92,6 +92,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+        if (Array.get(titles, position) == "AppbarLayout") {
+            val intent = Intent(this, AppbarLayoutLeran::class.java)
+            startActivity(intent)
+        }
         if (Array.get(titles, position) == "kotlin") {
             val intent = Intent(this, KotlinLearn::class.java)
             startActivity(intent)
