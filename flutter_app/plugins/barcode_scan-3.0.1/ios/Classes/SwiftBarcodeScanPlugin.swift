@@ -42,7 +42,7 @@ public class SwiftBarcodeScanPlugin: NSObject, FlutterPlugin, BarcodeScannerView
             scannerViewController.config = config
         }
         scannerViewController.delegate = self
-        hostViewController?.present(navigationController, animated: false)
+        hostViewController?.present(navigationController, animated: true)
     }
     
     private func getPayload<T : SwiftProtobuf.Message>(call: FlutterMethodCall) -> T? {

@@ -57,6 +57,11 @@ class BarcodeScannerViewController: UIViewController {
     #if targetEnvironment(simulator)
     view.backgroundColor = .lightGray
     #endif
+    self.view.backgroundColor = .black
+    self.navigationController?.navigationBar.setBackgroundImage(UIImage.init(), for: .default)
+    self.navigationController?.navigationBar.shadowImage = UIImage.init()
+    self.navigationController?.navigationBar.isTranslucent = true
+    self.title = "扫一扫"
     
     previewView = UIView(frame: view.bounds)
     if let previewView = previewView {
@@ -73,11 +78,16 @@ class BarcodeScannerViewController: UIViewController {
                                   previewView: previewView
       )
     }
-    navigationItem.leftBarButtonItem = UIBarButtonItem(title: config.strings["cancel"],
-                                                        style: .plain,
-                                                        target: self,
-                                                        action: #selector(cancel)
-    )
+//    navigationItem.leftBarButtonItem = UIBarButtonItem(title: config.strings["cancel"],
+//                                                        style: .plain,
+//                                                        target: self,
+//                                                        action: #selector(cancel)
+//    )
+    let barBtn = UIButton.init(type: .custom)
+    barBtn.setBackgroundImage(UIImage.init(named: "popWhite"), for: .normal)
+    barBtn.addTarget(self, action: #selector(cancel), for: .touchUpInside)
+    navigationItem.leftBarButtonItem = UIBarButtonItem(customView: barBtn)
+    
     updateToggleFlashButton()
   }
   
@@ -128,7 +138,6 @@ class BarcodeScannerViewController: UIViewController {
       scanRect.translatesAutoresizingMaskIntoConstraints = false
       scanRect.backgroundColor = UIColor.clear
       view.addSubview(scanRect)
-      scanRect.startAnimating()
     }
   }
   
@@ -177,12 +186,12 @@ class BarcodeScannerViewController: UIViewController {
       return
     }
     
-    let buttonText = isFlashOn ? config.strings["flash_off"] : config.strings["flash_on"]
-    navigationItem.rightBarButtonItem = UIBarButtonItem(title: buttonText,
-                                                        style: .plain,
-                                                        target: self,
-                                                        action: #selector(onToggleFlash)
-    )
+//    let buttonText = isFlashOn ? config.strings["flash_off"] : config.strings["flash_on"]
+//    navigationItem.rightBarButtonItem = UIBarButtonItem(title: buttonText,
+//                                                        style: .plain,
+//                                                        target: self,
+//                                                        action: #selector(onToggleFlash)
+//    )
   }
   
   private func setFlashState(_ on: Bool) {
@@ -207,12 +216,12 @@ class BarcodeScannerViewController: UIViewController {
   
   private func errorResult(errorCode: String){
     delegate?.didFailWithErrorCode(self, errorCode: errorCode)
-    dismiss(animated: false)
+    dismiss(animated: true)
   }
   
   private func scanResult(_ scanResult: ScanResult){
     self.delegate?.didScanBarcodeWithResult(self, scanResult: scanResult)
-    dismiss(animated: false)
+    dismiss(animated: true)
   }
   
   private func mapRestrictedBarcodeTypes() -> [String] {
