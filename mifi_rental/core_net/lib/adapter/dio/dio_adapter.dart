@@ -1,0 +1,97 @@
+import 'package:dio/dio.dart';
+
+import '../../core_net.dart';
+import '../../net_exception.dart';
+
+class DioAdapter extends INetAdapter {
+  Dio _dio;
+
+  DioAdapter(this._dio);
+
+  @override
+  Future<String> request(HttpMethod method, String url,
+      {Map<String, dynamic> params,
+        Map<String, dynamic> headers,
+        extra}) async {
+    if (extra is Map) {
+      RequestOptions options;
+      if (extra.containsKey("options")) {
+        options = extra["options"];
+      }
+      CancelToken cancelToken;
+      if (extra.containsKey("cancelToken")) {
+        cancelToken = extra[cancelToken];
+      }
+      Response response = await _dio.request(url,
+          queryParameters: params,
+          options: _checkOptions(HttpMethodValues[method], headers,
+              options: options),
+          cancelToken: cancelToken);
+      return response.data.toString();
+    }
+    Response response = await _dio.request(url,
+        data: params,
+        options: _checkOptions(HttpMethodValues[method], headers));
+    return response.data.toString();
+  }
+
+  Options _checkOptions(method, Map headers, {Options options}) {
+    if (options == null) {
+      options = new Options();
+    }
+    if (headers != null) {
+      options.headers.addAll(headers);
+    }
+    options.method = method;
+    return options;
+  }
+
+  @override
+  dynamic handleError(dynamic e) {
+    if (e is DioError) {
+      switch (e.type) {
+        case DioErrorType.CANCEL:
+          {
+            return NetException(
+                errorType: ErrorType.UNKNOWN, message: "请求取消", e: e);
+          }
+          break;
+        case DioErrorType.CONNECT_TIMEOUT:
+          {
+            return NetException(
+                errorType: ErrorType.TIMEOUT, message: "连接超时", e: e);
+          }
+          break;
+        case DioErrorType.SEND_TIMEOUT:
+          {
+            return NetException(
+                errorType: ErrorType.TIMEOUT, message: "请求超时", e: e);
+          }
+          break;
+        case DioErrorType.RECEIVE_TIMEOUT:
+          {
+            return NetException(
+                errorType: ErrorType.TIMEOUT, message: "响应超时", e: e);
+          }
+          break;
+        case DioErrorType.RESPONSE:
+          {
+            try {
+              String errMsg = e.response.statusMessage;
+              return NetException(errorType: ErrorType.HTTP, message: errMsg);
+            } on Exception catch (_) {
+              return NetException(
+                  errorType: ErrorType.UNKNOWN, message: "未知错误", e: e);
+            }
+          }
+          break;
+        default:
+          {
+            return NetException(
+                errorType: ErrorType.UNKNOWN, message: e.message, e: e);
+          }
+      }
+    }
+    return e;
+  }
+}
