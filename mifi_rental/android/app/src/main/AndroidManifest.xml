@@ -18,6 +18,8 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="mifi_rental">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCjBUP2pui2ADS_Ou1jMvHRnX0ALbCjBcQ"/>
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -47,6 +49,13 @@
             <!--                android:resource="@drawable/page_loading" />-->
 
         </activity>
+
+        <activity
+            android:name=".FActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:hardwareAccelerated="true"
+            android:theme="@style/Theme.AppCompat"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".NativeActivity"
             android:theme="@style/Theme.AppCompat" />

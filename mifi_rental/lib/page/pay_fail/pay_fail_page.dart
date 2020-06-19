@@ -1,6 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boost/flutter_boost.dart';
+//import 'package:flutter_boost/flutter_boost.dart';
 import 'package:mifi_rental/base/base_page.dart';
 import 'package:mifi_rental/base/base_provider.dart';
 import 'package:mifi_rental/common/route.dart';
@@ -8,8 +10,13 @@ import 'package:mifi_rental/localizations/localizations.dart';
 import 'package:mifi_rental/res/colors.dart';
 import 'package:mifi_rental/res/dimens.dart';
 import 'package:mifi_rental/res/strings.dart';
+import 'package:mifi_rental/util/route_util.dart';
 
 class PayFailPage extends BasePage {
+  final String _sn;
+
+  PayFailPage(this._sn);
+
   @override
   Widget doBuild(BuildContext context, Widget scaffold) {
     return scaffold;
@@ -24,13 +31,13 @@ class PayFailPage extends BasePage {
   PreferredSizeWidget setAppbar(BuildContext context) {
     return AppBar(
       title: Text(
-        MyLocalizations.of(context).getString(rent_fail),
+        MyLocalizations.of(context).getString(pay_fail),
         style: TextStyle(fontSize: sp_title),
       ),
       centerTitle: true,
       leading: GestureDetector(
           onTap: () {
-            FlutterBoost.singleton.closeCurrent();
+//            FlutterBoost.singleton.closeCurrent();
           },
           child: Icon(
             Icons.arrow_back_ios,
@@ -68,7 +75,12 @@ class PayFailPage extends BasePage {
                   style: TextStyle(fontSize: sp_16, color: color_text_333333),
                 ),
                 onPressed: () {
-                  FlutterBoost.singleton.open(PAY, exts: {"animated":true});
+                  if (Platform.isAndroid) {
+                    RouteUtil.openFlutter(PAY,
+                        urlParams: {'sn': _sn}, clearTask: true);
+                  } else {
+//                    FlutterBoost.singleton.open(PAY, urlParams: {'sn': _sn});
+                  }
                 },
                 shape: RoundedRectangleBorder(
                     side: BorderSide(color: color_line),

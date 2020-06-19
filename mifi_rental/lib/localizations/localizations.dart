@@ -1,11 +1,12 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:mifi_rental/res/strings.dart';
+import 'package:mifi_rental/util/shared_preferences_util.dart';
 
 class MyLocalizations {
   MyLocalizations(this.locale);
-
   final Locale locale;
 
   static MyLocalizations of(BuildContext context) {
@@ -13,77 +14,111 @@ class MyLocalizations {
   }
 
   String getLanguage() {
-    switch (locale.languageCode) {
-      case 'zh':
-        return 'zh-${locale.countryCode}';
-      default:
+    String languageCode = locale.languageCode;
+    String countryCode = locale.countryCode;
+    if (Platform.isIOS) {
+      languageCode = SharedPreferenceUtil.nativeLocal.languageCode;
+      countryCode = SharedPreferenceUtil.nativeLocal.countryCode;
+
+      if (languageCode.contains('zh')) {
+        return 'zh-${countryCode}';
+      } else {
         return 'en-US';
+      }
+    } else {
+      switch (languageCode) {
+        case 'zh':
+          return 'zh-${countryCode}';
+        default:
+          return 'en-US';
+      }
     }
   }
 
   String getString(int id) {
+    String languageCode = locale.languageCode;
+    String countryCode = locale.countryCode;
     String value;
-    switch (locale.languageCode) {
-      case 'en':
+    if (Platform.isIOS) {
+      languageCode = SharedPreferenceUtil.nativeLocal.languageCode;
+      countryCode = SharedPreferenceUtil.nativeLocal.countryCode;
+
+      if (languageCode.contains('zh')) {
+        value = _localizedZH[countryCode][id];
+      } else {
         value = __localizedEN[id];
-        break;
-      case 'zh':
-        value = _localizedZH[locale.countryCode][id];
-        break;
-      default:
-        value = __localizedEN[id];
+      }
+    } else {
+      switch (languageCode) {
+        case 'en':
+          value = __localizedEN[id];
+          break;
+        case 'zh':
+          value = _localizedZH[countryCode][id];
+          break;
+        default:
+          value = __localizedEN[id];
+      }
     }
     return value != null ? value : '';
   }
 
   static Map<int, String> __localizedEN = {
     home_page: 'Home',
-    user_agreement: '用户协议',
-    privacy_policy: '隐私政策',
-    scan_wifi_rental: '请扫描面包机上的二维码租赁设备',
+    user_agreement: 'User Agreement',
+    privacy_policy: 'Privacy Policy',
+    scan_wifi_rental: 'Scan the QR Code displayed on the cabinet',
     scan: 'Scan',
-    agree: 'Agree',
-    disagree: 'Disagree',
-    last_update: '上次刷新时间:',
-    refresh: '刷新',
-    surplus_data: '剩余流量',
-    buy_data: '流量不够，去购买加油包',
-    lease_duration: '租赁时长(小时)',
-    buckle_amount: '应付金额(美元)',
-    lease_date: '租赁时间',
-    device_deposit: '设备押金',
-    if_like_device: '如果您喜欢这个设备，您还可以:',
-    buy_this_device: '拥有此设备',
-    buy_new_device: '购买新设备',
-    device_info: '设备信息',
-    wifi_name: 'WIFI名称',
+    agree: 'I agree',
+    disagree: 'Cancel',
+    last_update: 'Last refresh time:',
+    refresh: 'Refresh',
+    surplus_data: 'Data remaining',
+    buy_data: 'You are running out of data allowance, buy more data add-on',
+    lease_duration: 'Rental period',
+    buckle_amount: 'Pre-paid amount',
+    lease_date: 'Device rented',
+    device_deposit: 'Deposit',
+    if_like_device: 'If you like this device, you can also:',
+    buy_this_device: 'Keep it',
+    buy_new_device: 'Buy a new one',
+    device_info: 'Device information',
+    wifi_name: 'WiFi SSID',
+    wifi_password: 'WIFI Password',
     imei: 'IMEI',
-    trouble_report: '故障申报',
-    pay: '支付',
+    trouble_report: 'Report a fault',
+    pay: 'Pay',
     paypal: 'Paypal',
-    pay_type: '支付方式',
-    paypal_tip: '由于Paypal的认证机制，请不要用电子支票和银行转账。',
-    lease_tip: '租赁使用规则',
-    expend_all: '展开全部',
-    pay_amount: '支付金额',
-    go_pay: '去支付',
-    buckle_tip: '还机后剩余押金将自动原路退还',
-    problem: '常见问题',
-    rent_fail: '租赁失败',
-    pay_fail: '支付失败',
-    pay_fail_tip: '未支付成功，请重新支付',
-    repay: '重新支付',
-    flow_package: '加油包',
-    choose_package: '选择加油包',
-    notice_for_use: '使用须知',
-    rent_success: '租赁成功',
-    no_rent_device: '无可租设备',
-    no_rent_device_detail: '非常抱歉，机器内已无可租设备！',
-    return_home: '返回首页',
-    device_pop_up: '设备已弹出',
-    take_your_equipment: '请拿好您的设备,开机即可享受WIFI服务!',
-    check_device_information: '查看设备信息',
-    rent_tip: '获取设备后请在5分钟内进行检查，如果发现有问题请点击“故障申告”进行反馈，反馈完毕后请将设备插回机器空置仓位，此期间不计费。',
+    pay_type: 'Payment method',
+    paypal_tip: 'e-Cheque and Wire transfer are not supported.',
+    lease_tip: 'Rules of rental',
+    expend_all: 'Expend all',
+    pay_amount: 'Rent total',
+    go_pay: 'Checkout',
+    buckle_tip: 'After your return the device, the rental fees will be deducted from deposit, and the remaining deposit will be refunded to your original payment method.',
+    problem: 'FAQs',
+    rent_fail: 'Rent failed',
+    pay_fail: 'Pay failed',
+    pay_fail_tip: 'Failed to pay successfully, please pay again',
+    repay: 'Please pay again',
+    flow_package: 'Data add-on',
+    choose_package: 'Select data add-on',
+    notice_for_use: 'Usage terms',
+    rent_success: 'Success',
+    no_rent_device: 'No rentable MiFi',
+    no_rent_device_detail: 'Sorry, there is no rental MiFi in the cabinet!',
+    return_home: 'Back to home page',
+    device_pop_up: 'The device has been ejected',
+    take_your_equipment: 'Please take your device. Have a good trip!',
+    check_device_information: 'View device information',
+    rent_tip: 'Please check your device within 5 minutes upon pick up. If it is a faulty device, click on "Report a fault" and insert it back after submission. No charges would occur during the process.',
+    confirm: 'Confirm',
+    return_success:'Return successfully',
+    hours:'h',
+    minutes:'m',
+    network_exceptions:'Network exception',
+    tips:'Tips',
+    please_wait:'MiFi is being ejected, please wait , thanks!',
   };
 
   static Map<String, Map<int, String>> _localizedZH = {
@@ -99,8 +134,8 @@ class MyLocalizations {
       refresh: '刷新',
       surplus_data: '剩余流量',
       buy_data: '流量不够，去购买加油包',
-      lease_duration: '租赁时长(小时)',
-      buckle_amount: '应付金额(美元)',
+      lease_duration: '租赁时长',
+      buckle_amount: '应付金额',
       lease_date: '租赁时间',
       device_deposit: '设备押金',
       if_like_device: '如果您喜欢这个设备，您还可以:',
@@ -137,6 +172,13 @@ class MyLocalizations {
       check_device_information: '查看设备信息',
       rent_tip:
           '获取设备后请在5分钟内进行检查，如果发现有问题请点击“故障申告”进行反馈，反馈完毕后请将设备插回机器空置仓位，此期间不计费。',
+      confirm: '确定',
+      return_success:'归还成功',
+      hours:'时',
+      minutes:'分',
+      network_exceptions:'网络异常',
+      tips:'提示',
+      please_wait:'正在弹出设备，请稍候...',
     },
     'HK': {
       home_page: '首頁',
@@ -150,8 +192,8 @@ class MyLocalizations {
       refresh: '刷新',
       surplus_data: '剩余流量',
       buy_data: '流量不夠，去購買加油包',
-      lease_duration: '租賃時長(小時)',
-      buckle_amount: '應付金額(美元)',
+      lease_duration: '租賃時長',
+      buckle_amount: '應付金額',
       lease_date: '租賃時間',
       device_deposit: '設備押金',
       if_like_device: '如果您喜歡這個設備，您還可以:',
@@ -188,6 +230,13 @@ class MyLocalizations {
       check_device_information: '查看設備信息',
       rent_tip:
           '獲取設備後請在5分鐘內進行檢查，如果發現有問題請點擊“故障申告”進行反饋，反饋完畢後請將設備插回機器空置倉位，此期間不計費。',
+      confirm: '確認',
+      return_success:'歸還成功',
+      hours:'時',
+      minutes:'分',
+      network_exceptions:'網絡異常',
+      tips:'提示',
+      please_wait:'正在彈出設備，請稍候...',
     },
     'TW': {
       home_page: '首頁',
@@ -201,8 +250,8 @@ class MyLocalizations {
       refresh: '刷新',
       surplus_data: '剩余流量',
       buy_data: '流量不夠，去購買加油包',
-      lease_duration: '租賃時長(小時)',
-      buckle_amount: '應付金額(美元)',
+      lease_duration: '租賃時長',
+      buckle_amount: '應付金額',
       lease_date: '租賃時間',
       device_deposit: '設備押金',
       if_like_device: '如果您喜歡這個設備，您還可以:',
@@ -239,6 +288,13 @@ class MyLocalizations {
       check_device_information: '查看設備信息',
       rent_tip:
           '獲取設備後請在5分鐘內進行檢查，如果發現有問題請點擊“故障申告”進行反饋，反饋完畢後請將設備插回機器空置倉位，此期間不計費。',
+      confirm: '確認',
+      return_success:'歸還成功',
+      hours:'時',
+      minutes:'分',
+      network_exceptions:'網絡異常',
+      tips:'提示',
+      please_wait:'正在彈出設備，請稍候...',
     }
   };
 }

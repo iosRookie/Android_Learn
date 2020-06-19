@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mifi_rental/base/base_page.dart';
 import 'package:mifi_rental/base/base_provider.dart';
+import 'package:mifi_rental/localizations/localizations.dart';
 import 'package:mifi_rental/page/query/query_provider.dart';
 import 'package:mifi_rental/res/colors.dart';
 import 'package:mifi_rental/res/dimens.dart';
+import 'package:mifi_rental/res/strings.dart';
 
 class QueryPage extends BasePage {
   @override
@@ -21,7 +23,7 @@ class QueryPage extends BasePage {
   PreferredSizeWidget setAppbar(BuildContext context) {
     return AppBar(
       title: Text(
-        '提示',
+        MyLocalizations.of(context).getString(tips),
         style: TextStyle(fontSize: sp_title),
       ),
       centerTitle: true,
@@ -40,7 +42,7 @@ class QueryPage extends BasePage {
         Padding(
             padding: EdgeInsets.only(top: 30),
             child: Text(
-              '正在弹出设备，请稍后...',
+              MyLocalizations.of(context).getString(please_wait),
               style: TextStyle(fontSize: sp_16, color: color_text_333333),
             )),
       ],

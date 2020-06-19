@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class NotifyProvider extends ChangeNotifier {
+class DeviceNotifyProvider extends ChangeNotifier {
 
   bool refreshState = false;
 

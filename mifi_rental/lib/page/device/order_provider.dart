@@ -1,14 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
-import 'package:flutter_boost/flutter_boost.dart';
+//import 'package:flutter_boost/flutter_boost.dart';
 import 'package:mifi_rental/base/base_provider.dart';
 import 'package:mifi_rental/common/route.dart';
 import 'package:mifi_rental/db/db_order.dart';
 import 'package:mifi_rental/db/db_user.dart';
+import 'package:mifi_rental/dialog/return_dialog.dart';
 import 'package:mifi_rental/entity/order.dart';
 import 'package:mifi_rental/entity/user.dart';
 import 'package:mifi_rental/localizations/localizations.dart';
 import 'package:mifi_rental/repository/order_repository.dart';
+import 'package:mifi_rental/res/strings.dart';
 import 'package:mifi_rental/util/reset_util.dart';
+import 'package:mifi_rental/util/route_util.dart';
 
 class OrderProvider extends BaseProvider with ChangeNotifier {
   Order order;
@@ -21,13 +26,13 @@ class OrderProvider extends BaseProvider with ChangeNotifier {
     this.order = order;
     var usedTm = order.usedTmStr.split("|");
     usedTmStr =
-        "${(int.parse(usedTm[0]) + int.parse(usedTm[1]) / 60).toStringAsFixed(1)}";
+        '${usedTm[0]}${MyLocalizations.of(context).getString(hours)} ${usedTm[1]}${MyLocalizations.of(context).getString(minutes)}';
     rentDate = DateTime.fromMillisecondsSinceEpoch(order.rentTm.toInt())
         .toString()
         .substring(0, 19)
         .replaceAll('-', '/');
-    shouldPay = (order.shouldPay / 100).toString();
-    deposit = (order.deposit / 100).toString();
+    shouldPay = '${order.currencyCode} ${(order.shouldPay / 100).toStringAsFixed(2)}';
+    deposit = '${order.currencyCode} ${(order.deposit / 100).toStringAsFixed(2)}';
     notifyListeners();
   }
 
@@ -52,15 +57,22 @@ class OrderProvider extends BaseProvider with ChangeNotifier {
       }
       return;
     }
-    OrderRepository().queryOrderInfo(
+    OrderRepository.queryOrderInfo(
       loginCustomerId: user.loginCustomerId,
       orderSn: order.orderSn,
       langType: MyLocalizations.of(context).getLanguage(),
       success: ((o) {
-        if (o.orderStatus == OrderStatus.FINISHED ||
+        if (o == null ||
+            o.orderStatus == OrderStatus.FINISHED ||
             o.orderStatus == OrderStatus.CANCELED) {
           ResetUtil.reset();
-          FlutterBoost.singleton.open(RENT);
+          if (o.orderStatus == OrderStatus.FINISHED) {
+            ReturnDialog().show(context, o).then((_) {
+              _openRent();
+            });
+          } else {
+            _openRent();
+          }
         } else {
           _setOrder = o;
           if (complete != null) {
@@ -75,5 +87,13 @@ class OrderProvider extends BaseProvider with ChangeNotifier {
         }
       }),
     );
+  }
+
+  _openRent() {
+    if (Platform.isAndroid) {
+      RouteUtil.openFlutter(RENT, clearTask: true);
+    } else {
+//      FlutterBoost.singleton.open(RENT);
+    }
   }
 }

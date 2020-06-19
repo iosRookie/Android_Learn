@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:core_log/core_log.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boost/flutter_boost.dart';
+//import 'package:flutter_boost/flutter_boost.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mifi_rental/localizations/localizations.dart';
@@ -26,7 +26,7 @@ class FaultReporting extends StatelessWidget {
         centerTitle: true,
         leading: GestureDetector(
             onTap: () {
-              FlutterBoost.singleton.closeCurrent();
+//              FlutterBoost.singleton.closeCurrent();
             },
             child: Icon(
               Icons.arrow_back_ios,

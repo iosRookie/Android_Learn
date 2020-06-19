@@ -29,7 +29,7 @@ class GoodsProvider extends BaseProvider with ChangeNotifier {
   }
 
   set _setGoods(Goods goods) {
-    var t = 1048576.0;
+    var t = 1.0;
     for (int i = 0; i < _units.length; i++) {
       var u = _units[i];
       if (goods.surplusFlowbyte < t * 1000 || i == _units.length - 1) {
@@ -38,7 +38,7 @@ class GoodsProvider extends BaseProvider with ChangeNotifier {
         if (i == 0) {
           surplusFlow = s.toStringAsFixed(0);
         } else {
-          surplusFlow = s.toStringAsFixed(1);
+          surplusFlow = s.toStringAsFixed(2);
         }
         break;
       } else {

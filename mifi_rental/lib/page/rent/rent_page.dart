@@ -1,41 +1,70 @@
-import 'dart:io';
-
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:core_log/core_log.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_boost/flutter_boost.dart';
+//import 'package:flutter_boost/flutter_boost.dart';
 import 'package:mifi_rental/base/base_page.dart';
 import 'package:mifi_rental/base/base_provider.dart';
 import 'package:mifi_rental/common/preference_key.dart';
 import 'package:mifi_rental/common/route.dart';
 import 'package:mifi_rental/dialog/privacy_policy.dart';
+import 'package:mifi_rental/dialog/tips_dialog.dart';
 import 'package:mifi_rental/dialog/user_agreement.dart';
 import 'package:mifi_rental/localizations/localizations.dart';
+import 'package:mifi_rental/page/pay/pay_page.dart';
+import 'package:mifi_rental/page/problem/problem_page.dart';
 import 'package:mifi_rental/page/rent/rent_provider.dart';
 import 'package:mifi_rental/res/colors.dart';
 import 'package:mifi_rental/res/dimens.dart';
 import 'package:mifi_rental/res/strings.dart';
+import 'package:mifi_rental/util/connect_util.dart';
+import 'package:mifi_rental/util/route_util.dart';
 import 'package:mifi_rental/util/shared_preferences_util.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:barcode_scan/barcode_scan.dart';
 
-class RentPage extends BasePage {
+class RentPage extends StatefulWidget {
+
   @override
-  Widget doBuild(BuildContext context, Widget scaffold) {
-    return scaffold;
+  State<StatefulWidget> createState() {
+    return RentPageState();
+  }
+
+//  @override
+//  Widget doBuild(BuildContext context, Widget scaffold) {
+//    return scaffold;
+//  }
+
+//  @override
+//  List<BaseProvider> setProviders() {
+//    return [RentProvider()];
+//  }
+//
+//  @override
+//  Widget setBody(BuildContext context) {
+//    return _Body();
+//  }
+}
+
+class RentPageState extends State<RentPage> {
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
-  List<BaseProvider> setProviders() {
-    return [RentProvider()];
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: _appbar(context),
+      body: _Body()
+    );
   }
 
-  @override
-  PreferredSizeWidget setAppbar(BuildContext context) {
+  PreferredSizeWidget _appbar(BuildContext context) {
     return AppBar(
-//      brightness: Brightness.dark,
-//      backgroundColor: Colors.blue,
+      brightness: Brightness.light,
+      backgroundColor: Colors.white,
       title: Text(
         MyLocalizations.of(context).getString(home_page),
         style: TextStyle(fontSize: sp_title),
@@ -82,11 +111,6 @@ class RentPage extends BasePage {
     );
   }
 
-  @override
-  Widget setBody(BuildContext context) {
-    return _Body();
-  }
-
   _showUserAgreement(BuildContext context) async {
     bool agree = await SharedPreferenceUtil.getBool(USER_AGREEMENT) ?? false;
     UserAgreementDialog().show(context, showActions: !agree);
@@ -116,7 +140,9 @@ class _Body extends StatelessWidget {
                           child: InkWell(
                             borderRadius: new BorderRadius.circular(40.0),
                             onTap: () {
-                              FlutterBoost.singleton.open(PROBLEM, exts: {"animated":true});
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                                return ProblemPage();
+                              }));
                             },
                             child: Container(
                               width: 80,
@@ -124,25 +150,6 @@ class _Body extends StatelessWidget {
                             ),
                           ))),
                 ),
-//                Positioned(
-//                  right: 0,
-//                  bottom: 0,
-//                  child: Material(
-//                      color: Colors.transparent,
-//                      child: Ink(
-//                          decoration: BoxDecoration(
-//                              image: DecorationImage(
-//                                  image:
-//                                      AssetImage('images/online_service.png'))),
-//                          child: InkWell(
-//                            borderRadius: new BorderRadius.circular(40.0),
-//                            onTap: () {},
-//                            child: Container(
-//                              width: 80,
-//                              height: 80,
-//                            ),
-//                          ))),
-//                ),
                 Center(child: _Scan())
               ],
             ))
@@ -205,53 +212,45 @@ class _Scan extends StatelessWidget {
     if (!agree) {
       UserAgreementDialog().show(context, showActions: !agree);
     } else {
-      if (Platform.isIOS) {
-        try {
-          ScanResult result = await BarcodeScanner.scan();
-          if (result.type == ResultType.Barcode) {
-            if (result.rawContent.contains('rental.ukelink.net')) {
-              try {
-                var sn =
-                result.rawContent.substring(result.rawContent.indexOf('=') + 1, result.rawContent.length);
-                ULog.i('sn: $sn');
-                FlutterBoost.singleton.open(PAY, urlParams: {'sn': sn}, exts: {"animated":true});
-              } catch (e) {
-                ULog.e(e.toString());
-              }
-            }
-          }
-          print(result.type); // The result type (barcode, cancelled, failed)
-          print(result.rawContent); // The barcode content
-          print(result.format); // The barcode format (as enum)
-          print(result.formatNote); // If a unknown format was scanned this field contains a note
-        } on PlatformException catch (e) {
-
-        } on FormatException{
-
-        } catch (e) {
-
+      ConnectUtil.isConnected().then((b) {
+        if (!b) {
+          TipsDialog().show(context,
+              MyLocalizations.of(context).getString(network_exceptions));
+          return;
         }
-      } else if(Platform.isAndroid) {
-        requestPermissions().then((result) {
-          if (result) {
-            FlutterBoost.singleton.open(SCAN, exts: {'animated': true}).then((Map value) {
-              ULog.i('scan result $value');
-              var content = value['content'].toString();
-              if (content != null && content.contains('rental.ukelink.net')) {
-                try {
-                  var sn =
-                  content.substring(content.indexOf('=') + 1, content.length);
-                  ULog.i('sn: $sn');
-                  FlutterBoost.singleton.open(PAY, urlParams: {'sn': sn}, exts: {"animated":true});
-                } catch (e) {
-                  ULog.e(e.toString());
-                }
-              }
-            });
-          }
-        });
-      }
+        _doScan(context);
+      });
     }
+  }
+
+  void _doScan(BuildContext context) async {
+    try {
+      ScanResult result = await BarcodeScanner.scan();
+      if (result.type == ResultType.Barcode) {
+        if (result.rawContent.contains('rental.ukelink.net')) {
+          try {
+            var sn = result.rawContent.substring(
+                result.rawContent.indexOf('=') + 1, result.rawContent.length);
+            ULog.i('sn: $sn');
+//            if (Platform.isAndroid) {
+//              RouteUtil.openFlutter(PAY, urlParams: {'sn': sn});
+//            } else {
+////              FlutterBoost.singleton.open(PAY, urlParams: {'sn': sn}, exts: {"animated": true});
+//            }
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return PayPage(sn);
+            }));
+          } catch (e) {
+            ULog.e(e.toString());
+          }
+        }
+      }
+      print(result.type); // The result type (barcode, cancelled, failed)
+      print(result.rawContent); // The barcode content
+      print(result.format); // The barcode format (as enum)
+      print(result
+          .formatNote); // If a unknown format was scanned this field contains a note
+    } on PlatformException catch (e) {} on FormatException {} catch (e) {}
   }
 
   Future<bool> requestPermissions() async {

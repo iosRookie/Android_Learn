@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:core_log/core_log.dart';
 import 'package:core_net/net_exception.dart';
 import 'package:core_net/net_proxy.dart';
+import 'package:mifi_rental/entity/config.dart';
 import 'package:mifi_rental/entity/device.dart';
 import 'package:mifi_rental/entity/goods.dart';
 import 'package:mifi_rental/entity/order.dart';
@@ -22,23 +23,27 @@ class RequestProxy extends IRequestProxy {
 
 class ResponseProxy extends IResponseProxy {
   @override
-  proxy(String url, String data, String clazz) {
-    ULog.i('url:$url --- response: $data');
-    if (data != null) {
-      Map<String, dynamic> map = jsonDecode(data);
+  proxy(String url, String result, String clazz) {
+    ULog.i('url:$url --- response: $result');
+    if (result != null) {
+      Map<String, dynamic> map = jsonDecode(result);
       String resultCode = map['resultCode'];
       if (resultCode != '00000000') {
         String resultDesc = map['resultDesc'];
-        throw NetException(errorType: ErrorType.RESPONSE, message: resultDesc);
+        throw NetException(
+            errorType: ErrorType.RESPONSE,
+            message: resultDesc,
+            code: resultCode);
       } else {
-        if (clazz != null) {
-          return _parseData(clazz, map['data']);
+        var data = map['data'];
+        if (data != null && clazz != null) {
+          return _parseData(clazz, data);
         } else {
-          return map['data'];
+          return data;
         }
       }
     }
-    return data;
+    return result;
   }
 
   dynamic _parseData(String clazz, data) {
@@ -65,6 +70,8 @@ class ResponseProxy extends IResponseProxy {
         return Goods.fromJson(data);
       case 'Terminal':
         return Terminal.fromJson(data);
+      case 'Config':
+        return Config.fromJson(data);
     }
     return null;
   }

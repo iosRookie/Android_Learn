@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boost/flutter_boost.dart';
+//import 'package:flutter_boost/flutter_boost.dart';
 import 'package:mifi_rental/base/base_page.dart';
 import 'package:mifi_rental/base/base_provider.dart';
 import 'package:mifi_rental/common/route.dart';
@@ -10,6 +10,7 @@ import 'package:mifi_rental/localizations/localizations.dart';
 import 'package:mifi_rental/res/colors.dart';
 import 'package:mifi_rental/res/dimens.dart';
 import 'package:mifi_rental/res/strings.dart';
+import 'package:mifi_rental/util/route_util.dart';
 
 class SuccessPage extends BasePage {
   @override
@@ -25,6 +26,7 @@ class SuccessPage extends BasePage {
   @override
   PreferredSizeWidget setAppbar(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       title: Text(
         MyLocalizations.of(context).getString(rent_success),
         style: TextStyle(fontSize: sp_title),
@@ -32,7 +34,7 @@ class SuccessPage extends BasePage {
       centerTitle: true,
       leading: GestureDetector(
           onTap: () {
-            FlutterBoost.singleton.closeCurrent();
+//            FlutterBoost.singleton.closeCurrent();
           },
           child: Icon(
             Icons.arrow_back_ios,
@@ -67,12 +69,11 @@ class SuccessPage extends BasePage {
           padding: EdgeInsets.only(top: 30),
           child: RaisedButton(
             onPressed: () {
-              if(Platform.isAndroid) {
-                FlutterBoost.singleton.open(DEVICE);
-                FlutterBoost.singleton.closeCurrent();
+              if (Platform.isAndroid) {
+                RouteUtil.openFlutter(DEVICE, clearTask: true);
               } else {
-                FlutterBoost.singleton.closeCurrent();
-                FlutterBoost.singleton.open(DEVICE);
+//                FlutterBoost.singleton.closeCurrent();
+//                FlutterBoost.singleton.open(DEVICE);
               }
             },
             color: color_theme,
@@ -96,7 +97,7 @@ class SuccessPage extends BasePage {
             padding: EdgeInsets.only(top: 30),
             child: FlatButton(
               onPressed: () {
-                FlutterBoost.singleton.open(FAULR_REPORT, exts: {"animated":true});
+//                FlutterBoost.singleton.open(FAULR_REPORT, exts: {"animated": true});
               },
               child: Text(
                 MyLocalizations.of(context).getString(trouble_report),

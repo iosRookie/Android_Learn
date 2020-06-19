@@ -16,6 +16,7 @@ class OrderDb extends DbProvider {
 
   insert(Order order) async {
     var db = await getDataBase();
+    await db.delete(tableName());
     return await db.insert(tableName(), toMap(order));
   }
 
@@ -28,12 +29,6 @@ class OrderDb extends DbProvider {
       return mList[0];
     }
     return null;
-  }
-
-  update(Order order) async {
-    var db = await getDataBase();
-    ULog.d('更新订单' + order.toString());
-    return await db.update(tableName(), toMap(order));
   }
 
   void deleteAll() async {

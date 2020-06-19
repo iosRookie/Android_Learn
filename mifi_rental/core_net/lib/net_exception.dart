@@ -1,10 +1,10 @@
 class NetException implements Exception {
   ErrorType errorType;
   String message;
+  String code;
   dynamic e;
 
-  NetException({this.errorType, this.message, this.e});
-
+  NetException({this.errorType, this.message, this.e, this.code});
 }
 
 class RetryException {

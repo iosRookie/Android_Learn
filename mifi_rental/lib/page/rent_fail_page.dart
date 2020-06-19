@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boost/flutter_boost.dart';
 import 'package:mifi_rental/localizations/localizations.dart';
 import 'package:mifi_rental/res/colors.dart';
 import 'package:mifi_rental/res/dimens.dart';
@@ -19,9 +18,10 @@ class RentFailPage extends StatelessWidget {
         centerTitle: true,
         leading: GestureDetector(
           onTap: () {
-            BoostContainerSettings settings =
-                BoostContainer.of(context).settings;
-            FlutterBoost.singleton.close(settings.uniqueId);
+//            BoostContainerSettings settings =
+//                BoostContainer.of(context).settings;
+//            FlutterBoost.singleton.close(settings.uniqueId);
+              Navigator.of(context).pop();
           },
           child: Icon(
             Icons.arrow_back_ios,

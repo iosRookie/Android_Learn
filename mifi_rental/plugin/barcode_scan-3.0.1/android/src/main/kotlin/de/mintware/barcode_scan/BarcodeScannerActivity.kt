@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.WindowManager
+import android.widget.FrameLayout
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.Result
 import me.dm7.barcodescanner.zxing.ZXingScannerView
@@ -17,6 +20,7 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
 
     private lateinit var config: Protos.Configuration
     private var scannerView: ZXingScannerView? = null
+    private lateinit var fl_layout: FrameLayout
 
     companion object {
         const val TOGGLE_FLASH = 200
@@ -44,8 +48,16 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
     // region Activity lifecycle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        println("BarcodeScannerActivity onCreate")
+        actionBar!!.hide()
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         config = Protos.Configuration.parseFrom(intent.extras!!.getByteArray(EXTRA_CONFIG))
+        setContentView(R.layout.activity_scan_qr)
+        initView()
+    }
+
+    private fun initView() {
+        fl_layout = findViewById(R.id.fl_layout)
     }
 
     private fun setupScannerView() {
@@ -54,6 +66,7 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
         }
 
         scannerView = ZXingAutofocusScannerView(this).apply {
+
             setAutoFocus(config.android.useAutoFocus)
             val restrictedFormats = mapRestrictedBarcodeTypes()
             if (restrictedFormats.isNotEmpty()) {
@@ -68,8 +81,10 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
             }
         }
 
-        setContentView(scannerView)
+        fl_layout.removeAllViews()
+        fl_layout.addView(scannerView)
     }
+
 
     // region AppBar menu
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -165,4 +180,14 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
 
         return types
     }
+
+    fun back(view: View) {
+        finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        println("BarcodeScannerActivity onDestroy")
+    }
+
 }

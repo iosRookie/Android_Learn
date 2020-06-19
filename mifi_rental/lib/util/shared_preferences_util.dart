@@ -1,6 +1,24 @@
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceUtil {
+  factory SharedPreferenceUtil() => _getInstance();
+  static SharedPreferenceUtil _instance;
+  static Locale _nativeDefaultLocale;
+  SharedPreferenceUtil._internal();
+  static SharedPreferenceUtil _getInstance() {
+    if (_instance == null) {
+      _instance = new SharedPreferenceUtil._internal();
+    }
+    return _instance;
+  }
+
+  static saveNativeLocal(Map map) {
+    _nativeDefaultLocale = Locale(map["languageCode"], map["countryCode"]);
+  }
+
+  static Locale get nativeLocal => SharedPreferenceUtil._nativeDefaultLocale;
+
   static Future<bool> setBool(String key, bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.setBool(key, value);

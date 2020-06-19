@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_boost/flutter_boost.dart';
+//import 'package:flutter_boost/flutter_boost.dart';
 import 'package:mifi_rental/base/base_page.dart';
 import 'package:mifi_rental/base/base_provider.dart';
 import 'package:mifi_rental/common/route.dart';
@@ -11,6 +13,7 @@ import 'package:mifi_rental/page/device/refresh_provider.dart';
 import 'package:mifi_rental/res/colors.dart';
 import 'package:mifi_rental/res/dimens.dart';
 import 'package:mifi_rental/res/strings.dart';
+import 'package:mifi_rental/util/route_util.dart';
 import 'package:provider/provider.dart';
 
 import 'goods_provider.dart';
@@ -24,7 +27,7 @@ class DevicePage extends BasePage {
       ChangeNotifierProvider(create: (_) => getProvider<DeviceProvider>()),
       ChangeNotifierProvider(create: (_) => getProvider<OrderProvider>()),
       ChangeNotifierProvider(create: (_) => getProvider<GoodsProvider>()),
-      ChangeNotifierProxyProvider<NotifyProvider, RefreshProvider>(
+      ChangeNotifierProxyProvider<DeviceNotifyProvider, RefreshProvider>(
         create: (_) => getProvider<RefreshProvider>(),
         update: (_, notifyProvider, refreshProvider) {
           if (notifyProvider.refreshState) {
@@ -210,7 +213,11 @@ class _DeviceInfo extends StatelessWidget {
                   child: RaisedButton(
                       padding: EdgeInsets.only(top: 10, bottom: 10),
                       onPressed: () {
-                        FlutterBoost.singleton.open(FAULR_REPORT, exts: {"animated":true});
+                        if (Platform.isAndroid) {
+                          RouteUtil.openFlutter(FAULR_REPORT);
+                        } else {
+//                          FlutterBoost.singleton.open(FAULR_REPORT);
+                        }
                       },
                       color: color_theme,
                       child: Text(
@@ -376,7 +383,7 @@ class _OrderInfo extends StatelessWidget {
                   Flexible(
                     fit: FlexFit.tight,
                     child: Text(
-                      '\$${orderProvider.deposit}',
+                      orderProvider.deposit ?? '',
                       textAlign: TextAlign.end,
                     ),
                   )
@@ -451,7 +458,11 @@ class _DataInfo extends StatelessWidget {
                   child: InkWell(
                     borderRadius: new BorderRadius.circular(40.0),
                     onTap: () {
-                      FlutterBoost.singleton.open(PROBLEM, exts: {'animated': true});
+                      if (Platform.isAndroid) {
+                        RouteUtil.openFlutter(PROBLEM);
+                      } else {
+//                        FlutterBoost.singleton.open(PROBLEM);
+                      }
                     },
                     child: Container(
                       width: 80,
@@ -500,7 +511,7 @@ class _DataInfo extends StatelessWidget {
                               Text(
                                 goodsProvider.surplusFlow ?? '--',
                                 style: TextStyle(
-                                    fontSize: 50, color: color_text_FFFFFF),
+                                    fontSize: 40, color: color_text_FFFFFF),
                               ),
                               Text(
                                 goodsProvider.unit ?? '',
@@ -522,17 +533,23 @@ class _DataInfo extends StatelessWidget {
                       padding: EdgeInsets.only(top: 5),
                       child: FlatButton(
                           onPressed: () {
-                            FlutterBoost.singleton.open(FLOW_PACKAGE, exts: {"animated":true});
+                            if (Platform.isAndroid) {
+                              RouteUtil.openFlutter(FLOW_PACKAGE);
+                            } else {
+//                              FlutterBoost.singleton.open(FLOW_PACKAGE);
+                            }
                           },
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text(
+                              Flexible (
+                                  child: Text(
                                 MyLocalizations.of(context).getString(buy_data),
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: sp_14, color: color_theme),
-                              ),
+                              )),
                               Padding(
                                 padding: EdgeInsets.only(left: 5),
                                 child: Image.asset('images/arrow_right.png'),

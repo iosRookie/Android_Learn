@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boost/flutter_boost.dart';
+//import 'package:flutter_boost/flutter_boost.dart';
 import 'package:mifi_rental/base/base_page.dart';
 import 'package:mifi_rental/base/base_provider.dart';
+import 'package:mifi_rental/common/route.dart';
 import 'package:mifi_rental/localizations/localizations.dart';
 import 'package:mifi_rental/res/colors.dart';
 import 'package:mifi_rental/res/dimens.dart';
 import 'package:mifi_rental/res/strings.dart';
+import 'package:mifi_rental/util/route_util.dart';
 
 class RentFailPage extends BasePage {
   @override
@@ -29,7 +33,7 @@ class RentFailPage extends BasePage {
       centerTitle: true,
       leading: GestureDetector(
           onTap: () {
-            FlutterBoost.singleton.closeCurrent();
+//            FlutterBoost.singleton.closeCurrent();
           },
           child: Icon(
             Icons.arrow_back_ios,
@@ -67,7 +71,11 @@ class RentFailPage extends BasePage {
                   style: TextStyle(fontSize: sp_16, color: color_text_333333),
                 ),
                 onPressed: () {
-                  FlutterBoost.singleton.closeCurrent();
+                  if (Platform.isAndroid) {
+                    RouteUtil.openFlutter(RENT, clearTask: true);
+                  } else {
+//                    FlutterBoost.singleton.open(RENT);
+                  }
                 },
                 shape: RoundedRectangleBorder(
                     side: BorderSide(color: color_line),

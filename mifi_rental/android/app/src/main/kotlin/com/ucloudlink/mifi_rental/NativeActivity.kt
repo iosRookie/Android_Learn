@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.idlefish.flutterboost.interfaces.IFlutterViewContainer.RESULT_KEY
+//import com.idlefish.flutterboost.interfaces.IFlutterViewContainer.RESULT_KEY
 import com.ucloudlink.mifi_rental.R
 
 /**
@@ -23,7 +23,7 @@ class NativeActivity : AppCompatActivity() {
             map["param1"] = "test"
             map["param2"] = "test"
             val intent = Intent()
-            intent.putExtra(RESULT_KEY, map)
+//            intent.putExtra(RESULT_KEY, map)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }

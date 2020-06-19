@@ -1,6 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-
+import 'package:native_system_default_config/native_system_default_config.dart';
 import 'localizations.dart';
 
 class MyLocalizationsDelegate extends LocalizationsDelegate<MyLocalizations> {
@@ -11,7 +13,8 @@ class MyLocalizationsDelegate extends LocalizationsDelegate<MyLocalizations> {
 
   @override
   Future<MyLocalizations> load(Locale locale) {
-    return new SynchronousFuture<MyLocalizations>(new MyLocalizations(locale));
+      return new SynchronousFuture<MyLocalizations>(
+          new MyLocalizations(locale));
   }
 
   @override

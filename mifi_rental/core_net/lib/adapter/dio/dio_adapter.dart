@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 
 import '../../core_net.dart';
@@ -50,6 +52,14 @@ class DioAdapter extends INetAdapter {
   dynamic handleError(dynamic e) {
     if (e is DioError) {
       switch (e.type) {
+        case DioErrorType.DEFAULT:
+          if(e.error is SocketException){
+            return  NetException(errorType: ErrorType.HTTP);
+          }else{
+            return NetException(
+                errorType: ErrorType.UNKNOWN, message: e.message, e: e);
+          }
+          break;
         case DioErrorType.CANCEL:
           {
             return NetException(

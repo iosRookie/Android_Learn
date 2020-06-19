@@ -33,6 +33,7 @@ class JSApi: NSObject {
         switch arg {
         case "toPaySuccess":
             // 支付完成到设备查询界面
+            self.viewController?.popViewController(animated: false)
             PlatformRouterImp.sharedInstance.open("query", urlParams: ["":""], exts: ["animated" : true]) { _ in }
             break
         case "toPayCancel", "repayAgain":

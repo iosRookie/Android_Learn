@@ -50,7 +50,6 @@ class Log {
 
   static _print(String msg, {tag: 'X-LOG'}){
     if (defaultTargetPlatform == TargetPlatform.iOS || perform == null){
-      LogUtil.debuggable = !Constant.inProduction;
       LogUtil.v(msg, tag: tag);
     }
   }

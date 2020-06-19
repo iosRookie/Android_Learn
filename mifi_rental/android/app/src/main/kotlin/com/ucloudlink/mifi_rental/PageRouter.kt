@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.idlefish.flutterboost.containers.BoostFlutterActivity
+//import com.idlefish.flutterboost.containers.BoostFlutterActivity
 import com.ucloudlink.mifi_rental.pay.PayActivity
 import org.json.JSONObject
 
@@ -28,6 +28,7 @@ object PageRouter {
             put("flow_package", "flow_package")
             put("success", "success")
             put("query", "query")
+
             put("pay_fail", "pay_fail")
         }
     }
@@ -44,14 +45,14 @@ object PageRouter {
 
         try {
             if (pageName.containsKey(path)) {
-                val intent = BoostFlutterActivity.withNewEngine().url(pageName[path]!!).params(params
-                        ?: HashMap<String, String>())
-                        .backgroundMode(BoostFlutterActivity.BackgroundMode.opaque).build(context)
-                if (context is Activity) {
-                    context.startActivityForResult(intent, requestCode)
-                } else {
-                    context.startActivity(intent)
-                }
+//                val intent = BoostFlutterActivity.withNewEngine().url(pageName[path]!!).params(params
+//                        ?: HashMap<String, String>())
+//                        .backgroundMode(BoostFlutterActivity.BackgroundMode.opaque).build(context)
+//                if (context is Activity) {
+//                    context.startActivityForResult(intent, requestCode)
+//                } else {
+//                    context.startActivity(intent)
+//                }
                 return true
             } else if (url.startsWith(FLUTTER_FRAGMENT_PAGE_URL)) {
                 //                context.startActivity(new Intent(context, FlutterFragmentPageActivity.class));

@@ -61,8 +61,22 @@ class BarcodeScannerViewController: UIViewController {
     self.navigationController?.navigationBar.setBackgroundImage(UIImage.init(), for: .default)
     self.navigationController?.navigationBar.shadowImage = UIImage.init()
     self.navigationController?.navigationBar.isTranslucent = true
-    self.title = "扫一扫"
-    
+    let bundlePaths = Bundle(for: BarcodeScannerViewController.self).paths(forResourcesOfType: "bundle", inDirectory: nil)
+    let resourcePath = bundlePaths.first
+    var language = Locale.preferredLanguages.first
+    if (language?.hasPrefix("en"))! {
+        language = "en"
+    } else if (language?.hasPrefix("zh"))! {
+        if (language?.contains("Hans"))! {
+            language = "zh-Hans"
+        } else {
+            language = "zh-Hant"
+        }
+    } else {
+        language = "en"
+    }
+    let bun = Bundle(path: resourcePath!)!.path(forResource: language, ofType: "lproj")
+    self.title = NSLocalizedString("scan", tableName: nil, bundle: Bundle(path: bun!)!, value: "", comment: "")
     previewView = UIView(frame: view.bounds)
     if let previewView = previewView {
       previewView.autoresizingMask = [.flexibleWidth, .flexibleHeight]

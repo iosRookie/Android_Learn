@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import cn.bingoogolapple.qrcode.core.BarcodeType
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import cn.bingoogolapple.qrcode.zxing.ZXingView
-import com.idlefish.flutterboost.interfaces.IFlutterViewContainer.RESULT_KEY
+//import com.idlefish.flutterboost.interfaces.IFlutterViewContainer.RESULT_KEY
 import com.ucloudlink.core_log.ULog
 import kotlin.collections.set
 
@@ -21,6 +21,7 @@ import kotlin.collections.set
  * Email: kang.ning@ukelink.com
  * Description:
  */
+//@Route(path = "/main/scan")
 class ScanActivity : AppCompatActivity(), QRCodeView.Delegate {
     private var mZXingView: ZXingView? = null
 
@@ -69,9 +70,8 @@ class ScanActivity : AppCompatActivity(), QRCodeView.Delegate {
         val map = HashMap<String, Any>()
         map["content"] = result
         val intent = Intent()
-        intent.putExtra(RESULT_KEY, map)
+//        intent.putExtra(RESULT_KEY, map)
         setResult(Activity.RESULT_OK, intent)
-
         finish()
     }
 

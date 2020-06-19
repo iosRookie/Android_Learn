@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_boost/flutter_boost.dart';
+//import 'package:flutter_boost/flutter_boost.dart';
 import 'package:mifi_rental/base/base_page.dart';
 import 'package:mifi_rental/base/base_provider.dart';
 import 'package:mifi_rental/localizations/localizations.dart';
@@ -39,7 +39,8 @@ class ProblemPage extends BasePage {
       centerTitle: true,
       leading: GestureDetector(
           onTap: () {
-            FlutterBoost.singleton.closeCurrent();
+//            FlutterBoost.singleton.closeCurrent();
+            Navigator.of(context).pop();
           },
           child: Icon(
             Icons.arrow_back_ios,

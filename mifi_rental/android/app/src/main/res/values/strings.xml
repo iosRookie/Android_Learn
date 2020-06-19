@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">WBShop</string>
-    <string name="scan_tip_text">将二维码放入框内，即可自动扫描</string>
-    <string name="scan_title">扫一扫</string>
+    <string name="scan_tip_text">Put the QR code in the frame and it will be scanned automatically</string>
+    <string name="scan_title">Scan</string>
 
-    <string name="tip">提示</string>
-    <string name="whether_cancel_payment">是否取消支付</string>
-    <string name="cancel">取消</string>
-    <string name="confirm">确定</string>
+    <string name="tip">Tips</string>
+    <string name="whether_cancel_payment">Cancel payment</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
 </resources>

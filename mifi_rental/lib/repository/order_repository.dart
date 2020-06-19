@@ -7,8 +7,8 @@ import 'package:mifi_rental/net/api.dart';
 import 'package:mifi_rental/repository/base_repository.dart';
 import 'package:mifi_rental/util/net_util.dart';
 
-class OrderRepository extends BaseRepository {
-  void createOrder({
+class OrderRepository {
+  static void createOrder({
     String loginCustomerId,
     String terminalSn,
     String langType,
@@ -43,7 +43,7 @@ class OrderRepository extends BaseRepository {
     });
   }
 
-  void queryOrderInfo({
+  static Future<void> queryOrderInfo({
     String loginCustomerId,
     String langType,
     String orderSn,
@@ -70,12 +70,15 @@ class OrderRepository extends BaseRepository {
             any.orderStatus == OrderStatus.CANCELED) {
           OrderDb().deleteAll();
         } else {
-          OrderDb().update(any);
+          OrderDb().insert(any);
         }
         if (success != null) {
           success(any);
         }
       } else {
+        if(any==null){
+          OrderDb().deleteAll();
+        }
         if (success != null) {
           success(null);
         }
@@ -87,7 +90,7 @@ class OrderRepository extends BaseRepository {
     });
   }
 
-  void cancelOrder({
+  static void cancelOrder({
     String langType,
     String loginCustomerId,
     String orderSn,

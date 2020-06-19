@@ -22,7 +22,7 @@ class AuthPaypal {
       {this.loginCustomerId,
       this.orderSn,
       this.streamNo,
-      this.totalAmount = '150',
+      this.totalAmount,
       this.orderSubject = 'orderSubject',
       this.orderDesc = 'orderDesc',
       this.currencyCode,

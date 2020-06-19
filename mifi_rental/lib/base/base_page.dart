@@ -57,6 +57,7 @@ abstract class _BasePage extends StatelessWidget {
     }
 
     var scaffold = SafeArea(
+        top: false,
         child: Scaffold(
           key: _globalKey,
           appBar: setAppbar(context),

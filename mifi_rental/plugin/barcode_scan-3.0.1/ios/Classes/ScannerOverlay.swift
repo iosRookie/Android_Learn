@@ -35,10 +35,26 @@ class ScannerOverlay: UIView {
         
         let scanRect = calculateScanRect()
         let alert = UILabel.init()
-        alert.frame = CGRect.init(x: 0, y: scanRect.origin.y + scanRect.size.height + 40, width: self.bounds.size.width, height: 14)
+        alert.frame = CGRect.init(x: 20, y: scanRect.origin.y + scanRect.size.height + 40, width: self.bounds.size.width-40, height: 30)
         alert.font = UIFont.systemFont(ofSize: 14)
         alert.textColor = .white
-        alert.text = "将二维码放入框内，即可自动扫描"
+        alert.numberOfLines = 2
+        let bundlePaths = Bundle(for: BarcodeScannerViewController.self).paths(forResourcesOfType: "bundle", inDirectory: nil)
+        let resourcePath = bundlePaths.first
+        var language = Locale.preferredLanguages.first
+        if (language?.hasPrefix("en"))! {
+            language = "en"
+        } else if (language?.hasPrefix("zh"))! {
+            if (language?.contains("Hans"))! {
+                language = "zh-Hans"
+            } else {
+                language = "zh-Hant"
+            }
+        } else {
+            language = "en"
+        }
+        let bun = Bundle(path: resourcePath!)!.path(forResource: language, ofType: "lproj")
+        alert.text = NSLocalizedString("scan_tip_text", tableName: nil, bundle: Bundle(path: bun!)!, value: "", comment: "")
         alert.textAlignment = .center
         addSubview(alert)
     }

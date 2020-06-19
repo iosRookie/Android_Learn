@@ -17,7 +17,7 @@ A new Flutter plugin.
   s.dependency 'Flutter'
   s.dependency 'SwiftyJSON', '~> 4.0'
   s.vendored_frameworks = 'Frameworks/mars.framework'
-  s.platform = :ios, '10.0'
+  s.platform = :ios, '9.0'
   s.frameworks = 'SystemConfiguration', 'CoreTelephony'
   s.libraries = 'z', 'resolv.9', 'c++'
 

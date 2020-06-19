@@ -17,20 +17,19 @@ class PayWebViewController: BaseViewController {//, WKNavigationDelegate, WKScri
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-//        self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.navigationBar.isHidden = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-//        self.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.navigationBar.isHidden = true
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        self.title = "支付"
-        
+        self.title = NSLocalizedString("pay", comment: "")
         self.setDefaultBackButton(selector: #selector(popAlert))
         self.jsApi = JSApi(params: params, viewController: self.navigationController)
         self.myWebView.addJavascriptObject(self.jsApi, namespace: nil)
@@ -69,9 +68,9 @@ class PayWebViewController: BaseViewController {//, WKNavigationDelegate, WKScri
 //    }
     
     @objc func popAlert() {
-        let alert = UIAlertController.init(title: "提示", message: "是否取消支付？", preferredStyle: .alert)
-        alert.addAction(UIAlertAction.init(title: "取消", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction.init(title: "确定", style: .default, handler: { (action) in
+        let alert = UIAlertController.init(title: NSLocalizedString("tip", comment: ""), message: NSLocalizedString("whether_cancel_payment", comment: ""), preferredStyle: .alert)
+        alert.addAction(UIAlertAction.init(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction.init(title: NSLocalizedString("confirm", comment: ""), style: .default, handler: { (action) in
             self.navigationController?.popViewController(animated: true)
         }))
         self.present(alert, animated: true) {}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_boost/flutter_boost.dart';
+//import 'package:flutter_boost/flutter_boost.dart';
 import 'package:mifi_rental/res/colors.dart';
 
 class RentSuc extends StatelessWidget {
@@ -21,7 +21,8 @@ class RentSuc extends StatelessWidget {
             color: color_text_333333,
           ),
           onPressed: () {
-            FlutterBoost.singleton.closeCurrent();
+//            FlutterBoost.singleton.closeCurrent();
+              Navigator.of(context).pop();
           },
         ),
         title: Text(

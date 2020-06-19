@@ -24,6 +24,7 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+//apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
@@ -44,6 +45,12 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+//        javaCompileOptions {
+//            annotationProcessorOptions {
+//                arguments = [AROUTER_MODULE_NAME: project.getName()]
+//            }
+//        }
     }
 
     signingConfigs {
@@ -90,4 +97,7 @@ dependencies {
     implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.5'
     implementation 'com.github.wendux:DSBridge-Android:3.0-SNAPSHOT'
     implementation 'com.github.wendux:DSBridge-Android:x5-3.0-SNAPSHOT'
+    implementation 'org.greenrobot:eventbus:3.2.0'
+//    implementation 'com.alibaba:arouter-api:1.5.0'
+//    kapt 'com.alibaba:arouter-compiler:1.2.2'
 }

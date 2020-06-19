@@ -1,8 +1,9 @@
 package com.ucloudlink.mifi_rental.pay
 
+import android.app.Activity
 import android.webkit.JavascriptInterface
 import com.ucloudlink.core_log.ULog
-import com.ucloudlink.mifi_rental.PageRouter
+import com.ucloudlink.mifi_rental.Router
 
 class JSApi(private val params: String?, private val activity: PayActivity) {
     /***
@@ -23,16 +24,13 @@ class JSApi(private val params: String?, private val activity: PayActivity) {
         ULog.i("JSApi jumpToNativePage $msg")
         when (msg) {
             "toPaySuccess" -> {
-                PageRouter.openPageByUrl(activity, "query", null)
-                activity.finish()
+//                val exts = HashMap<String, Any>()
+//                exts["clearTask"] = true
+//                Router.openPageByUrl(activity, "flutter://query", null, exts = exts)
+                activity.paySuccess()
             }
             "toPayCancel", "repayAgain" -> {
-                val map = HashMap<String, String>()
-                activity.terminalSn?.let {
-                    map["sn"] = it
-                }
-                PageRouter.openPageByUrl(activity, "pay", map)
-                activity.finish()
+                activity.cancelOrder()
             }
             "toContactUsActivity" -> {
             }

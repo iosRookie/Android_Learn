@@ -1,35 +1,83 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boost/flutter_boost.dart';
+import 'package:flutter/services.dart';
+//import 'package:flutter_boost/flutter_boost.dart';
 import 'package:mifi_rental/base/base_page.dart';
 import 'package:mifi_rental/base/base_provider.dart';
 import 'package:mifi_rental/localizations/localizations.dart';
 import 'package:mifi_rental/page/pay/order_provider.dart';
 import 'package:mifi_rental/page/pay/rental_agreement_provider.dart';
+import 'package:mifi_rental/page/query/query_page.dart';
 import 'package:mifi_rental/res/colors.dart';
 import 'package:mifi_rental/res/dimens.dart';
 import 'package:mifi_rental/res/strings.dart';
 import 'package:provider/provider.dart';
 
-class PayPage extends BasePage {
+class PayPage extends StatefulWidget {
   final String _sn;
-
   PayPage(this._sn);
 
   @override
-  List<BaseProvider> setProviders() {
-    return [OrderProvider(), RentalAgreementProvider()];
+  State<StatefulWidget> createState() {
+    return PayPageState();
+  }
+}
+
+class PayPageState extends State<PayPage> {
+  OrderProvider _orderProvider;
+  RentalAgreementProvider _rentalProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    _orderProvider = OrderProvider();
+    _orderProvider.context = context;
+    _orderProvider.globalKey = GlobalKey<ScaffoldState>();
+
+    _rentalProvider = RentalAgreementProvider();
+    _rentalProvider.context = context;
+  }
+
+  void _onEvent(Object event) {
+    var message = event as String;
+    switch (message) {
+      case "cancelOrder": // 取消订单
+      // 调用取消订单接口
+        _orderProvider.checkOrder();
+        break;
+
+      case "paySuccess": // 支付成功
+      // 进入查询界面
+        Navigator.of(context).push(
+            MaterialPageRoute(builder:(context) {
+              return QueryPage();
+            })
+        );
+        break;
+      default:
+
+        break;
+    }
+  }
+
+  void _onError(Object error) {
+
   }
 
   @override
-  Widget doBuild(BuildContext context, Widget scaffold) {
-    return MultiProvider(providers: [
-      ChangeNotifierProvider(
-          create: (_) => getProvider<RentalAgreementProvider>()),
-      Provider(create: (_) => getProvider<OrderProvider>()),
-    ], child: scaffold);
+  Widget build(BuildContext context) {
+    return SafeArea(
+        top: false,
+        child: MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) => _rentalProvider),
+              Provider(create: (_) => _orderProvider)],
+            child: Scaffold(
+              appBar: setAppbar(context),
+              body: setBody(context),
+            ))
+    );
   }
 
-  @override
   PreferredSizeWidget setAppbar(BuildContext context) {
     return AppBar(
       title: Text(
@@ -39,7 +87,8 @@ class PayPage extends BasePage {
       centerTitle: true,
       leading: GestureDetector(
           onTap: () {
-            FlutterBoost.singleton.closeCurrent();
+//            FlutterBoost.singleton.closeCurrent();
+            Navigator.of(context).pop();
           },
           child: Icon(
             Icons.arrow_back_ios,
@@ -48,10 +97,8 @@ class PayPage extends BasePage {
     );
   }
 
-  @override
   Widget setBody(BuildContext context) {
-    var p= getProvider<RentalAgreementProvider>();
-    p.getAgreement(_sn);
+    _rentalProvider.getAgreement(widget._sn);
     return Container(
       color: color_bg_FFFFFF,
       width: double.infinity,
@@ -79,12 +126,31 @@ class PayPage extends BasePage {
             height: dp_line,
             color: color_line,
           ),
-          _Pay(_sn),
+          _Pay(widget._sn),
         ],
       ),
     );
   }
 }
+
+
+//class PayPage1 extends BasePage {
+//
+//
+//  @override
+//  List<BaseProvider> setProviders() {
+//    return [OrderProvider(), RentalAgreementProvider()];
+//  }
+//
+//  @override
+//  Widget doBuild(BuildContext context, Widget scaffold) {
+//    return MultiProvider(providers: [
+//      ChangeNotifierProvider(
+//          create: (_) => getProvider<RentalAgreementProvider>()),
+//      Provider(create: (_) => getProvider<OrderProvider>()),
+//    ], child: scaffold);
+//  }
+//}
 
 class _PayType extends StatelessWidget {
   @override
@@ -146,6 +212,8 @@ class _PayType extends StatelessWidget {
 class _Deposit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    RentalAgreementProvider provider =
+        Provider.of<RentalAgreementProvider>(context);
     return Padding(
       padding: EdgeInsets.fromLTRB(dp_frame, 15, dp_frame, 15),
       child: Column(
@@ -160,7 +228,7 @@ class _Deposit extends StatelessWidget {
               Flexible(
                 fit: FlexFit.tight,
                 child: Text(
-                  '\$150',
+                  provider.deposit ?? '',
                   textAlign: TextAlign.end,
                   style: TextStyle(fontSize: sp_16, color: color_theme),
                 ),
@@ -180,7 +248,6 @@ class _Deposit extends StatelessWidget {
 }
 
 class _Rule extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
     return _RuleState();
@@ -189,7 +256,6 @@ class _Rule extends StatefulWidget {
 
 class _RuleState extends State<_Rule> {
   bool _isExpand = false;
-
 
   @override
   void initState() {
@@ -277,7 +343,9 @@ class _Pay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    OrderProvider provider = Provider.of<OrderProvider>(context);
+    OrderProvider orderProvider = Provider.of<OrderProvider>(context);
+    RentalAgreementProvider rentalAgreementProvider =
+        Provider.of<RentalAgreementProvider>(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
@@ -296,7 +364,7 @@ class _Pay extends StatelessWidget {
                   Padding(
                       padding: EdgeInsets.only(left: 5),
                       child: Text(
-                        '\$150',
+                        rentalAgreementProvider.deposit ?? '',
                         style: TextStyle(fontSize: sp_24, color: color_theme),
                       )),
                 ],
@@ -307,7 +375,7 @@ class _Pay extends StatelessWidget {
           decoration: BoxDecoration(color: color_theme),
           child: InkWell(
               onTap: () {
-                provider.createOrder(sn);
+                orderProvider.createOrder(sn);
               },
               child: Padding(
                   padding: EdgeInsets.fromLTRB(30, 15, 30, 15),
