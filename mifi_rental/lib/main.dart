@@ -41,6 +41,10 @@ import 'package:native_system_default_config/native_system_default_config.dart';
 //buythree@163.com
 //密码都是: 123456789
 
+// keep it  协议的位置：  /MiFiRent/DHIRental/flow_explain_en_DHI.html  /MiFiRent/DHIRental/flow_explain_zh-cn_DHI.html      和租赁协议一样， 每个MVNO或许会不同，根据面包机的MVNO来取
+// keep it  协议的位置：  /MiFiRent/DHIRental/keepit_agreement_en_DHI.json  /MiFiRent/DHIRental/keepit_agreement_zh-cn_DHI.json    和租赁协议一样， 每个MVNO或许会不同，根据面包机的MVNO来取
+
+
 void main() async {
   runApp(
       MaterialApp(
