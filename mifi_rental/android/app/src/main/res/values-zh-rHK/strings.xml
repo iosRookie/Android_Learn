@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">WBShop</string>
+    <string name="scan_tip_text">將二維碼放入框內，即可自動掃描</string>
+    <string name="scan_title">掃一掃</string>
+
+    <string name="tip">提示</string>
+    <string name="whether_cancel_payment">是否取消支付</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">確定</string>
+</resources>

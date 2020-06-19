@@ -1,0 +1,62 @@
+/*
+  Localize.strings
+  Runner
+
+  Created by yyg on 2020/6/3.
+  Copyright © 2020 The Chromium Authors. All rights reserved.
+*/
+"home_page" = "首页";
+"user_agreement" = "用户协议";
+"privacy_policy" = "隐私政策";
+"scan_wifi_rental" = "请扫描面包机上的二维码租赁设备";
+"scan" = "扫一扫";
+"agree" = "同意";
+"disagree" = "不同意";
+"last_update" = "上次刷新时间:";
+"refresh" = "刷新";
+"surplus_data" = "剩余流量";
+"buy_data" = "流量不够，去购买加油包";
+"lease_duration" = "租赁时长(小时)";
+"buckle_amount" = "应付金额";
+"lease_date" = "租赁时间";
+"device_deposit" = "设备押金";
+"if_like_device" = "如果您喜欢这个设备，您还可以:";
+"buy_this_device" = "拥有此设备";
+"buy_new_device" = "购买新设备";
+"device_info" = "设备信息";
+"wifi_name" = "WIFI名称";
+"trouble_report" = "故障申报";
+"pay" = "支付";
+"pay_type" = "支付方式";
+"paypal_tip" = "由于Paypal的认证机制，请不要用电子支票和银行转账。";
+"lease_tip" = "租赁使用规则";
+"expend_all" = "展开全部";
+"pay_amount" = "支付金额";
+"go_pay" = "去支付";
+"buckle_tip" = "还机后剩余押金将自动原路退还";
+"problem" = "常见问题";
+"rent_fail" = "租赁失败";
+"pay_fail" = "支付失败";
+"pay_fail_tip" = "未支付成功，请重新支付";
+"repay" = "重新支付";
+"flow_package" = "加油包";
+"choose_package" = "选择加油包";
+"notice_for_use" = "使用须知";
+"rent_success" = "租赁成功";
+"no_rent_device" = "无可租设备";
+"no_rent_device_detail" = "非常抱歉，机器内已无可租设备！";
+"return_home" = "返回首页";
+"device_pop_up" = "设备已弹出";
+"take_your_equipment" = "请拿好您的设备,开机即可享受WIFI服务!";
+"check_device_information" = "查看设备信息";
+"rent_tip" = "获取设备后请在5分钟内进行检查，如果发现有问题请点击“故障申告”进行反馈，反馈完毕后请将设备插回机器空置仓位，此期间不计费。";
+"wifi_password" = "WIFI密码";
+"confirm" = "确定";
+"return_success" = "归还成功";
+"date" = "xx小时xx分钟";
+"network_exceptions" = "网络异常";
+"scan_tip_text" = "将二维码放入框内，即可自动扫描";
+"tip" = "提示";
+"whether_cancel_payment" = "是否取消支付?";
+"cancel" = "取消";
+"confirm" = "确定";

@@ -1,0 +1,62 @@
+/* 
+  Localize.strings
+  Runner
+
+  Created by yyg on 2020/6/3.
+  Copyright © 2020 The Chromium Authors. All rights reserved.
+*/
+"home_page" = "home page";
+"user_agreement" = "User Agreement";
+"privacy_policy" = "Privacy Policy";
+"scan_wifi_rental" = "Scan the QR Code displayed on the cabinet";
+"scan" = "Scan";
+"agree" = "I agree";
+"disagree" = "Cancel";
+"last_update" = "Last refresh time";
+"refresh" = "refresh";
+"surplus_data" = "Data remaining";
+"buy_data" = "You are running out of data allowance, buy more data add-on";
+"lease_duration" = "Rental period";
+"buckle_amount" = "Pre-paid amount";
+"lease_date" = "Device rented";
+"device_deposit" = "Deposit";
+"if_like_device" = "If you like this device, you can also:";
+"buy_this_device" = "Keep it";
+"buy_new_device" = "Buy a new one";
+"device_info" = "Device information";
+"wifi_name" = "WiFi SSID";
+"trouble_report" = "Report a fault";
+"pay" = "pay";
+"pay_type" = "payment method";
+"paypal_tip" = "e-Cheque and Wire transfer are not supported";
+"lease_tip" = "Rules of rental";
+"expend_all" = "expend all";
+"pay_amount" = "Rent total";
+"go_pay" = "Checkout";
+"buckle_tip" = "After your return the device, the rental fees will be deducted from deposit, and the remaining deposit will be refunded to your original payment method.";
+"problem" = "FAQs";
+"rent_fail" = "rent failed";
+"pay_fail" = "pay failed";
+"pay_fail_tip" = "Failed to pay successfully, please pay again";
+"repay" = "please pay again";
+"flow_package" = "Data add-on";
+"choose_package" = "Select data add-on";
+"notice_for_use" = "Usage terms";
+"rent_success" = "Success";
+"no_rent_device" = "No rentable MiFi";
+"no_rent_device_detail" = "Sorry, there is no rental MiFi in the cabinet!";
+"return_home" = "Back to home page";
+"device_pop_up" = "The device has been ejected";
+"take_your_equipment" = "Please take your device. Have a good trip!";
+"check_device_information" = "View device information";
+"rent_tip" = "Please check your device within 5 minutes upon pick up. If it is a faulty device, click on \"Report a fault\" and insert it back after submission. No charges would occur during the process.";
+"wifi_password" = "WIFI Password";
+"confirm" = "Confirm";
+"return_success" = "Return successfully";
+"date" = "XX hours XX minutes";
+"network_exceptions" = "Network exception";
+"scan_tip_text" = "Put the QR code in the frame and it will be scanned automatically";
+"tip" = "Tips";
+"whether_cancel_payment" = "Cancel payment?";
+"cancel" = "Cancel";
+"confirm" = "Confirm";
