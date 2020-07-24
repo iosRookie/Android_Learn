@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:core_log/core_log.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_boost/flutter_boost.dart';
@@ -7,6 +8,7 @@ import 'package:mifi_rental/base/base_page.dart';
 import 'package:mifi_rental/base/base_provider.dart';
 import 'package:mifi_rental/common/route.dart';
 import 'package:mifi_rental/localizations/localizations.dart';
+import 'package:mifi_rental/repository/order_repository.dart';
 import 'package:mifi_rental/res/colors.dart';
 import 'package:mifi_rental/res/dimens.dart';
 import 'package:mifi_rental/res/strings.dart';
@@ -14,6 +16,7 @@ import 'package:mifi_rental/util/route_util.dart';
 
 class PayFailPage extends BasePage {
   final String _sn;
+  BuildContext _context;
 
   PayFailPage(this._sn);
 
@@ -29,20 +32,24 @@ class PayFailPage extends BasePage {
 
   @override
   PreferredSizeWidget setAppbar(BuildContext context) {
+    _context = context;
     return AppBar(
       title: Text(
         MyLocalizations.of(context).getString(pay_fail),
         style: TextStyle(fontSize: sp_title),
       ),
       centerTitle: true,
-      leading: GestureDetector(
-          onTap: () {
-//            FlutterBoost.singleton.closeCurrent();
-          },
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: color_bg_333333,
-          )),
+      automaticallyImplyLeading: false,
+//      leading: GestureDetector(
+//          onTap: () {
+////            FlutterBoost.singleton.closeCurrent();
+//              // 退出并取消订单
+//              Navigator.of(context).pop();
+//          },
+//          child: Icon(
+//            Icons.arrow_back_ios,
+//            color: color_bg_333333,
+//          )),
     );
   }
 
@@ -75,12 +82,15 @@ class PayFailPage extends BasePage {
                   style: TextStyle(fontSize: sp_16, color: color_text_333333),
                 ),
                 onPressed: () {
-                  if (Platform.isAndroid) {
-                    RouteUtil.openFlutter(PAY,
-                        urlParams: {'sn': _sn}, clearTask: true);
-                  } else {
-//                    FlutterBoost.singleton.open(PAY, urlParams: {'sn': _sn});
-                  }
+//                  if (Platform.isAndroid) {
+//                    RouteUtil.openFlutter(PAY,
+//                        urlParams: {'sn': _sn}, clearTask: true);
+//                  } else {
+////                    FlutterBoost.singleton.open(PAY, urlParams: {'sn': _sn});
+//                  }
+                    // 退出并取消订单
+//                  cancelOrder();
+                  Navigator.of(context).popUntil(ModalRoute.withName(PAY));
                 },
                 shape: RoundedRectangleBorder(
                     side: BorderSide(color: color_line),
@@ -90,4 +100,16 @@ class PayFailPage extends BasePage {
       ),
     ));
   }
+
+//  void cancelOrder() {
+//    OrderRepository.cancelOrder(
+//        langType: MyLocalizations.of(_context).getLanguage(),
+//        orderSn: _sn,
+//        success: (() {
+//          ULog.d('取消订单请求成功');
+//        }),
+//        error: ((e) {
+//          ULog.d('取消订单请求失败 + ${e.toString()}');
+//        }));
+//  }
 }

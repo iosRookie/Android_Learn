@@ -12,7 +12,8 @@ const Color color_text_999999 = Color(0xFF999999);
 const Color color_text_FFFFFF = Color(0xFFFFFFFF);
 const Color color_text_E4393C = Color(0xFFE4393C);
 const Color color_text_5099CC = Color(0xFF5099CC);
-const Color color_text_E0E0E0  = Color(0xFFE0E0E0);
+const Color color_text_E0E0E0 = Color(0xFFE0E0E0);
+const Color color_text_F5A623 = Color(0xFFF5A623);
 
 const Color color_bg_333333 = Color(0xFF333333);
 const Color color_bg_FFFFFF = Color(0xFFFFFFFF);

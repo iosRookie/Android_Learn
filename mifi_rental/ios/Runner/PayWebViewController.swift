@@ -38,7 +38,7 @@ class PayWebViewController: BaseViewController {//, WKNavigationDelegate, WKScri
             print("Javascript Close Window")
         }
 
-        self.myWebView.load(URLRequest.init(url: URL.init(string: "https://saas82mph5.ukelink.net/pay/authPaypal")!))
+        self.myWebView.load(URLRequest.init(url: URL.init(string: self.params?["paypalUrl"] as! String)!))
         self.view.addSubview(self.myWebView)
         myWebView.mas_makeConstraints { (make) in
             make?.edges.equalTo()(self.view)
@@ -57,6 +57,26 @@ class PayWebViewController: BaseViewController {//, WKNavigationDelegate, WKScri
 //        failureBtn.setTitle("failure", for: .normal)
 //        failureBtn.addTarget(self, action: #selector(failure), for: .touchUpInside)
 //        self.view.addSubview(failureBtn)
+        
+        startTimer()
+    }
+    
+    func startTimer() {
+        var timeCount = 60 * 15
+        let timer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
+        timer.schedule(deadline: .now(), repeating: .seconds(1))
+        timer.setEventHandler {
+            timeCount -= 1
+            if timeCount <= 0 {
+                timer.cancel()
+                
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancelOrder"), object: ["orderSn": self.params?["orderSn"]])
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
+        timer.resume()
     }
     
 //    @objc func success() {
@@ -71,7 +91,8 @@ class PayWebViewController: BaseViewController {//, WKNavigationDelegate, WKScri
         let alert = UIAlertController.init(title: NSLocalizedString("tip", comment: ""), message: NSLocalizedString("whether_cancel_payment", comment: ""), preferredStyle: .alert)
         alert.addAction(UIAlertAction.init(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil))
         alert.addAction(UIAlertAction.init(title: NSLocalizedString("confirm", comment: ""), style: .default, handler: { (action) in
-            self.navigationController?.popViewController(animated: true)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancelOrder"), object: ["orderSn": self.params?["orderSn"]])
+            self.dismiss(animated: true, completion: nil)
         }))
         self.present(alert, animated: true) {}
     }

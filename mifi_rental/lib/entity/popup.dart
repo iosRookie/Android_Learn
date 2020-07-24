@@ -9,7 +9,7 @@ class Popup {
   String terminalSn; //机柜编码
   String mifiImei; //mifi imei码
   String slotIndex; //弹出孔位
-  num popStatus; //弹出状态  0-失败，1-成功
+  num popResult; //弹出状态  0-失败，1-成功 2-弹机中
 
   Popup(
       {this.mvnoCode,
@@ -17,7 +17,7 @@ class Popup {
       this.terminalSn,
       this.mifiImei,
       this.slotIndex,
-      this.popStatus});
+      this.popResult});
 
   factory Popup.fromJson(Map<String, dynamic> json) => _$PopupFromJson(json);
 

@@ -5,7 +5,7 @@ import 'package:mifi_rental/res/dimens.dart';
 class LoadingDialog extends Dialog {
   final String text;
 
-  LoadingDialog({this.text});
+  const LoadingDialog({this.text});
 
   @override
   Widget build(BuildContext context) {

@@ -30,6 +30,10 @@ PODS:
     - GoogleMaps/Base
   - image_picker (0.0.1):
     - Flutter
+  - location (0.0.1):
+    - Flutter
+  - location_web (0.0.1):
+    - Flutter
   - Masonry (1.1.0)
   - MTBBarcodeScanner (5.0.11)
   - native_system_default_config (0.0.1):
@@ -44,10 +48,6 @@ PODS:
     - FMDB (~> 2.7.2)
   - SwiftProtobuf (1.6.0)
   - SwiftyJSON (4.3.0)
-  - video_player (0.0.1):
-    - Flutter
-  - video_player_web (0.0.1):
-    - Flutter
   - webview_flutter (0.0.1):
     - Flutter
 
@@ -62,13 +62,13 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - location (from `.symlinks/plugins/location/ios`)
+  - location_web (from `.symlinks/plugins/location_web/ios`)
   - Masonry
   - native_system_default_config (from `.symlinks/plugins/native_system_default_config/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
-  - video_player (from `.symlinks/plugins/video_player/ios`)
-  - video_player_web (from `.symlinks/plugins/video_player_web/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
@@ -101,6 +101,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  location:
+    :path: ".symlinks/plugins/location/ios"
+  location_web:
+    :path: ".symlinks/plugins/location_web/ios"
   native_system_default_config:
     :path: ".symlinks/plugins/native_system_default_config/ios"
   permission_handler:
@@ -109,10 +113,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
-  video_player:
-    :path: ".symlinks/plugins/video_player/ios"
-  video_player_web:
-    :path: ".symlinks/plugins/video_player_web/ios"
   webview_flutter:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
@@ -129,6 +129,8 @@ SPEC CHECKSUMS:
   google_maps_flutter: 924970f41ec509a201b593548db005efb2a09ee9
   GoogleMaps: 67f4a604f80dd6a22d09c2a507a3a395b9f23060
   image_picker: 66aa71bc96850a90590a35d4c4a2907b0d823109
+  location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
+  location_web: b94e7433cfe28c0f7c8923c2ee482824b32e55a7
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   native_system_default_config: a3b4fb4d6923ca54ddf99ce89b4f32120bf02569
@@ -138,8 +140,6 @@ SPEC CHECKSUMS:
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   SwiftProtobuf: e905ca1366405696411aaf174411c4b19c0ef73d
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
-  video_player: 69c5f029fac4ffe4fc8a85ea7f7b793709661549
-  video_player_web: da8cadb8274ed4f8dbee8d7171b420dedd437ce7
   webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
 
 PODFILE CHECKSUM: 9b6c9e5627d7ddc3b4cf21687a91039f525f3a7e

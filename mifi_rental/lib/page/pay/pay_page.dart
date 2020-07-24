@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-//import 'package:flutter_boost/flutter_boost.dart';
-import 'package:mifi_rental/base/base_page.dart';
-import 'package:mifi_rental/base/base_provider.dart';
+import 'package:mifi_rental/common/loading_page_util.dart';
 import 'package:mifi_rental/localizations/localizations.dart';
 import 'package:mifi_rental/page/pay/order_provider.dart';
 import 'package:mifi_rental/page/pay/rental_agreement_provider.dart';
-import 'package:mifi_rental/page/query/query_page.dart';
 import 'package:mifi_rental/res/colors.dart';
 import 'package:mifi_rental/res/dimens.dart';
 import 'package:mifi_rental/res/strings.dart';
@@ -22,9 +18,13 @@ class PayPage extends StatefulWidget {
   }
 }
 
-class PayPageState extends State<PayPage> {
+class PayPageState extends State<PayPage> with AutomaticKeepAliveClientMixin {
   OrderProvider _orderProvider;
   RentalAgreementProvider _rentalProvider;
+  bool _loading = true;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -35,61 +35,50 @@ class PayPageState extends State<PayPage> {
 
     _rentalProvider = RentalAgreementProvider();
     _rentalProvider.context = context;
-  }
 
-  void _onEvent(Object event) {
-    var message = event as String;
-    switch (message) {
-      case "cancelOrder": // 取消订单
-      // 调用取消订单接口
-        _orderProvider.checkOrder();
-        break;
-
-      case "paySuccess": // 支付成功
-      // 进入查询界面
-        Navigator.of(context).push(
-            MaterialPageRoute(builder:(context) {
-              return QueryPage();
-            })
-        );
-        break;
-      default:
-
-        break;
-    }
-  }
-
-  void _onError(Object error) {
-
+    _rentalProvider.getAgreement(widget._sn,
+        success: () {
+          setState(() {
+            _loading = false;
+          });
+        },
+        failure: () {
+          setState(() {
+            _loading = false;
+          });
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        top: false,
-        child: MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (_) => _rentalProvider),
-              Provider(create: (_) => _orderProvider)],
-            child: Scaffold(
-              appBar: setAppbar(context),
-              body: setBody(context),
-            ))
+    super.build(context);
+    return LoadingPageUtil(
+        loading: _loading,
+        child: SafeArea(
+            top: false,
+            child: MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(create: (_) => _rentalProvider),
+                  Provider(create: (_) => _orderProvider)],
+                child: Scaffold(
+                  key: _orderProvider.globalKey,
+                  appBar: setAppbar(context),
+                  body: setBody(context),
+                ))
+        )
     );
   }
 
   PreferredSizeWidget setAppbar(BuildContext context) {
     return AppBar(
+      elevation: 0.0,
       title: Text(
         MyLocalizations.of(context).getString(pay),
         style: TextStyle(fontSize: sp_title),
       ),
       centerTitle: true,
       leading: GestureDetector(
-          onTap: () {
-//            FlutterBoost.singleton.closeCurrent();
-            Navigator.of(context).pop();
-          },
+          onTap: () { Navigator.of(context).pop(); },
           child: Icon(
             Icons.arrow_back_ios,
             color: color_bg_333333,
@@ -98,7 +87,6 @@ class PayPageState extends State<PayPage> {
   }
 
   Widget setBody(BuildContext context) {
-    _rentalProvider.getAgreement(widget._sn);
     return Container(
       color: color_bg_FFFFFF,
       width: double.infinity,
@@ -107,6 +95,7 @@ class PayPageState extends State<PayPage> {
           Flexible(
             fit: FlexFit.tight,
             child: ListView(
+              physics: BouncingScrollPhysics(),
               children: <Widget>[
                 _Rule(),
                 Container(
@@ -132,25 +121,6 @@ class PayPageState extends State<PayPage> {
     );
   }
 }
-
-
-//class PayPage1 extends BasePage {
-//
-//
-//  @override
-//  List<BaseProvider> setProviders() {
-//    return [OrderProvider(), RentalAgreementProvider()];
-//  }
-//
-//  @override
-//  Widget doBuild(BuildContext context, Widget scaffold) {
-//    return MultiProvider(providers: [
-//      ChangeNotifierProvider(
-//          create: (_) => getProvider<RentalAgreementProvider>()),
-//      Provider(create: (_) => getProvider<OrderProvider>()),
-//    ], child: scaffold);
-//  }
-//}
 
 class _PayType extends StatelessWidget {
   @override
@@ -254,8 +224,11 @@ class _Rule extends StatefulWidget {
   }
 }
 
-class _RuleState extends State<_Rule> {
+class _RuleState extends State<_Rule> with AutomaticKeepAliveClientMixin{
   bool _isExpand = false;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -264,6 +237,8 @@ class _RuleState extends State<_Rule> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     RentalAgreementProvider provider =
         Provider.of<RentalAgreementProvider>(context);
     return Column(
@@ -375,6 +350,7 @@ class _Pay extends StatelessWidget {
           decoration: BoxDecoration(color: color_theme),
           child: InkWell(
               onTap: () {
+                // 创建订单后去支付
                 orderProvider.createOrder(sn);
               },
               child: Padding(

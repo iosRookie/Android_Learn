@@ -22,7 +22,7 @@ abstract class INetAdapter {
 }
 
 class NetClient {
-  static const DEFAULT_RETRY_TIMES = 3;
+  static const DEFAULT_RETRY_TIMES = 0;
   static const DEFAULT_DELAY_SEC = 3;
 
   final INetAdapter _adapter =
@@ -120,10 +120,12 @@ class NetClient {
               return _responseProxy?.proxy(
                       url, data, cls == "dynamic" ? null : cls) ??
                   data;
-            }).onErrorResume((e) {
+            })
+            .onErrorResume((e) {
               var error = _adapter.handleError(e) ?? e;
               return Stream.error(_errorProxy?.proxy(url, error) ?? error);
-            }), (e, s) {
+            })
+        , (e, s) {
       if (e is RetryException) {
         int retryTimes = retryMap[e.retryKey] ?? 0;
         retryMap[e.retryKey] = ++retryTimes;

@@ -1,31 +1,28 @@
-import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:mifi_rental/base/base_provider.dart';
-import 'package:mifi_rental/db/db_goods.dart';
-import 'package:mifi_rental/db/db_order.dart';
-import 'package:mifi_rental/db/db_user.dart';
 import 'package:mifi_rental/entity/goods.dart';
 import 'package:mifi_rental/entity/order.dart';
-import 'package:mifi_rental/entity/user.dart';
-import 'package:mifi_rental/localizations/localizations.dart';
 import 'package:mifi_rental/repository/goods_repository.dart';
 
 class GoodsProvider extends BaseProvider with ChangeNotifier {
+  Order order;
+  BuildContext context;
   List<String> _units = ['MB', 'GB'];
   String unit;
   String surplusFlow;
 
+  GoodsProvider(this.order, this.context) {
+    _query(this.order);
+  }
+
+  void updateWithOrder(Order order, {Function complete}) {
+    this.order = order;
+    _query(order, complete: complete);
+  }
+
   @override
   void init() async {
-    var goods = await GoodsDb().query();
-    if (goods != null) {
-      _setGoods = goods;
-    } else {
-      var order = await OrderDb().query();
-      var user = await UserDb().query();
-      query(order, user);
-    }
   }
 
   set _setGoods(Goods goods) {
@@ -48,16 +45,14 @@ class GoodsProvider extends BaseProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void query(Order order, User user, {Function() complete}) {
-    if (order == null || user == null) {
+  void _query(Order order, {Function() complete}) {
+    if (order == null) {
       if (complete != null) {
         complete();
       }
       return;
     }
     GoodsRepository().queryGoods(
-      langType: MyLocalizations.of(context).getLanguage(),
-      loginCustomerId: user.loginCustomerId,
       imei: order.mifiImei,
       success: ((g) {
         _setGoods = g;

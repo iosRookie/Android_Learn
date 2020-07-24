@@ -5,10 +5,12 @@ import 'package:core_net/net_exception.dart';
 import 'package:core_net/net_proxy.dart';
 import 'package:mifi_rental/entity/config.dart';
 import 'package:mifi_rental/entity/device.dart';
+import 'package:mifi_rental/entity/flow_packages.dart';
 import 'package:mifi_rental/entity/goods.dart';
 import 'package:mifi_rental/entity/order.dart';
 import 'package:mifi_rental/entity/popup.dart';
 import 'package:mifi_rental/entity/terminal.dart';
+import 'package:mifi_rental/entity/terminal_site.dart';
 
 class RequestProxy extends IRequestProxy {
   @override
@@ -72,6 +74,10 @@ class ResponseProxy extends IResponseProxy {
         return Terminal.fromJson(data);
       case 'Config':
         return Config.fromJson(data);
+      case 'TerminalSite':
+        return TerminalSite.fromJson(data);
+      case 'FlowPackageRespond':
+        return FlowPackageRespond.fromJson(data);
     }
     return null;
   }
@@ -81,12 +87,28 @@ class ErrorProxy extends IErrorProxy {
   @override
   proxy(String url, e) {
     if (e is NetException) {
-      ULog.i('url:$url --- error:${e.message}');
-      if (e.errorType == ErrorType.TIMEOUT) {
-        return RetryException('TIMEOUT', e);
+      switch (e.errorType) {
+        case ErrorType.SOCKET:
+        // 网络异常
+          return RetryException('SOCKET', e);
+          break;
+        case ErrorType.CONNECT_TIMEOUT:
+        case ErrorType.RECEIVE_TIMEOUT:
+        case ErrorType.SEND_TIMEOUT:
+        // 请求超时
+          return RetryException('TIMEOUT', e);
+          break;
+        case ErrorType.CANCEL:
+        // 取消请求
+          return RetryException('CANCEL', e);
+          break;
+        case ErrorType.RESPONSE:
+        // 服务异常
+          return RetryException('SERVICE_EXCEPTION', e);
+          break;
+        default:
+          return RetryException('UNKNOWN', e);
       }
-    } else {
-      ULog.i('url:$url --- error:$e');
     }
     return e;
   }

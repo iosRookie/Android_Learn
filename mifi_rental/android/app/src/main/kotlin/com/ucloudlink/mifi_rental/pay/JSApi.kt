@@ -15,13 +15,13 @@ class JSApi(private val params: String?, private val activity: PayActivity) {
      */
     @JavascriptInterface
     fun getInfo(msg: Any): String? {
-        ULog.d("JSApi getInfo $msg params:$params")
+        ULog.d("-------> JSApi getInfo $msg params:$params")
         return params
     }
 
     @JavascriptInterface
     fun jumpToNativePage(msg: Any): String? {
-        ULog.i("JSApi jumpToNativePage $msg")
+        ULog.i("-------> JSApi jumpToNativePage $msg")
         when (msg) {
             "toPaySuccess" -> {
 //                val exts = HashMap<String, Any>()

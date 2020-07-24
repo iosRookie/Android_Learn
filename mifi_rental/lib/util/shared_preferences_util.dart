@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -5,6 +7,7 @@ class SharedPreferenceUtil {
   factory SharedPreferenceUtil() => _getInstance();
   static SharedPreferenceUtil _instance;
   static Locale _nativeDefaultLocale;
+
   SharedPreferenceUtil._internal();
   static SharedPreferenceUtil _getInstance() {
     if (_instance == null) {
@@ -18,6 +21,20 @@ class SharedPreferenceUtil {
   }
 
   static Locale get nativeLocal => SharedPreferenceUtil._nativeDefaultLocale;
+
+  static Future<String> getLoginCustomId() async {
+    String id = await SharedPreferenceUtil.getString("loginCustomId");
+    if (id == null) {
+      String alphabet = '0123456789qwertyuiopasdfghjklzxcvbnm';
+      StringBuffer buffer = StringBuffer();
+      for (int i = 0; i < 30; i++) {
+        buffer.write(alphabet[Random().nextInt(alphabet.length)]);
+      }
+      id = buffer.toString();
+      await SharedPreferenceUtil.setString("loginCustomId", id);
+    }
+    return id;
+  }
 
   static Future<bool> setBool(String key, bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -1,3 +1,4 @@
+const ROOT = '/';
 const RENT = 'rent';
 const FAULR_REPORT = 'fault_report';
 const DEVICE = 'device';
@@ -10,3 +11,4 @@ const SUCCESS = 'success';
 const PAY_NATIVE = 'pay_native';
 const QUERY = 'query';
 const PAY_FAIL = 'pay_fail';
+const FLOW_PACKAGE_PAY = 'flow_package_pay';

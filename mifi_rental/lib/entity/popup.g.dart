@@ -13,7 +13,7 @@ Popup _$PopupFromJson(Map<String, dynamic> json) {
     terminalSn: json['terminalSn'] as String,
     mifiImei: json['mifiImei'] as String,
     slotIndex: json['slotIndex'] as String,
-    popStatus: json['popStatus'] as num,
+    popResult: json['popResult'] as num,
   );
 }
 
@@ -23,5 +23,5 @@ Map<String, dynamic> _$PopupToJson(Popup instance) => <String, dynamic>{
       'terminalSn': instance.terminalSn,
       'mifiImei': instance.mifiImei,
       'slotIndex': instance.slotIndex,
-      'popStatus': instance.popStatus,
+      'popResult': instance.popResult,
     };

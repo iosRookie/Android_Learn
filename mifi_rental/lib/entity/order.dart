@@ -9,21 +9,21 @@ class Order {
   String orderSn; //订单编号
   String mifiImei; //设备imei码 扫码下单时此项为空
   String customerId; //用户id
-  num rentTm; //租赁时间
-  num returnTm; //归还时间
+  int rentTm; //租赁时间
+  int returnTm; //归还时间
   String usedTmStr; //使用时长
   String currencyCode; //货币类型
-  num deposit; //预授权金额 单位为分
-  num shouldPay; //应付金额 单位为分
-  num actuallyPay; //实付金额 单位为分
+  int deposit; //预授权金额 单位为分
+  int shouldPay; //应付金额 单位为分
+  int actuallyPay; //实付金额 单位为分
   String payStatus; //支付状态  UN_PAYED-未支付, PAYED-已支付
   String returnStatus; //归还状态  NOT_RETURN-未归还，RETURNED-已归还
   String saleStatus; //转售状态 UN_SALE-未转售，SALED-已转售
   String
       orderStatus; //订单状态  IN_ORDER-下单中，IN_USING-使用中，CANCELED-已取消，FINISHED-已完成
-  num canPopup; //是否可以进行设备弹出操作  0 否，1 是
-  num createTm; //订单创建时间
-  num updateTm; //订单更新时间
+  int canPopup; //是否可以进行设备弹出操作  0 否，1 是
+  int createTm; //订单创建时间
+  int updateTm; //订单更新时间
 
   Order(
       {this.mvnoCode,
@@ -31,18 +31,18 @@ class Order {
       this.orderSn,
       this.mifiImei,
       this.customerId,
-      this.rentTm,
-      this.returnTm,
+      this.rentTm = 0,
+      this.returnTm = 0,
       this.usedTmStr,
       this.currencyCode,
-      this.deposit,
-      this.shouldPay,
-      this.actuallyPay,
+      this.deposit = 0,
+      this.shouldPay = 0,
+      this.actuallyPay = 0,
       this.payStatus,
       this.returnStatus,
       this.saleStatus,
       this.orderStatus,
-      this.canPopup,
+      this.canPopup = 0,
       this.createTm,
       this.updateTm}); //订单更新时间
 

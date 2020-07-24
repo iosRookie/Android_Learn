@@ -54,7 +54,7 @@ class DioAdapter extends INetAdapter {
       switch (e.type) {
         case DioErrorType.DEFAULT:
           if(e.error is SocketException){
-            return  NetException(errorType: ErrorType.HTTP);
+            return  NetException(errorType: ErrorType.SOCKET, message: e.message, e: e);
           }else{
             return NetException(
                 errorType: ErrorType.UNKNOWN, message: e.message, e: e);
@@ -63,32 +63,32 @@ class DioAdapter extends INetAdapter {
         case DioErrorType.CANCEL:
           {
             return NetException(
-                errorType: ErrorType.UNKNOWN, message: "请求取消", e: e);
+                errorType: ErrorType.CANCEL, message: "请求取消", e: e);
           }
           break;
         case DioErrorType.CONNECT_TIMEOUT:
           {
             return NetException(
-                errorType: ErrorType.TIMEOUT, message: "连接超时", e: e);
+                errorType: ErrorType.CONNECT_TIMEOUT, message: "连接超时", e: e);
           }
           break;
         case DioErrorType.SEND_TIMEOUT:
           {
             return NetException(
-                errorType: ErrorType.TIMEOUT, message: "请求超时", e: e);
+                errorType: ErrorType.SEND_TIMEOUT, message: "请求超时", e: e);
           }
           break;
         case DioErrorType.RECEIVE_TIMEOUT:
           {
             return NetException(
-                errorType: ErrorType.TIMEOUT, message: "响应超时", e: e);
+                errorType: ErrorType.RECEIVE_TIMEOUT, message: "响应超时", e: e);
           }
           break;
         case DioErrorType.RESPONSE:
           {
             try {
-              String errMsg = e.response.statusMessage;
-              return NetException(errorType: ErrorType.HTTP, message: errMsg);
+              String errMsg = e.response.toString();
+              return NetException(errorType: ErrorType.RESPONSE, message: errMsg);
             } on Exception catch (_) {
               return NetException(
                   errorType: ErrorType.UNKNOWN, message: "未知错误", e: e);

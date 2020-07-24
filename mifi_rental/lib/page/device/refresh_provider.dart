@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:mifi_rental/base/base_provider.dart';
 import 'package:mifi_rental/db/db_refresh.dart';
 import 'package:mifi_rental/db/db_user.dart';
+import 'package:mifi_rental/entity/order.dart';
 import 'package:mifi_rental/entity/refresh.dart';
 import 'package:mifi_rental/entity/user.dart';
 import 'package:mifi_rental/page/device/device_provider.dart';
@@ -10,22 +11,36 @@ import 'package:mifi_rental/page/device/order_provider.dart';
 import 'goods_provider.dart';
 
 class RefreshProvider extends BaseProvider with ChangeNotifier {
+  Order order;
+  BuildContext context;
+
   String date;
   int refreshNum;
   User user;
 
-  OrderProvider orderProvider = OrderProvider();
-  DeviceProvider deviceProvider = DeviceProvider();
-  GoodsProvider goodsProvider = GoodsProvider();
+  OrderProvider orderProvider;
+  DeviceProvider deviceProvider;
+  GoodsProvider goodsProvider;
 
-  @override
-  void init() async {
+  RefreshProvider(this.order, this.context) {
+    orderProvider = OrderProvider(this.order, this.context);
+    deviceProvider = DeviceProvider(this.order, this.context);
+    goodsProvider = GoodsProvider(this.order, this.context);
+
+    _refreshTime();
+  }
+
+  _refreshTime() async {
     var refresh = await RefreshDb().query();
     if (refresh != null && refresh.date != null) {
       _setDate = refresh.date;
     } else {
       _saveDate();
     }
+  }
+
+  @override
+  void init() async {
   }
 
   set _setDate(String date) {
@@ -35,30 +50,25 @@ class RefreshProvider extends BaseProvider with ChangeNotifier {
     }
   }
 
-  void refreshData({bool showLoad}) async {
+  void refreshData({bool showLoad, Order order}) async {
+    this.order = order;
     if (showLoad == true) {
       showLoading();
     }
-    if (user == null) {
-      user = await UserDb().query();
-    }
     refreshNum = 0;
-    orderProvider.query(
-        user: user,
-        complete: () {
-          _update();
-        });
-    deviceProvider.query(orderProvider.order, user, complete: () {
+    orderProvider.updateOrder(order);
+
+    deviceProvider.updateWithOrder(order, complete: () {
       _update();
     });
-    goodsProvider.query(orderProvider.order, user, complete: () {
+    goodsProvider.updateWithOrder(order, complete: () {
       _update();
     });
   }
 
   void _update() {
     refreshNum += 1;
-    if (refreshNum == 3) {
+    if (refreshNum == 2) {
       dismissLoading();
       _saveDate();
     }

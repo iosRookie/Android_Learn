@@ -1,19 +1,26 @@
-import 'package:core_log/core_log.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:mifi_rental/base/base_provider.dart';
-import 'package:mifi_rental/db/db_device.dart';
-import 'package:mifi_rental/db/db_order.dart';
-import 'package:mifi_rental/db/db_user.dart';
 import 'package:mifi_rental/entity/device.dart';
 import 'package:mifi_rental/entity/order.dart';
-import 'package:mifi_rental/entity/user.dart';
-import 'package:mifi_rental/localizations/localizations.dart';
 import 'package:mifi_rental/repository/device_repository.dart';
 
 class DeviceProvider extends BaseProvider with ChangeNotifier {
+  Order order;
+  BuildContext context;
   String wifiName;
   String wifiPwd;
   String imei;
+
+  String get deviceImei => imei;
+
+  DeviceProvider(this.order, this.context) {
+    _query(this.order);
+  }
+
+  void updateWithOrder(Order order, {Function complete}) {
+    this.order = order;
+    _query(order, complete: complete);
+  }
 
   set _setDevice(Device device) {
     wifiName = device.wifiName;
@@ -24,27 +31,17 @@ class DeviceProvider extends BaseProvider with ChangeNotifier {
 
   @override
   void init() async {
-    var device = await DeviceDb().query();
-    if (device != null) {
-      _setDevice = device;
-    } else {
-      var order = await OrderDb().query();
-      var user = await UserDb().query();
-      query(order, user);
-    }
   }
 
-  void query(Order order, User user, {Function complete}) {
-    if (order == null || user == null) {
+  void _query(Order order, {Function complete}) {
+    if (order == null) {
       if (complete != null) {
         complete();
       }
       return;
     }
-    DeviceRepository().queryMifiInfo(
-      langType: MyLocalizations.of(context).getLanguage(),
-      loginCustomerId: user.loginCustomerId,
-      imei: order.mifiImei,
+    DeviceRepository.queryMifiInfo(
+      order.mifiImei,
       success: ((d) {
         _setDevice = d;
         if (complete != null) {

@@ -1,40 +1,23 @@
 import 'package:core_net/core_net.dart';
-import 'package:mifi_rental/db/db_device.dart';
-import 'package:mifi_rental/db/db_order.dart';
-import 'package:mifi_rental/db/db_user.dart';
 import 'package:mifi_rental/entity/device.dart';
 import 'package:mifi_rental/net/api.dart';
 import 'package:mifi_rental/repository/base_repository.dart';
-import 'package:mifi_rental/util/net_util.dart';
 
 class DeviceRepository extends BaseRepository {
-  void queryMifiInfo({
-    String langType,
-    String loginCustomerId,
+  static void queryMifiInfo(
     String imei,
+      {
     Function(Device) success,
     Function(dynamic) error,
   }) async {
-    if (loginCustomerId == null) {
-      var user = await UserDb().query();
-      loginCustomerId = user.loginCustomerId;
-    }
-    if (imei == null) {
-      var order = await OrderDb().query();
-      imei = order.mifiImei;
-    }
+
+    Map<String, dynamic> params =  await BaseRepository.netCommonParams();
+    params.addAll(Map<String, dynamic>.from({'imei': imei}));
     NetClient().post<Device>(
-      UrlApi.BASE_HOST + UrlApi.QUERY_MIFI_INFO,
-      params: {
-        'streamNo': NetUtil.getSteamNo(),
-        'partnerCode': "partnerCode",
-        'langType': langType,
-        'loginCustomerId': loginCustomerId,
-        'imei': imei,
-      },
+      UrlApi.QUERY_MIFI_INFO,
+      params: params,
       success: ((any) {
         if (any is Device) {
-          DeviceDb().update(any);
           if (success != null) {
             success(any);
           }
@@ -50,5 +33,23 @@ class DeviceRepository extends BaseRepository {
         }
       }),
     );
+  }
+
+  static void buyMifi(
+      String orderSn,
+      Function(Device) success,
+      Function(dynamic) error,
+      ) async {
+    Map<String, dynamic> params =  await BaseRepository.netCommonParams();
+    params.addAll(Map<String, dynamic>.from({'orderSn': orderSn}));
+      NetClient().post(UrlApi.BUY_MIFI,
+        params: params,
+        success: ((any) {
+          success ?? success(any);
+        }),
+        error: ((e) {
+            error ?? error(e);
+        }),
+      );
   }
 }

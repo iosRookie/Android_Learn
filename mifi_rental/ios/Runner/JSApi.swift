@@ -33,12 +33,14 @@ class JSApi: NSObject {
         switch arg {
         case "toPaySuccess":
             // 支付完成到设备查询界面
-            self.viewController?.popViewController(animated: false)
-            PlatformRouterImp.sharedInstance.open("query", urlParams: ["":""], exts: ["animated" : true]) { _ in }
+            self.viewController?.dismiss(animated: true, completion: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "paySuccess"), object: nil)
+//            PlatformRouterImp.sharedInstance.open("query", urlParams: ["":""], exts: ["animated" : true]) { _ in }
             break
         case "toPayCancel", "repayAgain":
             // 关闭支付界面并且取消订单
-            self.viewController?.popViewController(animated: true)
+            // NotificationCenter.default.post(name: NSNotification.Name(rawValue: "cancelOrder"), object: nil)
+            self.viewController?.dismiss(animated: true, completion: nil)
             break
         case "toContactUsActivity":
             break

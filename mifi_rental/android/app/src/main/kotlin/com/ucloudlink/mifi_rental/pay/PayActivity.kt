@@ -10,6 +10,7 @@ import android.view.View
 import android.webkit.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.common.util.JsonUtils
 import com.ucloudlink.core_log.ULog
 import com.ucloudlink.mifi_rental.MessageEvent
 import com.ucloudlink.mifi_rental.R
@@ -18,20 +19,28 @@ import io.flutter.plugin.common.EventChannel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.json.JSONObject
 import wendu.dsbridge.DWebView
 import java.util.*
-//import com.idlefish.flutterboost.interfaces.IFlutterViewContainer.RESULT_KEY
 
-//@Route(path = "/main/pay_native")
 class PayActivity : AppCompatActivity() {
     var timer: Timer = Timer()
+    var orderSn: String? = null
+    var paypalUrl: String? = null
+    var payType: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_pay)
         val dwebView = findViewById<View>(R.id.dwebview) as DWebView
         DWebView.setWebContentsDebuggingEnabled(true)
-        val param: String = intent.getStringExtra("params")
+        val param: String? = intent.getStringExtra("params")
+        if (param != null) {
+            val jsonObject = com.alibaba.fastjson.JSONObject.parseObject(param)
+            orderSn = jsonObject.getString("orderSn")
+            paypalUrl = jsonObject.getString("paypalUrl")
+            payType = jsonObject.getString("payType") //flow_package 流量包  rental_device 设备租赁
+        }
         println("PayActivity param: $param")
         dwebView.addJavascriptObject(JSApi(param, this), null)
         dwebView.webChromeClient = object : WebChromeClient() {
@@ -66,8 +75,11 @@ class PayActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
         }
-        dwebView.loadUrl("https://saas82mph5.ukelink.net/pay/authPaypal")
-
+        // 测试环境
+//        dwebView.loadUrl("https://saas82mph5.ukelink.net/pay/authPaypal")
+        // 开发环境
+//        dwebView.loadUrl("https://webdevmph5.ukelink.net/pay/authPaypal")
+        dwebView.loadUrl(paypalUrl)
         val task = object : TimerTask() {
             override fun run() {
                 cancelOrder()
@@ -84,7 +96,9 @@ class PayActivity : AppCompatActivity() {
 
     fun cancelOrder() {
         // 取消订单
-        EventBus.getDefault().post(MessageEvent("cancelOrder"))
+        if (payType == "rental_device") {
+            EventBus.getDefault().post(MessageEvent("cancelOrder", mapOf("orderSn" to orderSn as Any)))
+        }
         finish()
     }
     
@@ -92,7 +106,9 @@ class PayActivity : AppCompatActivity() {
         // 支付成功
         ULog.d("支付成功")
         finish()
-        EventBus.getDefault().post(MessageEvent("paySuccess"))
+        if (payType == "rental_device") {
+            EventBus.getDefault().post(MessageEvent("paySuccess"))
+        }
     }
 
     private fun showCancelDialog() {
@@ -107,7 +123,7 @@ class PayActivity : AppCompatActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && payType == "rental_device") {
             showCancelDialog()
             return true
         }

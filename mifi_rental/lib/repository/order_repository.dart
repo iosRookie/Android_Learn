@@ -7,27 +7,19 @@ import 'package:mifi_rental/net/api.dart';
 import 'package:mifi_rental/repository/base_repository.dart';
 import 'package:mifi_rental/util/net_util.dart';
 
-class OrderRepository {
+class OrderRepository extends BaseRepository {
   static void createOrder({
-    String loginCustomerId,
     String terminalSn,
-    String langType,
     Function(Order) success,
     Function(dynamic) error,
   }) async {
-    if (loginCustomerId == null) {
-      var user = await UserDb().query();
-      loginCustomerId = user.loginCustomerId;
-    }
-    NetClient().post<Order>(UrlApi.BASE_HOST + UrlApi.CREATE_ORDER, params: {
-      'streamNo': NetUtil.getSteamNo(),
-      'loginCustomerId': loginCustomerId,
-      'langType': langType,
-      'partnerCode': "partnerCode",
-      'terminalSn': terminalSn,
-    }, success: (any) {
+    Map<String, dynamic> params =  await BaseRepository.netCommonParams();
+    params.addAll(Map<String, dynamic>.from({'terminalSn': terminalSn}));
+
+    NetClient().post<Order>(UrlApi.CREATE_ORDER,
+        params: params,
+        success: (any) {
       if (any is Order) {
-        OrderDb().insert(any);
         if (success != null) {
           success(any);
         }
@@ -44,41 +36,22 @@ class OrderRepository {
   }
 
   static Future<void> queryOrderInfo({
-    String loginCustomerId,
-    String langType,
-    String orderSn,
+    bool pay,
+    int count,
     Function(Order) success,
     Function(dynamic) error,
   }) async {
-    if (loginCustomerId == null) {
-      var user = await UserDb().query();
-      loginCustomerId = user.loginCustomerId;
-    }
-    if (orderSn == null) {
-      var order = await OrderDb().query();
-      orderSn = order.orderSn;
-    }
-    NetClient().post<Order>(UrlApi.BASE_HOST + UrlApi.QUERY_ORDER_INFO, params: {
-      'streamNo': NetUtil.getSteamNo(),
-      'loginCustomerId': loginCustomerId,
-      'langType': langType,
-      'partnerCode': "partnerCode",
-      'orderSn': orderSn,
-    }, success: (any) {
+    Map<String, dynamic> params =  await BaseRepository.netCommonParams();
+    params.addAll(Map<String, dynamic>.from({'pay': pay, 'count': count})); // pay 标示是否 设备轮询弹出时 的查询
+
+    NetClient().post<Order>(UrlApi.QUERY_ORDER_INFO,
+        params: params,
+        success: (any) {
       if (any is Order) {
-        if (any.orderStatus == OrderStatus.FINISHED ||
-            any.orderStatus == OrderStatus.CANCELED) {
-          OrderDb().deleteAll();
-        } else {
-          OrderDb().insert(any);
-        }
         if (success != null) {
           success(any);
         }
       } else {
-        if(any==null){
-          OrderDb().deleteAll();
-        }
         if (success != null) {
           success(null);
         }
@@ -90,35 +63,21 @@ class OrderRepository {
     });
   }
 
-  static void cancelOrder({
-    String langType,
-    String loginCustomerId,
+  static void cancelOrder(
     String orderSn,
-    Function() success,
-    Function(dynamic) error,
-  }) async {
+      {Function() success,
+    Function(dynamic) error
+      }
+    ) async {
     ULog.d('取消订单');
-    if (loginCustomerId == null) {
-      var user = await UserDb().query();
-      loginCustomerId = user.loginCustomerId;
-    }
-    if (orderSn == null) {
-      var order = await OrderDb().query();
-      orderSn = order.orderSn;
-    }
+    Map<String, dynamic> params =  await BaseRepository.netCommonParams();
+    params.addAll(Map<String, dynamic>.from({'orderSn': orderSn}));
 
     NetClient().post(
-      UrlApi.BASE_HOST + UrlApi.CANCEL_ORDER,
-      params: {
-        'streamNo': NetUtil.getSteamNo(),
-        'loginCustomerId': loginCustomerId,
-        'langType': langType,
-        'partnerCode': "partnerCode",
-        'orderSn': orderSn,
-      },
+      UrlApi.CANCEL_ORDER,
+      params: params,
       success: ((any) {
         ULog.d('订单取消成功');
-        OrderDb().deleteAll();
         if (success != null) {
           success();
         }

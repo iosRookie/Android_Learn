@@ -29,11 +29,7 @@ class MainActivity : FlutterActivity() {
                 val json = JSONObject()
                 (call.arguments as Map<*, *>?)?.forEach {
                     if ("__container_uniqueId_key__" != it.key) {
-                        if (it.key == "terminalSn") {
-                            intent.putExtra("terminalSn", it.value as String)
-                        } else {
-                            json.put(it.key as String, it.value as String)
-                        }
+                        json.put(it.key as String, it.value)
                     }
                 }
                 intent.putExtra("params", json.toString())
@@ -43,7 +39,7 @@ class MainActivity : FlutterActivity() {
             }
         }
 
-        EventChannel(flutterEngine.dartExecutor, "com.uklink.common/eventChannel").setStreamHandler(
+        EventChannel(flutterEngine.dartExecutor, "com.uklink.common/payPageState").setStreamHandler(
                 object : EventChannel.StreamHandler {
                     override fun onListen(arguments: Any?, events: EventSink?) {
                         eventSink = events
@@ -71,8 +67,11 @@ class MainActivity : FlutterActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun handlerEvent(messageEvent: MessageEvent) {
+    public fun handlerEvent(messageEvent: MessageEvent) {
         Log.d("PayActivity", "${messageEvent.getMessage()}")
-        eventSink?.success("${messageEvent.getMessage()}")
+        var map = mutableMapOf<String, Any>()
+        messageEvent.params?.let { map.putAll(it) }
+        map.putAll(mapOf("method" to messageEvent.getMessage() as Any))
+        eventSink?.success(map)
     }
 }

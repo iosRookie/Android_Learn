@@ -1,5 +1,6 @@
 import 'package:core_net/net_exception.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mifi_rental/dialog/loading.dart';
 import 'package:mifi_rental/localizations/localizations.dart';
 import 'package:mifi_rental/res/strings.dart';
@@ -11,27 +12,40 @@ abstract class BaseProvider {
 
   void init();
 
+  // UNKNOWN, CONNECT_TIMEOUT, RECEIVE_TIMEOUT, SEND_TIMEOUT, CANCEL, SOCKET, RESPONSE
   void handleError(error) {
     if (error is NetException) {
-      if (globalKey != null) {
         switch (error.errorType) {
-          case ErrorType.HTTP:
-            globalKey.currentState.showSnackBar(SnackBar(
-                content: new Text(MyLocalizations.of(context)
-                    .getString(network_exceptions))));
+          case ErrorType.SOCKET:
+            Fluttertoast.showToast(
+                msg: MyLocalizations.of(context).getString(network_exceptions),
+                gravity: ToastGravity.CENTER
+            );
             break;
-          case ErrorType.TIMEOUT:
-            globalKey.currentState.showSnackBar(SnackBar(
-                content: new Text(MyLocalizations.of(context)
-                    .getString(network_exceptions))));
+          case ErrorType.CONNECT_TIMEOUT:
+          case ErrorType.RECEIVE_TIMEOUT:
+          case ErrorType.SEND_TIMEOUT:
+            Fluttertoast.showToast(
+                msg: "连接超时",
+                gravity: ToastGravity.CENTER
+            );
+            break;
+          case ErrorType.CANCEL:
+            // 取消请求
+            break;
+          case ErrorType.RESPONSE:
+            // 服务异常
+            Fluttertoast.showToast(
+                msg: "服务异常 + ${error.code}  + " " + ${error.message}",
+                gravity: ToastGravity.CENTER
+            );
             break;
           default:
-            if (error.message != null) {
-              globalKey.currentState
-                  .showSnackBar(SnackBar(content: new Text(error.message)));
-            }
+            Fluttertoast.showToast(
+                msg: "${error.code}  + " " + ${error.message}",
+                gravity: ToastGravity.CENTER
+            );
         }
-      }
     }
   }
 

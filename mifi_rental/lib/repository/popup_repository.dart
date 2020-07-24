@@ -4,34 +4,21 @@ import 'package:mifi_rental/db/db_user.dart';
 import 'package:mifi_rental/entity/popup.dart';
 import 'package:mifi_rental/net/api.dart';
 import 'package:mifi_rental/repository/base_repository.dart';
-import 'package:mifi_rental/util/net_util.dart';
 
 class PopupRepository extends BaseRepository {
-  void handlerOrder({
-    String langType,
-    String loginCustomerId,
+  void handlerOrder(
     String orderSn,
-    Function() success,
-    Function(dynamic) error,
-  }) async {
-    if (loginCustomerId == null) {
-      var user = await UserDb().query();
-      loginCustomerId = user.loginCustomerId;
-    }
-    if (orderSn == null) {
-      var order = await OrderDb().query();
-      orderSn = order.orderSn;
-    }
+      {Function() success,
+    Function(dynamic) error,}
+    ) async {
+    assert(orderSn != null || orderSn.length != 0);
+
+    Map<String, dynamic> params =  await BaseRepository.netCommonParams();
+    params.addAll(Map<String, dynamic>.from({'orderSn': orderSn}));
 
     NetClient().post(
-      UrlApi.BASE_HOST + UrlApi.HANDLER_ORDER,
-      params: {
-        'streamNo': NetUtil.getSteamNo(),
-        'loginCustomerId': loginCustomerId,
-        'langType': langType,
-        'partnerCode': "partnerCode",
-        'orderSn': orderSn,
-      },
+      UrlApi.HANDLER_ORDER,
+      params: params,
       success: ((any) {
         if (success != null) {
           success();
@@ -45,30 +32,20 @@ class PopupRepository extends BaseRepository {
     );
   }
 
-  queryPopupResult({
-    String langType,
-    String loginCustomerId,
+  queryPopupResult(
     String orderSn,
-    Function(Popup) success,
-    Function(dynamic) error,
-  }) async {
-    if (loginCustomerId == null) {
-      var user = await UserDb().query();
-      loginCustomerId = user.loginCustomerId;
-    }
-    if (orderSn == null) {
-      var order = await OrderDb().query();
-      orderSn = order.orderSn;
-    }
+      { int count = 0,
+        Function(Popup) success,
+    Function(dynamic) error,}
+  ) async {
+    assert(orderSn != null || orderSn.length != 0);
+
+    Map<String, dynamic> params =  await BaseRepository.netCommonParams();
+    params.addAll(Map<String, dynamic>.from({'orderSn': orderSn, "count" : count}));
+
     NetClient().post<Popup>(
-      UrlApi.BASE_HOST + UrlApi.QUERY_POPUP_RESULT,
-      params: {
-        'streamNo': NetUtil.getSteamNo(),
-        'loginCustomerId': loginCustomerId,
-        'langType': langType,
-        'partnerCode': "partnerCode",
-        'orderSn': orderSn,
-      },
+      UrlApi.QUERY_POPUP_RESULT,
+      params: params,
       success: ((any) {
         if (any is Popup) {
           if (success != null) {

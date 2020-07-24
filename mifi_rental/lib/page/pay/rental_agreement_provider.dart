@@ -1,9 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:mifi_rental/base/base_provider.dart';
-import 'package:mifi_rental/localizations/localizations.dart';
+import 'package:mifi_rental/entity/config.dart';
+import 'package:mifi_rental/net/net_data_analysis_error.dart';
 import 'package:mifi_rental/repository/conf_repository.dart';
 import 'package:mifi_rental/repository/rent_agreement_repository.dart';
 import 'package:mifi_rental/repository/terminal_repository.dart';
+import 'package:mifi_rental/util/shared_preferences_util.dart';
 
 class RentalAgreementProvider extends BaseProvider with ChangeNotifier {
   String agreement;
@@ -19,30 +23,45 @@ class RentalAgreementProvider extends BaseProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void getAgreement(String sn) {
-    var langType = MyLocalizations.of(context).getLanguage();
+  void getAgreement(String sn, {Function success, Function failure}) {
+    Config tempConfig;
     TerminalRepository().queryTerminalInfo(
-        langType: langType,
         terminalSn: sn,
         success: (t) {
-          ConfigRepository().getConfByMvno(
+          ConfigRepository.getConfByMvno(
             mvnoCode: t.mvnoCode,
-            langType: langType,
             success: ((config) {
+              tempConfig = config;
               setDeposit =
                   '${config.currencyType} ${(double.parse(config.depositAmount) / 100).toStringAsFixed(2)}';
-            }),
-          );
 
-          RentAgreementRepository().getAgreement(
-              mvno: t.mvnoCode,
-              langType: langType,
-              success: ((str) {
-                setAgreement = str;
-              }));
+              RentAgreementRepository().getAgreement(
+                  mvno: t.mvnoCode,
+                  success: ((str) {
+                    setAgreement = str.replaceAll("\${currencyType}", tempConfig.currencyType)
+                        .replaceAll("\${depositAmount}", "${(double.parse(tempConfig.depositAmount) / 100).toStringAsFixed(2)}")
+                        .replaceAll("\${perHourPrice}", "${(double.parse(tempConfig.perHourPrice) / 100).toStringAsFixed(2)}")
+                        .replaceAll("\${dayMaxPrice}", "${(double.parse(tempConfig.dayMaxPrice) / 100).toStringAsFixed(2)}")
+                        .replaceAll("\${maxRentDay}", tempConfig.maxRentDay)
+                        .replaceAll("\${salePrice}", "${(double.parse(tempConfig.salePrice) / 100).toStringAsFixed(2)}")
+                        .replaceAll("\${maxRentDay}", tempConfig.maxRentDay);
+                    success();
+                  }),
+                  error: (e) {
+                    failure();
+                    NetDataAnalysisError.showErrorToast(e, context);
+                  }
+              );
+            }),
+            error: (e) {
+              failure();
+              NetDataAnalysisError.showErrorToast(e, context);
+            }
+          );
         },
         error: (e) {
-          handleError(e);
+          failure();
+          NetDataAnalysisError.showErrorToast(e, context);
         });
   }
 

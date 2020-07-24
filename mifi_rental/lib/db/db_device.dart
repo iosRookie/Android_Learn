@@ -32,7 +32,7 @@ class DeviceDb extends DbProvider {
   }
 
   update(Device device) async {
-    ULog.d('跟新设备' + device.toString());
+    ULog.d('更新设备' + device.toString());
     var db = await getDataBase();
     await db.delete(tableName());
     return await db.insert(tableName(), _toMap(device));
